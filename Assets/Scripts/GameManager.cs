@@ -25,8 +25,6 @@ public class GameManager : MonoBehaviour
     public GameObject GetNamesPanel;
     public GetnameScript getNameScript;
 
-    int questaenuova;
-
     public bool SuspendInput = false;
     public int Lifes = 3;
     public int Score = 0;
