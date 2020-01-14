@@ -39,6 +39,8 @@ public class GameManager : MonoBehaviour
     private enum sides { UP, DOWN, RIGHT, LEFT };
 
 
+    int cosanuova;
+
     //Bordo
     private float colDepth = 1f;
     private float zPosition = 0f;
