@@ -7,9 +7,8 @@ public class EnemyBase : MonoBehaviour
     private Transform PlayerTransform;
     private GameManager gm;
     private Rigidbody2D rb;
-    private Animator anim;
+    private Animator animator;
     private bool canMove = true;
-    public Sprite EnemyTex;
 
     public float speed;
     public int HP;
@@ -20,15 +19,17 @@ public class EnemyBase : MonoBehaviour
         PlayerTransform = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
         gm = GameObject.Find("GameManager").GetComponent<GameManager>();
         rb = gameObject.GetComponent<Rigidbody2D>();
-        anim = gameObject.GetComponent<Animator>();
-        gameObject.GetComponent<SpriteRenderer>().sprite = EnemyTex;
+        animator = gameObject.GetComponent<Animator>();
     }
+
+
     private void Update()
     {
         if (canMove)
         {
             rb.rotation = (Mathf.Atan2(transform.position.y - PlayerTransform.position.y, transform.position.x - PlayerTransform.position.x) * Mathf.Rad2Deg + 90);
             rb.MovePosition(rb.position + new Vector2(transform.up[0], transform.up[1]) * Time.deltaTime * speed);
+
         }
 
         if (HP <= 0 && canMove)
@@ -47,7 +48,7 @@ public class EnemyBase : MonoBehaviour
         rb.velocity = Vector2.zero;
         rb.angularVelocity = 0;
 
-        anim.SetBool("Death", true);
+        animator.SetBool("Death", true);
         gm.Score++;
 
         yield return new WaitForSeconds(1);

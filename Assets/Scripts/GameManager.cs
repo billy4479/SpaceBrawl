@@ -17,7 +17,6 @@ public class GameManager : MonoBehaviour
 
     public GameObject[] Enemies;
 
-
     public GameObject PlayerPrefab;
     public TextMeshProUGUI LifesLabel;
     public TextMeshProUGUI ScoreLabel;

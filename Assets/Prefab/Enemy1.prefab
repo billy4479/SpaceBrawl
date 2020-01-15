@@ -170,7 +170,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d7ab1e015c4cd1e4194a03def04cc802, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  EnemyTex: {fileID: 21300000, guid: a9a8b434e37a8514aae32de46a312a7e, type: 3}
+  sprite: {fileID: 21300000, guid: a9a8b434e37a8514aae32de46a312a7e, type: 3}
   speed: 3.5
   HP: 10
   prob: 10
