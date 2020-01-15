@@ -170,6 +170,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d7ab1e015c4cd1e4194a03def04cc802, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  EnemyTex: {fileID: 21300000, guid: b0e754d116018004fb1f0e1216b84056, type: 3}
   speed: 5
   HP: 10
   prob: 20

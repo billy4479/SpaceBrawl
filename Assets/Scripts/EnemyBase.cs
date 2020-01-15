@@ -9,6 +9,7 @@ public class EnemyBase : MonoBehaviour
     private Rigidbody2D rb;
     private Animator anim;
     private bool canMove = true;
+    public Sprite EnemyTex;
 
     public float speed;
     public int HP;
@@ -20,6 +21,7 @@ public class EnemyBase : MonoBehaviour
         gm = GameObject.Find("GameManager").GetComponent<GameManager>();
         rb = gameObject.GetComponent<Rigidbody2D>();
         anim = gameObject.GetComponent<Animator>();
+        gameObject.GetComponent<SpriteRenderer>().sprite = EnemyTex;
     }
     private void Update()
     {
