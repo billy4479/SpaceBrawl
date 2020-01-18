@@ -172,4 +172,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 5
   HP: 10
-  prob: 20
+  prob: 10
+  pointsAtDeath: 2

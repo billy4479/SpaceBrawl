@@ -445,7 +445,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_text: "- GameDev: @jack_ellero\n- WebDev: @gio04_pelli\r\n\r- Illustrations:
-    @giacostino.cattaneo\n- Musics: federonchi\n- Sounds & Ideas: Rapo\r\n\r"
+    @giacostino.cattaneo\n- Music: federonchi\n- Sounds & Ideas: Rapo\r\n\r"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: e649f6a76bdae2c4cad7a7aaad109260, type: 2}
   m_sharedMaterial: {fileID: -7738589886612327634, guid: e649f6a76bdae2c4cad7a7aaad109260,
@@ -491,7 +491,7 @@ MonoBehaviour:
   m_enableWordWrapping: 1
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
-  m_firstOverflowCharacterIndex: 132
+  m_firstOverflowCharacterIndex: 131
   m_linkedTextComponent: {fileID: 0}
   m_isLinkedTextComponent: 0
   m_isTextTruncated: 0
@@ -515,7 +515,7 @@ MonoBehaviour:
   m_margin: {x: 476.61044, y: 320, z: 463.32837, w: 257.32523}
   m_textInfo:
     textComponent: {fileID: 628839740}
-    characterCount: 133
+    characterCount: 132
     spriteCount: 0
     spaceCount: 17
     wordCount: 19

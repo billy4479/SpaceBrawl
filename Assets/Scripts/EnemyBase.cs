@@ -13,6 +13,7 @@ public class EnemyBase : MonoBehaviour
     public float speed;
     public int HP;
     public int prob;
+    public int pointsAtDeath;
 
     private void Start()
     {
@@ -29,7 +30,6 @@ public class EnemyBase : MonoBehaviour
         {
             rb.rotation = (Mathf.Atan2(transform.position.y - PlayerTransform.position.y, transform.position.x - PlayerTransform.position.x) * Mathf.Rad2Deg + 90);
             rb.MovePosition(rb.position + new Vector2(transform.up[0], transform.up[1]) * Time.deltaTime * speed);
-
         }
 
         if (HP <= 0 && canMove)
@@ -49,7 +49,7 @@ public class EnemyBase : MonoBehaviour
         rb.angularVelocity = 0;
 
         animator.SetBool("Death", true);
-        gm.Score++;
+        gm.Score += pointsAtDeath;
 
         yield return new WaitForSeconds(1);
 
