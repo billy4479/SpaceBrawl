@@ -39,6 +39,7 @@ public class EnemyBase : MonoBehaviour
     {
         canMove = false;
         gameObject.name = "EnemyExplosion";
+        gameObject.tag = "EnemyExplosion";
 
         CapsuleCollider2D[] coll = gameObject.GetComponents<CapsuleCollider2D>();
         for (int i = 0; i < coll.Length; i++)
