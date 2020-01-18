@@ -12,12 +12,15 @@ public class Pause : MonoBehaviour
 
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.Escape))
         {
             if (isPaused)
                 resume();
             else
-                pause();
+            {
+                if (Time.timeScale != 0)
+                    pause();
+            }
         }
     }
 
@@ -49,7 +52,7 @@ public class Pause : MonoBehaviour
 
     public void BugReport()
     {
-        using(var f = new StreamWriter(Application.dataPath + "/debug.txt"))
+        using (var f = new StreamWriter(Application.dataPath + "/debug.txt"))
         {
             var prb = GameObject.Find("Player").GetComponent<Rigidbody2D>();
             var pa = GameObject.Find("Player").GetComponent<Animator>();

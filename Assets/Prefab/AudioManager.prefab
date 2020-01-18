@@ -50,7 +50,7 @@ MonoBehaviour:
     pitch: 1
     RandomVolume: 0
     RandomPitch: 0
-    loop: 0
+    loop: 1
   - name: Shot
     clip: {fileID: 8300000, guid: 41f3817df914de249a08c1255315e099, type: 3}
     volume: 0.7

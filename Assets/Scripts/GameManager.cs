@@ -116,7 +116,7 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(1);
 
         playerAnimator.SetBool("Death", false);
-        Destroy(GameObject.FindGameObjectWithTag("Player"));
+        Destroy(CurrentPlayer);
 
         yield return new WaitForSeconds(3);
 
