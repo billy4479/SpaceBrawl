@@ -14,7 +14,7 @@ public class EnemyBase : MonoBehaviour
     public int HP;
     public int prob;
 
-    private void Awake()
+    private void Start()
     {
         PlayerTransform = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
         gm = GameObject.Find("GameManager").GetComponent<GameManager>();

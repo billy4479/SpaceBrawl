@@ -9,7 +9,7 @@ public class PlayerMoviment : MonoBehaviour
     public GameManager gameManager;
     public Animator animator;
 
-    void Awake()
+    void Start()
     {
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
     }
