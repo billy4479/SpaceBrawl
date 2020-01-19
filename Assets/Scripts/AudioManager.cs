@@ -79,6 +79,17 @@ public class AudioManager : MonoBehaviour
         }
         Debug.LogError("No matching sound for " + name);
     }
-
+    public void StopSound(string name)
+    {
+        for (int i = 0; i < sounds.Length; i++)
+        {
+            if (sounds[i].name == name)
+            {
+                sounds[i].Stop();
+                return;
+            }
+        }
+        Debug.LogError("No matching sound for " + name);
+    }
 
 }

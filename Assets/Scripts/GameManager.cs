@@ -34,6 +34,7 @@ public class GameManager : MonoBehaviour
     [Range(0f, 1f)]
     public float friction;
     private GameObject CurrentPlayer;
+    private AudioManager audioManager;
 
     private enum sides { UP, DOWN, RIGHT, LEFT };
 
@@ -55,6 +56,8 @@ public class GameManager : MonoBehaviour
         this.Level = 1;
         this.EnemyNumber = 0;
         this.SuspendInput = false;
+
+        audioManager = AudioManager.instance;
 
         CreateBorders();
 
@@ -85,9 +88,7 @@ public class GameManager : MonoBehaviour
                 Destroy(CurrentPlayer);
                 GameObject[] bullets = GameObject.FindGameObjectsWithTag("Bullet");
                 for (int i = 0; i < bullets.Length; i++)
-                {
                     Destroy(bullets[i]);
-                }
                 GetNamesPanel.SetActive(true);
                 this.SuspendInput = true;
                 Time.timeScale = 0f;
@@ -112,6 +113,7 @@ public class GameManager : MonoBehaviour
 
         Animator playerAnimator = CurrentPlayer.GetComponent<Animator>();
         playerAnimator.SetBool("Death", true);
+        audioManager.PlaySound("PlayerExplosion");
 
         yield return new WaitForSeconds(1);
 
@@ -121,6 +123,7 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(3);
 
         CurrentPlayer = Instantiate(this.PlayerPrefab, new Vector3(0, 0, 0), Quaternion.identity);
+        audioManager.StopSound("PlayerExplosion");
 
         yield return new WaitForSeconds(1);
 
