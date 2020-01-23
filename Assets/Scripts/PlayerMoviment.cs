@@ -8,6 +8,7 @@ public class PlayerMoviment : MonoBehaviour
     public Rigidbody2D PlayerRB;
     public GameManager gameManager;
     public Animator animator;
+    public float maxSpeed;
 
     void Start()
     {
@@ -48,6 +49,15 @@ public class PlayerMoviment : MonoBehaviour
         else
             animator.SetInteger("dir", 0);
 
+        if (PlayerRB.velocity.x > maxSpeed)
+            PlayerRB.velocity = new Vector2(maxSpeed, PlayerRB.velocity.y);
+        if (PlayerRB.velocity.y > maxSpeed)
+            PlayerRB.velocity = new Vector2(PlayerRB.velocity.x, maxSpeed);
+        if (PlayerRB.velocity.x < -maxSpeed)
+            PlayerRB.velocity = new Vector2(-maxSpeed, PlayerRB.velocity.y);
+        if (PlayerRB.velocity.y < -maxSpeed)
+            PlayerRB.velocity = new Vector2(PlayerRB.velocity.x, -maxSpeed);
+        
     }
     private Vector3 pixelPos(Vector3 posR)
     {
@@ -59,5 +69,11 @@ public class PlayerMoviment : MonoBehaviour
         float rotation = Mathf.Atan2(MousePos.x - pixelPos(PlayerPos).x, MousePos.y - pixelPos(PlayerPos).y) * Mathf.Rad2Deg * -1;
 
         return rotation;
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.tag == "Bullet")
+            gameManager.PlayerLose();
     }
 }

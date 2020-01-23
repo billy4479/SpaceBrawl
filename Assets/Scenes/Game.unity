@@ -538,6 +538,7 @@ MonoBehaviour:
   LevelLabel: {fileID: 1945195145}
   GetNamesPanel: {fileID: 42764}
   getNameScript: {fileID: 42768}
+  EnemyRBs: []
   SuspendInput: 0
   Lifes: 3
   Score: 0

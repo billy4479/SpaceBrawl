@@ -8,11 +8,12 @@ public class GameManager : MonoBehaviour
 {
     /*
      TO DO:
-     * Audio
+     * Audio OK
      * Sistema Nemici Multipli OK
      * Eredità player
      * Menu Personaggi-Difficoltà
-     * Tipi di nemici diversi (sprite nuovi?)
+     * Tipi di nemici diversi (sprite nuovi?) Work in Progress
+     * Android
     */
 
     public GameObject[] Enemies;
@@ -23,6 +24,8 @@ public class GameManager : MonoBehaviour
     public TextMeshProUGUI LevelLabel;
     public GameObject GetNamesPanel;
     public GetnameScript getNameScript;
+    public List<Rigidbody2D> EnemyRBs;
+
 
     public bool SuspendInput = false;
     public int Lifes = 3;
@@ -163,8 +166,8 @@ public class GameManager : MonoBehaviour
                 Debug.LogError("No Enemy Selection");
                 break;
             }
-
-            Instantiate(this.Enemies[finalIndex], RandomSpawnPosOnBorders(), Quaternion.identity);
+            Vector3 pos = RandomSpawnPosOnBorders();
+            Instantiate(this.Enemies[finalIndex], pos, Quaternion.AngleAxis(Mathf.Atan2((CurrentPlayer.transform.position - pos).normalized.y, (CurrentPlayer.transform.position - pos).normalized.x) * Mathf.Rad2Deg - 90f, new Vector3(0, 0, 1)));
         }
         this.EnemyNumber = this.Level;
     }
