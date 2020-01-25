@@ -16,7 +16,7 @@ public class SaveManager : MonoBehaviour
 
     public static Scores scores;
 
-    void Start()
+    void Awake()
     {
         if (instance == null)
         {

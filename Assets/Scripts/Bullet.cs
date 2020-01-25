@@ -12,14 +12,7 @@ public class Bullet : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D info)
     {
-        if (info.tag == "Enemy")
-        {
+        if (info.tag != "EnemyExplosion")
             Destroy(gameObject);
-        }
-        if (info.tag == "Border")
-        {
-            Destroy(gameObject);
-        }
-
     }
 }

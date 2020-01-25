@@ -8,11 +8,12 @@ public class GameManager : MonoBehaviour
 {
     /*
      TO DO:
-     * Audio
+     * Audio OK
      * Sistema Nemici Multipli OK
      * Eredità player
      * Menu Personaggi-Difficoltà
-     * Tipi di nemici diversi (sprite nuovi?)
+     * Tipi di nemici diversi (sprite nuovi?) Work in Progress
+     * Android
     */
 
     public GameObject[] Enemies;
@@ -23,6 +24,8 @@ public class GameManager : MonoBehaviour
     public TextMeshProUGUI LevelLabel;
     public GameObject GetNamesPanel;
     public GetnameScript getNameScript;
+    public List<Rigidbody2D> EnemyRBs;
+
 
     public bool SuspendInput = false;
     public int Lifes = 3;
@@ -34,6 +37,7 @@ public class GameManager : MonoBehaviour
     [Range(0f, 1f)]
     public float friction;
     private GameObject CurrentPlayer;
+    private AudioManager audioManager;
 
     private enum sides { UP, DOWN, RIGHT, LEFT };
 
@@ -55,6 +59,8 @@ public class GameManager : MonoBehaviour
         this.Level = 1;
         this.EnemyNumber = 0;
         this.SuspendInput = false;
+
+        audioManager = AudioManager.instance;
 
         CreateBorders();
 
@@ -85,9 +91,7 @@ public class GameManager : MonoBehaviour
                 Destroy(CurrentPlayer);
                 GameObject[] bullets = GameObject.FindGameObjectsWithTag("Bullet");
                 for (int i = 0; i < bullets.Length; i++)
-                {
                     Destroy(bullets[i]);
-                }
                 GetNamesPanel.SetActive(true);
                 this.SuspendInput = true;
                 Time.timeScale = 0f;
@@ -112,15 +116,17 @@ public class GameManager : MonoBehaviour
 
         Animator playerAnimator = CurrentPlayer.GetComponent<Animator>();
         playerAnimator.SetBool("Death", true);
+        audioManager.PlaySound("PlayerExplosion");
 
         yield return new WaitForSeconds(1);
 
         playerAnimator.SetBool("Death", false);
-        Destroy(GameObject.FindGameObjectWithTag("Player"));
+        Destroy(CurrentPlayer);
 
         yield return new WaitForSeconds(3);
 
         CurrentPlayer = Instantiate(this.PlayerPrefab, new Vector3(0, 0, 0), Quaternion.identity);
+        audioManager.StopSound("PlayerExplosion");
 
         yield return new WaitForSeconds(1);
 
@@ -160,8 +166,8 @@ public class GameManager : MonoBehaviour
                 Debug.LogError("No Enemy Selection");
                 break;
             }
-
-            Instantiate(this.Enemies[finalIndex], RandomSpawnPosOnBorders(), Quaternion.identity);
+            Vector3 pos = RandomSpawnPosOnBorders();
+            Instantiate(this.Enemies[finalIndex], pos, Quaternion.AngleAxis(Mathf.Atan2((CurrentPlayer.transform.position - pos).normalized.y, (CurrentPlayer.transform.position - pos).normalized.x) * Mathf.Rad2Deg - 90f, new Vector3(0, 0, 1)));
         }
         this.EnemyNumber = this.Level;
     }

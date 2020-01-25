@@ -4,16 +4,24 @@ using UnityEngine;
 
 public class EnemyBase : MonoBehaviour
 {
-    private Transform PlayerTransform;
+    private Rigidbody2D PlayerRB;
     private GameManager gm;
     private Rigidbody2D rb;
     private Animator animator;
     private bool canMove = true;
+    private float repelRange = 1f;
+    private float repelStrenght = 1f;
 
-    public float speed;
+    public float speed = 5f;
+    public float turnSpeed = .1f;
     public int HP;
     public int prob;
+    public int pointsAtDeath = 1;
+    public bool isShooter = false;
+    public bool isSummoner = false;
+    public float fireDistance = 5f;
 
+<<<<<<< HEAD
     private void Awake()
     {
         PlayerTransform = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
@@ -24,21 +32,73 @@ public class EnemyBase : MonoBehaviour
 
 
     private void Update()
+=======
+    private void FixedUpdate()
+>>>>>>> ea395a247e439f7cb02f6caab2a5a48bf28ca8e6
     {
         if (canMove)
         {
-            rb.rotation = (Mathf.Atan2(transform.position.y - PlayerTransform.position.y, transform.position.x - PlayerTransform.position.x) * Mathf.Rad2Deg + 90);
-            rb.MovePosition(rb.position + new Vector2(transform.up[0], transform.up[1]) * Time.deltaTime * speed);
+            Vector2 direction = (PlayerRB.position - rb.position).normalized;
+            float distance = Vector2.Distance(rb.position, PlayerRB.position);
+            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg - 90f;
+            rb.rotation = Mathf.LerpAngle(rb.rotation, angle, turnSpeed);
 
+            if (isShooter)
+            {
+                if (distance >= fireDistance)
+                    rb.MovePosition(MoveNormally());
+                else
+                {
+
+                }
+            }
+            else
+                rb.MovePosition(MoveNormally());
         }
 
         if (HP <= 0 && canMove)
             StartCoroutine(EnemyDeath());
+
     }
+
+    private Vector2 MoveNormally()
+    {
+        Vector2 repelForce = Vector2.zero;
+        foreach (Rigidbody2D enemy in gm.EnemyRBs)
+        {
+            if (enemy == rb)
+                continue;
+            if (Vector2.Distance(enemy.position, rb.position) <= repelRange)
+                repelForce += (rb.position - enemy.position).normalized; //<=== direction         
+        }
+
+        Vector2 newPos = transform.position + transform.up * Time.fixedDeltaTime * speed;
+        newPos += repelForce * Time.fixedDeltaTime * repelStrenght;
+        return newPos;
+    }
+
+    private void Start()
+    {
+        if (gm.EnemyRBs == null)
+            gm.EnemyRBs = new List<Rigidbody2D>();
+        gm.EnemyRBs.Add(rb);
+    }
+
+    private void Awake()
+    {
+        PlayerRB = GameObject.FindGameObjectWithTag("Player").GetComponent<Rigidbody2D>();
+        gm = GameObject.Find("GameManager").GetComponent<GameManager>();
+        rb = gameObject.GetComponent<Rigidbody2D>();
+        animator = gameObject.GetComponent<Animator>();
+    }
+
+
     private IEnumerator EnemyDeath()
     {
         canMove = false;
         gameObject.name = "EnemyExplosion";
+        gameObject.tag = "EnemyExplosion";
+        gm.EnemyRBs.Remove(rb);
 
         CapsuleCollider2D[] coll = gameObject.GetComponents<CapsuleCollider2D>();
         for (int i = 0; i < coll.Length; i++)
@@ -49,7 +109,7 @@ public class EnemyBase : MonoBehaviour
         rb.angularVelocity = 0;
 
         animator.SetBool("Death", true);
-        gm.Score++;
+        gm.Score += pointsAtDeath;
 
         yield return new WaitForSeconds(1);
 
@@ -67,6 +127,7 @@ public class EnemyBase : MonoBehaviour
             {
                 foreach (GameObject enemies in GameObject.FindGameObjectsWithTag("Enemy"))
                 {
+                    gm.EnemyRBs = new List<Rigidbody2D>();
                     Destroy(enemies);
                 }
                 gm.PlayerLose();

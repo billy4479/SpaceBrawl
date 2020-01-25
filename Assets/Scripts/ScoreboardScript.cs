@@ -11,7 +11,7 @@ public class ScoreboardScript : MonoBehaviour
     SaveManager saveManager;
 
 
-    public void Awake()
+    public void Start()
     {
         saveManager = GameObject.Find("SaveManager").GetComponent<SaveManager>();
 
