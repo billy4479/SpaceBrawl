@@ -8,6 +8,7 @@ TagManager:
   - Border
   - Bullet
   - EnemyExplosion
+  - Anchor
   layers:
   - Default
   - TransparentFX
