@@ -21,20 +21,7 @@ public class EnemyBase : MonoBehaviour
     public bool isSummoner = false;
     public float fireDistance = 5f;
 
-<<<<<<< HEAD
-    private void Awake()
-    {
-        PlayerTransform = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
-        gm = GameObject.Find("GameManager").GetComponent<GameManager>();
-        rb = gameObject.GetComponent<Rigidbody2D>();
-        animator = gameObject.GetComponent<Animator>();
-    }
-
-
-    private void Update()
-=======
     private void FixedUpdate()
->>>>>>> ea395a247e439f7cb02f6caab2a5a48bf28ca8e6
     {
         if (canMove)
         {
