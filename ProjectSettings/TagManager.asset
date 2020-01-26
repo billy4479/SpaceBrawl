@@ -9,6 +9,7 @@ TagManager:
   - Bullet
   - EnemyExplosion
   - Anchor
+  - Pointer
   layers:
   - Default
   - TransparentFX

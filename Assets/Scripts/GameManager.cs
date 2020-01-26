@@ -25,7 +25,7 @@ public class GameManager : MonoBehaviour
     public GameObject GetNamesPanel;
     public GetnameScript getNameScript;
     public List<Rigidbody2D> EnemyRBs;
-
+    public List<Transform> anchors;
 
     public bool SuspendInput = false;
     public int Lifes = 3;
@@ -108,6 +108,8 @@ public class GameManager : MonoBehaviour
     private IEnumerator PlayerRespawning()
     {
         this.SuspendInput = true;
+        foreach (GameObject pointer in GameObject.FindGameObjectsWithTag("Pointer"))
+            Destroy(pointer);
 
         Rigidbody2D PlayerRB = CurrentPlayer.GetComponent<Rigidbody2D>();
         PlayerRB.velocity = Vector2.zero;
@@ -179,16 +181,16 @@ public class GameManager : MonoBehaviour
         switch (side)
         {
             case sides.UP:
-                result = new Vector3(Random.Range(screenSize.x, --screenSize.x), screenSize.y, 0);
+                result = new Vector3(Random.Range(anchors[0].position.x, -anchors[0].position.x), anchors[0].position.y, 0);
                 break;
             case sides.DOWN:
-                result = new Vector3(Random.Range(screenSize.x, -screenSize.x), -screenSize.y, 0);
+                result = new Vector3(Random.Range(anchors[1].position.x, -anchors[1].position.x), anchors[1].position.y, 0);
                 break;
             case sides.RIGHT:
-                result = new Vector3(screenSize.x, Random.Range(screenSize.y, -screenSize.y), 0);
+                result = new Vector3(Random.Range(anchors[0].position.y, -anchors[0].position.y), anchors[0].position.x, 0);
                 break;
             case sides.LEFT:
-                result = new Vector3(-screenSize.x, Random.Range(screenSize.y, -screenSize.y), 0);
+                result = new Vector3(Random.Range(anchors[1].position.y, -anchors[1].position.y), anchors[1].position.x, 0);
                 break;
             default:
                 Debug.LogError("No random number in enemy spawning function");

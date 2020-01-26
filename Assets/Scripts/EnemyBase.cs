@@ -6,12 +6,13 @@ public class EnemyBase : MonoBehaviour
 {
     private Rigidbody2D PlayerRB;
     private GameManager gm;
-    private Rigidbody2D rb;
-    private Animator animator;
     private bool canMove = true;
     private float repelRange = 1f;
     private float repelStrenght = 1f;
 
+    public Rigidbody2D rb;
+    public Animator animator;
+    public GameObject pointer;
     public float speed = 5f;
     public float turnSpeed = .1f;
     public int HP;
@@ -41,6 +42,15 @@ public class EnemyBase : MonoBehaviour
             }
             else
                 rb.MovePosition(MoveNormally());
+            if (Vector2.Distance(PlayerRB.position, rb.position) > gm.screenSize.y)
+            {
+                pointer.SetActive(true);
+            }
+            else
+            {
+                pointer.SetActive(false);
+            }
+            //Debug.Log(GetComponent<Renderer>().isVisible);
         }
 
         if (HP <= 0 && canMove)
@@ -75,8 +85,6 @@ public class EnemyBase : MonoBehaviour
     {
         PlayerRB = GameObject.FindGameObjectWithTag("Player").GetComponent<Rigidbody2D>();
         gm = GameObject.Find("GameManager").GetComponent<GameManager>();
-        rb = gameObject.GetComponent<Rigidbody2D>();
-        animator = gameObject.GetComponent<Animator>();
     }
 
 
@@ -96,6 +104,7 @@ public class EnemyBase : MonoBehaviour
         rb.angularVelocity = 0;
 
         animator.SetBool("Death", true);
+        Destroy(pointer);
         gm.Score += pointsAtDeath;
 
         yield return new WaitForSeconds(1);
@@ -117,8 +126,14 @@ public class EnemyBase : MonoBehaviour
                     gm.EnemyRBs = new List<Rigidbody2D>();
                     Destroy(enemies);
                 }
+                Destroy(pointer);
                 gm.PlayerLose();
             }
         }
+    }
+    void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.green;
+        Gizmos.DrawWireSphere(rb.position, gm.screenSize.y);
     }
 }

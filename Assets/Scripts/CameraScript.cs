@@ -67,10 +67,5 @@ public class CameraScript : MonoBehaviour
         oldPlayer = player;
     }
 
-    void OnDrawGizmosSelected()
-    {
-        Gizmos.color = Color.green;
-        Gizmos.DrawWireSphere(transform.position, gm.screenSize.x);
-        Gizmos.DrawWireSphere(transform.position, gm.screenSize.y);
-    }
+
 }

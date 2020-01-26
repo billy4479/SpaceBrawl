@@ -539,6 +539,9 @@ MonoBehaviour:
   GetNamesPanel: {fileID: 42764}
   getNameScript: {fileID: 42768}
   EnemyRBs: []
+  anchors:
+  - {fileID: 1972548374}
+  - {fileID: 904791233}
   SuspendInput: 0
   Lifes: 3
   Score: 0
