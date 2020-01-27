@@ -5,7 +5,6 @@ using UnityEngine;
 public class CameraScript : MonoBehaviour
 {
     public GameManager gm;
-    public GameObject background;
 
     private Vector3 player;
     private Vector3 oldPlayer;
@@ -14,7 +13,6 @@ public class CameraScript : MonoBehaviour
     void Start()
     {
         transform.position = new Vector3(0, 0, -10);
-        background.transform.DetachChildren();
     }
 
     void FixedUpdate()
