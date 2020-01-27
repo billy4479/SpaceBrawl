@@ -8,6 +8,8 @@ public class Pointer : MonoBehaviour
     private Rigidbody2D enemy;
     private Rigidbody2D player;
 
+    private float coeff = 3f;
+
     private void Awake()
     {
         gm = GameObject.Find("GameManager").GetComponent<GameManager>();
@@ -35,6 +37,11 @@ public class Pointer : MonoBehaviour
         //direction.Scale(gm.screenSize * 0.9f);
         Vector2 position = player.position + direction * gm.screenSize.y * .9f;
         transform.position = position;
+
+        float scale = coeff / Vector2.Distance(enemy.position, player.position);
+        if (scale < 0.1f)
+            scale = 0.1f;
+        transform.localScale = new Vector3(scale, scale * 2.5f, 1f);
     }
 
 }
