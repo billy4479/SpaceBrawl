@@ -272,7 +272,7 @@ MonoBehaviour:
   turnSpeed: 0.1
   HP: 10
   prob: 10
-  pointsAtDeath: 2
+  pointsAtDeath: 3
   isShooter: 0
   isSummoner: 0
   fireDistance: 0

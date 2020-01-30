@@ -34,14 +34,19 @@ public class Pointer : MonoBehaviour
         Vector2 direction = (enemy.position - player.position).normalized;
         transform.eulerAngles = new Vector3(0, 0, Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg + 90);
 
-        //direction.Scale(gm.screenSize * 0.9f);
-        Vector2 position = player.position + direction * gm.screenSize.y * .9f;
+        Vector2 position = player.position + direction *  gm.screenSize;
         transform.position = position;
 
         float scale = coeff / Vector2.Distance(enemy.position, player.position);
         if (scale < 0.1f)
             scale = 0.1f;
         transform.localScale = new Vector3(scale, scale * 2.5f, 1f);
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawLine(enemy.position, player.position);
     }
 
 }

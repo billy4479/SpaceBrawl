@@ -42,13 +42,16 @@ public class EnemyBase : MonoBehaviour
             }
             else
                 rb.MovePosition(MoveNormally());
-            if (Vector2.Distance(PlayerRB.position, rb.position) > gm.screenSize.y)
+
+            //hiding pointer
+
+            if (Vector2.Distance(PlayerRB.position, rb.position) > Vector2.Distance(PlayerRB.position, pointer.transform.position))
             {
-                pointer.SetActive(true);
+                pointer.GetComponent<Renderer>().enabled = true;
             }
             else
             {
-                pointer.SetActive(false);
+                pointer.GetComponent<Renderer>().enabled = false;
             }
             //Debug.Log(GetComponent<Renderer>().isVisible);
         }
@@ -131,9 +134,9 @@ public class EnemyBase : MonoBehaviour
             }
         }
     }
-    void OnDrawGizmosSelected()
+    void OnDrawGizmos()
     {
         Gizmos.color = Color.green;
-        Gizmos.DrawWireSphere(rb.position, gm.screenSize.y);
+        Gizmos.DrawWireSphere(rb.position, Vector2.Distance(PlayerRB.position, pointer.transform.position));
     }
 }
