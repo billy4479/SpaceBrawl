@@ -7,6 +7,7 @@ public class Background : MonoBehaviour
     public GameObject star;
     public Transform[] anchors;
     public float divider = 4f;
+    public float starSize = 7f;
 
     void Awake()
     {
@@ -19,7 +20,7 @@ public class Background : MonoBehaviour
 
         int starNumX = Mathf.RoundToInt((Mathf.Abs(anchors[0].transform.position.x) + Mathf.Abs(anchors[1].transform.position.x)) / divider);
         int starNumy = Mathf.RoundToInt((Mathf.Abs(anchors[0].transform.position.y) + Mathf.Abs(anchors[1].transform.position.y)) / divider);
-        star.transform.localScale = transform.localScale;
+        star.transform.localScale = new Vector3(starSize, starSize, 1f);
 
         for (int i = 0; i < starNumX; i++)
         {
