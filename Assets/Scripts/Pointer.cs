@@ -9,8 +9,10 @@ public class Pointer : MonoBehaviour
     private Rigidbody2D player;
 
     private float coeff = 3f;
-    private float cat = 0f;
     private Vector2 realPos = new Vector2();
+
+    private Vector2[] points = new Vector2[4];
+    private float[] angles;
 
     private void Awake()
     {
@@ -21,10 +23,29 @@ public class Pointer : MonoBehaviour
     private void Start()
     {
         transform.parent = null;
+
+        points[0] = new Vector2(gm.screenSize.x, gm.screenSize.y);
+        points[1] = new Vector2(-gm.screenSize.x, gm.screenSize.y);
+        points[2] = new Vector2(-gm.screenSize.x, -gm.screenSize.y);
+        points[3] = new Vector2(gm.screenSize.x, -gm.screenSize.y);
+
+
+        float[] dotProd = {
+        points[0].x * points[1].x + points[0].y * points[1].y,
+        points[1].x * points[2].x + points[1].y * points[2].y,
+        };
+
+        float[] _angles =  {
+            Mathf.Acos(dotProd[0] / (points[0].magnitude * points[1].magnitude)) * Mathf.Rad2Deg,
+            Mathf.Acos(dotProd[1] / (points[1].magnitude * points[2].magnitude)) * Mathf.Rad2Deg,
+        };
+        angles = _angles;
+
     }
 
     private void FixedUpdate()
     {
+        //Find the player or destroy gameObject
         try
         {
             player = gm.CurrentPlayer.GetComponent<Rigidbody2D>();
@@ -33,44 +54,56 @@ public class Pointer : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
+        //Set Direction
         Vector2 direction = (enemy.position - player.position).normalized;
         transform.eulerAngles = new Vector3(0, 0, Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg + 90);
 
+        //Set Scale
         float scale = coeff / Vector2.Distance(enemy.position, player.position);
         if (scale < 0.1f)
             scale = 0.1f;
-
         transform.localScale = new Vector3(scale, scale * 2.5f, 1f);
 
+        //Variables
         Vector2 finalPos;
+        float cat = 0f;
         float sub = .5f;
         float ratio = 1f;
 
         float angleRad = Mathf.Atan2(enemy.position.x - player.position.x, enemy.position.y - player.position.y);
         float angleDeg = angleRad * Mathf.Rad2Deg;
-        float maxAngle = Mathf.Atan2(gm.screenSize.x, gm.screenSize.y) * Mathf.Rad2Deg;
 
-        if ((angleDeg > 120f && angleDeg < 180f) || (angleDeg < -120f && angleDeg > -180f))
+
+        //Bottom
+        if ((angleDeg > 180f - angles[0] * .5f && angleDeg < 180f) || (angleDeg < -180f + angles[0] * .5f && angleDeg > -180f))
         {
             cat = Mathf.Tan(angleRad) * gm.screenSize.y - player.position.x;
             realPos = new Vector2(-cat, -gm.screenSize.y + player.position.y);
         }
-        if (angleDeg < 120f && angleDeg > 60f)
+
+        //Right
+        if (angleDeg < 180f - angles[0] * .5 && angleDeg > angles[0] - angles[1])
         {
             cat = Mathf.Tan(angleRad - Mathf.PI / 2f) * -gm.screenSize.x + player.position.y;
             realPos = new Vector2(gm.screenSize.x + player.position.x, cat);
         }
-        if (angleDeg < -60f && angleDeg > -120f)
+
+        //Left
+        if (angleDeg < -angles[0] + angles[1] && angleDeg > -180f + angles[0] * .5f)
         {
             cat = Mathf.Tan(angleRad - Mathf.PI / 2f) * -gm.screenSize.x - player.position.y;
             realPos = new Vector2(-gm.screenSize.x + player.position.x, -cat);
         }
-        if ((angleDeg < 60f && angleDeg > 0f) || (angleDeg > -60f && angleDeg < 0f))
+
+        //Up
+        if ((angleDeg < angles[0] * .5f && angleDeg > 0f) || (angleDeg > -angles[0] * .5f && angleDeg < 0f))
         {
             cat = Mathf.Tan(angleRad) * gm.screenSize.y + player.position.x;
             realPos = new Vector2(cat, gm.screenSize.y + player.position.y);
         }
 
+        //Taking nearer to the player
         ratio = ((realPos.x - player.position.x) / (realPos.y - player.position.y));
 
         float finY = Mathf.Sqrt(Mathf.Pow(sub, 2f) / (Mathf.Pow(ratio, 2f) + 1f));
@@ -81,6 +114,7 @@ public class Pointer : MonoBehaviour
         else
             finalPos = realPos + new Vector2(finX, finY);
 
+        //Setting final position
         transform.position = finalPos;
     }
 
@@ -88,9 +122,15 @@ public class Pointer : MonoBehaviour
     {
         Gizmos.color = Color.yellow;
         Gizmos.DrawLine(enemy.position, player.position);
-        Gizmos.color = Color.red;
 
+        Gizmos.color = Color.red;
         Gizmos.DrawLine(enemy.position, realPos);
+
+        Gizmos.color = Color.green;
+        Gizmos.DrawLine(player.position, points[0]);
+        Gizmos.DrawLine(player.position, points[1]);
+        Gizmos.DrawLine(player.position, points[2]);
+        Gizmos.DrawLine(player.position, points[3]);
     }
 
 }
