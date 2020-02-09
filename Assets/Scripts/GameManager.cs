@@ -6,16 +6,7 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    /*
-     TO DO:
-     * Audio OK
-     * Sistema Nemici Multipli OK
-     * Eredità player
-     * Menu Personaggi-Difficoltà
-     * Tipi di nemici diversi (sprite nuovi?) Work in Progress
-     * Android
-    */
-
+    #region variables
     public GameObject[] Enemies;
 
     public GameObject PlayerPrefab;
@@ -43,7 +34,7 @@ public class GameManager : MonoBehaviour
 
     public Vector2 screenSize;
     private Vector3 cameraPos;
-
+    #endregion
 
     private void Awake()
     {
@@ -57,7 +48,6 @@ public class GameManager : MonoBehaviour
         audioManager = AudioManager.instance;
 
     }
-
 
     private void Start()
     {

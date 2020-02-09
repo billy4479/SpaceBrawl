@@ -74,7 +74,8 @@ public class Pointer : MonoBehaviour
         float angleRad = Mathf.Atan2(enemy.position.x - player.position.x, enemy.position.y - player.position.y);
         float angleDeg = angleRad * Mathf.Rad2Deg;
 
-
+        //Chose the correct side and compute the position
+        #region IF
         //Bottom
         if ((angleDeg > 180f - angles[0] * .5f && angleDeg < 180f) || (angleDeg < -180f + angles[0] * .5f && angleDeg > -180f))
         {
@@ -102,8 +103,10 @@ public class Pointer : MonoBehaviour
             cat = Mathf.Tan(angleRad) * gm.screenSize.y + player.position.x;
             realPos = new Vector2(cat, gm.screenSize.y + player.position.y);
         }
+        #endregion
 
         //Taking nearer to the player
+        #region OnScreen
         ratio = ((realPos.x - player.position.x) / (realPos.y - player.position.y));
 
         float finY = Mathf.Sqrt(Mathf.Pow(sub, 2f) / (Mathf.Pow(ratio, 2f) + 1f));
@@ -113,12 +116,13 @@ public class Pointer : MonoBehaviour
             finalPos = realPos - new Vector2(finX, finY);
         else
             finalPos = realPos + new Vector2(finX, finY);
+        #endregion
 
         //Setting final position
         transform.position = finalPos;
     }
 
-    private void OnDrawGizmos()
+    private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.yellow;
         Gizmos.DrawLine(enemy.position, player.position);

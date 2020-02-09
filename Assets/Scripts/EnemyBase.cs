@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class EnemyBase : MonoBehaviour
 {
+    #region variables
     private Rigidbody2D PlayerRB;
     private GameManager gm;
     private bool canMove = true;
@@ -21,6 +22,7 @@ public class EnemyBase : MonoBehaviour
     public bool isShooter = false;
     public bool isSummoner = false;
     public float fireDistance = 5f;
+    #endregion
 
     private void FixedUpdate()
     {
@@ -44,16 +46,10 @@ public class EnemyBase : MonoBehaviour
                 rb.MovePosition(MoveNormally());
 
             //hiding pointer
-
             if (Vector2.Distance(PlayerRB.position, rb.position) > Vector2.Distance(PlayerRB.position, pointer.transform.position))
-            {
                 pointer.GetComponent<Renderer>().enabled = true;
-            }
             else
-            {
                 pointer.GetComponent<Renderer>().enabled = false;
-            }
-            //Debug.Log(GetComponent<Renderer>().isVisible);
         }
 
         if (HP <= 0 && canMove)
@@ -90,7 +86,6 @@ public class EnemyBase : MonoBehaviour
         gm = GameObject.Find("GameManager").GetComponent<GameManager>();
     }
 
-
     private IEnumerator EnemyDeath()
     {
         canMove = false;
@@ -115,6 +110,7 @@ public class EnemyBase : MonoBehaviour
         Destroy(gameObject);
         gm.EnemyNumber--;
     }
+    
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (canMove == true)
@@ -134,9 +130,10 @@ public class EnemyBase : MonoBehaviour
             }
         }
     }
-    void OnDrawGizmos()
+    
+    void OnDrawGizmosSelected()
     {
-        //Gizmos.color = Color.green;
-        //Gizmos.DrawWireSphere(rb.position, Vector2.Distance(PlayerRB.position, pointer.transform.position));
+        Gizmos.color = Color.green;
+        Gizmos.DrawWireSphere(rb.position, Vector2.Distance(PlayerRB.position, pointer.transform.position));
     }
 }

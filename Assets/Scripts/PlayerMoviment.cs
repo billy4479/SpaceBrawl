@@ -20,8 +20,7 @@ public class PlayerMoviment : MonoBehaviour
         PlayerRB.rotation = RotateToMouse(Input.mousePosition, transform.position);
         if (!gameManager.SuspendInput)
         {
-            //Moviment
-
+            #region moviment
             if (Input.GetKey(KeyCode.W))
                 PlayerRB.AddForce(transform.up * speed * Time.deltaTime);
             if (Input.GetKey(KeyCode.S))
@@ -30,9 +29,9 @@ public class PlayerMoviment : MonoBehaviour
                 PlayerRB.AddForce(transform.right * -1 * speed * Time.deltaTime);
             if (Input.GetKey(KeyCode.D))
                 PlayerRB.AddForce(transform.right * speed * Time.deltaTime);
+            #endregion
 
-            //Animation
-
+            #region animation
             if (Input.GetKey(KeyCode.W))
                 animator.SetInteger("dir", 1);
             else if (Input.GetKey(KeyCode.A))
@@ -45,10 +44,12 @@ public class PlayerMoviment : MonoBehaviour
                 animator.SetInteger("dir", 5);
             else
                 animator.SetInteger("dir", 0);
+            #endregion
         }
         else
             animator.SetInteger("dir", 0);
 
+        #region setMaxSpeed
         if (PlayerRB.velocity.x > maxSpeed)
             PlayerRB.velocity = new Vector2(maxSpeed, PlayerRB.velocity.y);
         if (PlayerRB.velocity.y > maxSpeed)
@@ -57,7 +58,8 @@ public class PlayerMoviment : MonoBehaviour
             PlayerRB.velocity = new Vector2(-maxSpeed, PlayerRB.velocity.y);
         if (PlayerRB.velocity.y < -maxSpeed)
             PlayerRB.velocity = new Vector2(PlayerRB.velocity.x, -maxSpeed);
-        
+        #endregion
+
     }
     private Vector3 pixelPos(Vector3 posR)
     {
