@@ -44,13 +44,12 @@ public class GameManager : MonoBehaviour
         this.EnemyNumber = 0;
         this.SuspendInput = false;
         cameraPos = Camera.main.transform.position;
-
-        audioManager = AudioManager.instance;
-
     }
 
     private void Start()
     {
+        audioManager = AudioManager.instance;
+        
         CurrentPlayer = Instantiate(this.PlayerPrefab, new Vector3(0, 0, 0), Quaternion.identity);
 
         screenSize.x = Vector2.Distance(Camera.main.ScreenToWorldPoint(new Vector2(0, 0)), Camera.main.ScreenToWorldPoint(new Vector2(Screen.width, 0))) * 0.5f;

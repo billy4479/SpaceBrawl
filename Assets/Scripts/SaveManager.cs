@@ -26,7 +26,12 @@ public class SaveManager : MonoBehaviour
         else if (instance != this)
             Destroy(this.gameObject);
 
-        path = Application.dataPath + "/save.json";
+
+        if (Application.platform == RuntimePlatform.Android)
+            path = Application.persistentDataPath + "/save.json";
+        else
+            path = Application.dataPath + "/save.json";
+
 
         if (scores == null)
         {
@@ -39,7 +44,8 @@ public class SaveManager : MonoBehaviour
             {   //Il file non esiste. Ne creo uno nuovo e carico i valori
                 Debug.LogWarning("Save not found! Creaing a new one...");
                 StreamWriter sw = new StreamWriter(path);
-                scores = new Scores{
+                scores = new Scores
+                {
                     score = new int[10],
                     name = new string[10]
                 };

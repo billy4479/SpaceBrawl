@@ -17,18 +17,28 @@ public class PlayerMoviment : MonoBehaviour
 
     void Update()
     {
-        PlayerRB.rotation = RotateToMouse(Input.mousePosition, transform.position);
         if (!gameManager.SuspendInput)
         {
             #region moviment
+            PlayerRB.rotation = RotateToMouse(Input.mousePosition, transform.position);
+/*
             if (Input.GetKey(KeyCode.W))
                 PlayerRB.AddForce(transform.up * speed * Time.deltaTime);
+
             if (Input.GetKey(KeyCode.S))
                 PlayerRB.AddForce(transform.up * -1 * speed * Time.deltaTime);
+
             if (Input.GetKey(KeyCode.A))
                 PlayerRB.AddForce(transform.right * -1 * speed * Time.deltaTime);
+
             if (Input.GetKey(KeyCode.D))
                 PlayerRB.AddForce(transform.right * speed * Time.deltaTime);
+*/
+            if (Input.GetMouseButton(0))
+            {
+                PlayerRB.AddForce(transform.up * speed * Time.deltaTime);
+            }
+
             #endregion
 
             #region animation

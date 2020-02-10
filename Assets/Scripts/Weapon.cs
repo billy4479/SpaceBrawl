@@ -23,12 +23,15 @@ public class Weapon : MonoBehaviour
 
     void Update()
     {
-        if ((Input.GetKey(KeyCode.Space) || Input.GetMouseButton(0)) && !gameManager.SuspendInput && counter + reloadTime <=  Time.time)
+        if ((Input.GetKey(KeyCode.Space) || Input.GetMouseButton(0)) && !gameManager.SuspendInput && counter + reloadTime <= Time.time)
         {
-            counter = Time.time;
-            Instantiate(bullet, FirePoint.position, FirePoint.rotation);
-            audioManager.PlaySound(shotSoundName);
-            rb.AddForce(transform.up * -strengh);
+            if (!Pause.isPaused)
+            {
+                counter = Time.time;
+                Instantiate(bullet, FirePoint.position, FirePoint.rotation);
+                audioManager.PlaySound(shotSoundName);
+                rb.AddForce(transform.up * -strengh);
+            }
         }
     }
 }

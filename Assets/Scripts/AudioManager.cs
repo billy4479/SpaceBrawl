@@ -34,8 +34,10 @@ public class Sound
         source.Play();
     }
 
-    public void Stop() => source.Stop();
+    public void Stop() { source.Stop(); }
 
+    public void Pause() { source.Pause(); }
+    public void Unpause() { source.UnPause(); }
 }
 
 public class AudioManager : MonoBehaviour
@@ -79,6 +81,7 @@ public class AudioManager : MonoBehaviour
         }
         Debug.LogError("No matching sound for " + name);
     }
+    
     public void StopSound(string name)
     {
         for (int i = 0; i < sounds.Length; i++)
@@ -91,5 +94,30 @@ public class AudioManager : MonoBehaviour
         }
         Debug.LogError("No matching sound for " + name);
     }
-
+    
+    public void PauseSound(string name)
+    {
+        for (int i = 0; i < sounds.Length; i++)
+        {
+            if (sounds[i].name == name)
+            {
+                sounds[i].Pause();
+                return;
+            }
+        }
+        Debug.LogError("No matching sound for " + name);
+    }
+    
+    public void UnpauseSound(string name)
+    {
+        for (int i = 0; i < sounds.Length; i++)
+        {
+            if (sounds[i].name == name)
+            {
+                sounds[i].Unpause();
+                return;
+            }
+        }
+        Debug.LogError("No matching sound for " + name);
+    }
 }

@@ -9,6 +9,9 @@ public class Pause : MonoBehaviour
     public static bool isPaused = false;
     public GameObject PauseMenu;
     public GameManager gameManager;
+    public AudioManager audioManager;
+
+    void Start() { audioManager = AudioManager.instance; }
 
     void Update()
     {
@@ -28,13 +31,17 @@ public class Pause : MonoBehaviour
     {
         isPaused = false;
         Time.timeScale = 1f;
+        gameManager.SuspendInput = false;
+        audioManager.UnpauseSound("Music");
         PauseMenu.SetActive(false);
     }
 
-    void pause()
+    public void pause()
     {
         isPaused = true;
         Time.timeScale = 0f;
+        gameManager.SuspendInput = true;
+        audioManager.PauseSound("Music");
         PauseMenu.SetActive(true);
     }
 
@@ -48,35 +55,6 @@ public class Pause : MonoBehaviour
     {
         Application.Quit();
         Debug.Log("Quitting...");
-    }
-
-    public void BugReport()
-    {
-        using (var f = new StreamWriter(Application.dataPath + "/debug.txt"))
-        {
-            var prb = GameObject.Find("Player").GetComponent<Rigidbody2D>();
-            var pa = GameObject.Find("Player").GetComponent<Animator>();
-
-            {
-                f.WriteLine("Variables:");
-                f.WriteLine(gameManager.EnemyNumber);
-                f.WriteLine(gameManager.Level);
-                f.WriteLine(gameManager.Lifes);
-                f.WriteLine(gameManager.Score);
-
-                f.WriteLine("Player:");
-
-                f.WriteLine(prb.velocity);
-                f.WriteLine(prb.angularVelocity);
-                f.WriteLine(prb.position);
-                f.WriteLine(pa.GetBool("Death"));
-                f.WriteLine(pa.GetInteger("dir"));
-
-            }
-
-            f.Flush();
-            f.Close();
-        }
     }
 
 }

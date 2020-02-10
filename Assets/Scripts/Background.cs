@@ -28,7 +28,7 @@ public class Background : MonoBehaviour
             {
                 var newstar = Instantiate(star, new Vector3(Random.Range((float)i, (float)i + 1f) * divider, Random.Range((float)j, (float)j + 1f) * divider, 0) + anchors[1].transform.position, Quaternion.identity);
                 newstar.transform.SetParent(transform);
-                newstar.GetComponent<Renderer>().sortingOrder = -1;
+                newstar.GetComponent<Renderer>().sortingOrder = -2;
             }
         }
     }
