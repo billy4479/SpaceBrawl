@@ -49,7 +49,7 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         audioManager = AudioManager.instance;
-        
+
         CurrentPlayer = Instantiate(this.PlayerPrefab, new Vector3(0, 0, 0), Quaternion.identity);
 
         screenSize.x = Vector2.Distance(Camera.main.ScreenToWorldPoint(new Vector2(0, 0)), Camera.main.ScreenToWorldPoint(new Vector2(Screen.width, 0))) * 0.5f;
@@ -80,6 +80,9 @@ public class GameManager : MonoBehaviour
                 GameObject[] bullets = GameObject.FindGameObjectsWithTag("Bullet");
                 for (int i = 0; i < bullets.Length; i++)
                     Destroy(bullets[i]);
+                GameObject[] pointers = GameObject.FindGameObjectsWithTag("Pointer");
+                for (int i = 0; i < pointers.Length; i++)
+                    Destroy(pointers[i]);
                 GetNamesPanel.SetActive(true);
                 this.SuspendInput = true;
                 Time.timeScale = 0f;
