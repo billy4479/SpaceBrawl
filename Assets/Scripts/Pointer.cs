@@ -79,40 +79,40 @@ public class Pointer : MonoBehaviour
         //Bottom
         if ((angleDeg > 180f - angles[0] * .5f && angleDeg < 180f) || (angleDeg < -180f + angles[0] * .5f && angleDeg > -180f))
         {
-            cat = Mathf.Tan(angleRad) * gm.screenSize.y - player.position.x;
-            realPos = new Vector2(-cat, -gm.screenSize.y + player.position.y);
+            cat = Mathf.Tan(angleRad) * gm.screenSize.y - Camera.main.transform.position.x;
+            realPos = new Vector2(-cat, -gm.screenSize.y + Camera.main.transform.position.y);
         }
 
         //Right
         if (angleDeg < 180f - angles[0] * .5 && angleDeg > angles[0] - angles[1])
         {
-            cat = Mathf.Tan(angleRad - Mathf.PI / 2f) * -gm.screenSize.x + player.position.y;
-            realPos = new Vector2(gm.screenSize.x + player.position.x, cat);
+            cat = Mathf.Tan(angleRad - Mathf.PI / 2f) * -gm.screenSize.x + Camera.main.transform.position.y;
+            realPos = new Vector2(gm.screenSize.x + Camera.main.transform.position.x, cat);
         }
 
         //Left
         if (angleDeg < -angles[0] + angles[1] && angleDeg > -180f + angles[0] * .5f)
         {
-            cat = Mathf.Tan(angleRad - Mathf.PI / 2f) * -gm.screenSize.x - player.position.y;
-            realPos = new Vector2(-gm.screenSize.x + player.position.x, -cat);
+            cat = Mathf.Tan(angleRad - Mathf.PI / 2f) * -gm.screenSize.x - Camera.main.transform.position.y;
+            realPos = new Vector2(-gm.screenSize.x + Camera.main.transform.position.x, -cat);
         }
 
         //Up
         if ((angleDeg < angles[0] * .5f && angleDeg > 0f) || (angleDeg > -angles[0] * .5f && angleDeg < 0f))
         {
-            cat = Mathf.Tan(angleRad) * gm.screenSize.y + player.position.x;
-            realPos = new Vector2(cat, gm.screenSize.y + player.position.y);
+            cat = Mathf.Tan(angleRad) * gm.screenSize.y + Camera.main.transform.position.x;
+            realPos = new Vector2(cat, gm.screenSize.y + Camera.main.transform.position.y);
         }
         #endregion
 
         //Taking nearer to the player
         #region OnScreen
-        ratio = ((realPos.x - player.position.x) / (realPos.y - player.position.y));
+        ratio = ((realPos.x - Camera.main.transform.position.x) / (realPos.y - Camera.main.transform.position.y));
 
         float finY = Mathf.Sqrt(Mathf.Pow(sub, 2f) / (Mathf.Pow(ratio, 2f) + 1f));
         float finX = ratio * finY;
 
-        if (enemy.position.y > player.position.y)
+        if (enemy.position.y > Camera.main.transform.position.y)
             finalPos = realPos - new Vector2(finX, finY);
         else
             finalPos = realPos + new Vector2(finX, finY);
