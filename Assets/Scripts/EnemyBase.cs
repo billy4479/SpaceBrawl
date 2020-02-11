@@ -45,11 +45,6 @@ public class EnemyBase : MonoBehaviour
             else
                 rb.MovePosition(MoveNormally());
 
-            //hiding pointer
-            if (Vector2.Distance(PlayerRB.position, rb.position) > Vector2.Distance(PlayerRB.position, pointer.transform.position))
-                pointer.GetComponent<Renderer>().enabled = true;
-            else
-                pointer.GetComponent<Renderer>().enabled = false;
         }
 
         if (HP <= 0 && canMove)

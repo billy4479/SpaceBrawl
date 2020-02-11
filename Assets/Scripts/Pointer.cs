@@ -118,6 +118,11 @@ public class Pointer : MonoBehaviour
             finalPos = realPos + new Vector2(finX, finY);
         #endregion
 
+        if (Vector2.Distance(player.position, enemy.position) > Vector2.Distance(player.position, realPos))
+            GetComponent<Renderer>().enabled = true;
+        else
+            GetComponent<Renderer>().enabled = false;
+
         //Setting final position
         transform.position = finalPos;
     }

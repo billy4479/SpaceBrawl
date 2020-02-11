@@ -6,8 +6,8 @@ public class Background : MonoBehaviour
 {
     public GameObject star;
     public Transform[] anchors;
-    public float divider = 4f;
-    public float starSize = 7f;
+    private float divider = 4f;
+    private float starSize = 3f;
 
     void Awake()
     {
