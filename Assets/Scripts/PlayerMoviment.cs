@@ -42,7 +42,7 @@ public class PlayerMoviment : MonoBehaviour
             #endregion
 
             #region animation
-            if (Input.GetKey(KeyCode.W))
+            /*if (Input.GetKey(KeyCode.W))
                 animator.SetInteger("dir", 1);
             else if (Input.GetKey(KeyCode.A))
                 animator.SetInteger("dir", 2);
@@ -53,7 +53,13 @@ public class PlayerMoviment : MonoBehaviour
             else if (Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.W))
                 animator.SetInteger("dir", 5);
             else
+                animator.SetInteger("dir", 0);*/
+                
+            if(Input.GetMouseButton(0))
+                animator.SetInteger("dir", 1);
+            else
                 animator.SetInteger("dir", 0);
+            
             #endregion
         }
         else
