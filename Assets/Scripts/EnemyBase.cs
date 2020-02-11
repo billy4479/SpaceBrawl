@@ -126,9 +126,4 @@ public class EnemyBase : MonoBehaviour
         }
     }
     
-    void OnDrawGizmosSelected()
-    {
-        Gizmos.color = Color.green;
-        Gizmos.DrawWireSphere(rb.position, Vector2.Distance(PlayerRB.position, pointer.transform.position));
-    }
 }
