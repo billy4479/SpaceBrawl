@@ -82,49 +82,29 @@ public class Pointer : MonoBehaviour
         //Bottom
         if ((angleDeg > 180f - angles[0] * .5f && angleDeg < 180f) || (angleDeg < -180f + angles[0] * .5f && angleDeg > -180f))
         {
-<<<<<<< HEAD
-            cat = Mathf.Tan(angleRad) * gm.screenSize.y - Camera.main.transform.position.x;
-            realPos = new Vector2(-cat, -gm.screenSize.y + Camera.main.transform.position.y);
-=======
             cat = Mathf.Tan(angleRad) * (gm.screenSize.y + (player.position.y - cam.position.y)) - player.position.x;
             realPos = new Vector2(-cat, -gm.screenSize.y + cam.position.y);
->>>>>>> 8f6d2c5104a89fde718c8f74eaef5a778255de6a
         }
 
         //Right
         if (angleDeg < 180f - angles[0] * .5 && angleDeg > angles[0] - angles[1])
         {
-<<<<<<< HEAD
-            cat = Mathf.Tan(angleRad - Mathf.PI / 2f) * -gm.screenSize.x + Camera.main.transform.position.y;
-            realPos = new Vector2(gm.screenSize.x + Camera.main.transform.position.x, cat);
-=======
             cat = Mathf.Tan(angleRad - Mathf.PI / 2f) * (-gm.screenSize.x + (player.position.x - cam.position.x)) + player.position.y;
             realPos = new Vector2(gm.screenSize.x + cam.position.x, cat);
->>>>>>> 8f6d2c5104a89fde718c8f74eaef5a778255de6a
         }
 
         //Left
         if (angleDeg < -angles[0] + angles[1] && angleDeg > -180f + angles[0] * .5f)
         {
-<<<<<<< HEAD
-            cat = Mathf.Tan(angleRad - Mathf.PI / 2f) * -gm.screenSize.x - Camera.main.transform.position.y;
-            realPos = new Vector2(-gm.screenSize.x + Camera.main.transform.position.x, -cat);
-=======
             cat = Mathf.Tan(angleRad - Mathf.PI / 2f) * (-gm.screenSize.x - (player.position.x - cam.position.x)) - player.position.y;
             realPos = new Vector2(-gm.screenSize.x + cam.position.x, -cat);
->>>>>>> 8f6d2c5104a89fde718c8f74eaef5a778255de6a
         }
 
         //Up
         if ((angleDeg < angles[0] * .5f && angleDeg > 0f) || (angleDeg > -angles[0] * .5f && angleDeg < 0f))
         {
-<<<<<<< HEAD
-            cat = Mathf.Tan(angleRad) * gm.screenSize.y + Camera.main.transform.position.x;
-            realPos = new Vector2(cat, gm.screenSize.y + Camera.main.transform.position.y);
-=======
             cat = Mathf.Tan(angleRad) * (gm.screenSize.y - (player.position.y - cam.position.y)) + player.position.x;
             realPos = new Vector2(cat, gm.screenSize.y + cam.position.y);
->>>>>>> 8f6d2c5104a89fde718c8f74eaef5a778255de6a
         }
         #endregion
 
