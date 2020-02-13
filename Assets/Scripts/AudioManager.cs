@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
 [System.Serializable]
 public class Sound
 {
@@ -19,6 +20,7 @@ public class Sound
     [Range(0f, .5f)]
     public float RandomPitch = .1f;
     public bool loop;
+    public bool isMusic;
 
     public void SetSource(AudioSource source)
     {
@@ -27,23 +29,26 @@ public class Sound
         this.source.loop = loop;
     }
 
-    public void Play()
+    public void Play(float volume)
     {
-        source.volume = volume * (1 + Random.Range(-RandomVolume / 2, RandomVolume / 2));
+        source.volume = this.volume * (1 + Random.Range(-RandomVolume / 2, RandomVolume / 2)) * (volume / 100f);
         source.pitch = pitch * (1 + Random.Range(-RandomPitch / 2, RandomPitch / 2));
         source.Play();
     }
-
     public void Stop() { source.Stop(); }
-
     public void Pause() { source.Pause(); }
     public void Unpause() { source.UnPause(); }
+    public void SetVolume(float volume)
+    { this.source.volume = this.volume * (1 + Random.Range(-RandomVolume / 2, RandomVolume / 2)) * (volume / 100f); }
 }
 
 public class AudioManager : MonoBehaviour
 {
     [SerializeField]
     Sound[] sounds;
+    private float musicVolume;
+    private float sfxVolume;
+
 
     public static AudioManager instance;
     void Awake()
@@ -66,7 +71,23 @@ public class AudioManager : MonoBehaviour
             _aud.transform.SetParent(transform);
         }
 
+        musicVolume = SaveManager.instance.settings.VolumeMusic;
+        sfxVolume = SaveManager.instance.settings.VolumeSFX;
+
         PlaySound("Music");
+    }
+
+    public void SetMusicVolume(float volume)
+    {
+        for (int i = 0; i < sounds.Length; i++)
+        {
+            if (sounds[i].name == "Music")
+            {
+                sounds[i].SetVolume(volume);
+                return;
+            }
+        }
+        Debug.LogError("No matching sound for " + name);
     }
 
     public void PlaySound(string name)
@@ -75,13 +96,18 @@ public class AudioManager : MonoBehaviour
         {
             if (sounds[i].name == name)
             {
-                sounds[i].Play();
+                float volume;
+                if (sounds[i].isMusic)
+                    volume = musicVolume;
+                else
+                    volume = sfxVolume;
+                sounds[i].Play(volume);
                 return;
             }
         }
         Debug.LogError("No matching sound for " + name);
     }
-    
+
     public void StopSound(string name)
     {
         for (int i = 0; i < sounds.Length; i++)
@@ -94,7 +120,7 @@ public class AudioManager : MonoBehaviour
         }
         Debug.LogError("No matching sound for " + name);
     }
-    
+
     public void PauseSound(string name)
     {
         for (int i = 0; i < sounds.Length; i++)
@@ -107,7 +133,7 @@ public class AudioManager : MonoBehaviour
         }
         Debug.LogError("No matching sound for " + name);
     }
-    
+
     public void UnpauseSound(string name)
     {
         for (int i = 0; i < sounds.Length; i++)

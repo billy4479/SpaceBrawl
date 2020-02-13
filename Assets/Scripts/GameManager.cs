@@ -13,8 +13,6 @@ public class GameManager : MonoBehaviour
     public TextMeshProUGUI LifesLabel;
     public TextMeshProUGUI ScoreLabel;
     public TextMeshProUGUI LevelLabel;
-    public GameObject GetNamesPanel;
-    public GetnameScript getNameScript;
     public List<Rigidbody2D> EnemyRBs;
     public List<Transform> anchors;
 
@@ -74,8 +72,9 @@ public class GameManager : MonoBehaviour
 
         if (this.Lifes == 0)
         {
-            if (this.Score > SaveManager.scores.score[9])
+            if (this.Score > SaveManager.instance.scores.score[0])
             {
+                SaveManager.SavedScores scr = SaveManager.instance.scores;
                 Destroy(CurrentPlayer);
                 GameObject[] bullets = GameObject.FindGameObjectsWithTag("Bullet");
                 for (int i = 0; i < bullets.Length; i++)
@@ -83,11 +82,23 @@ public class GameManager : MonoBehaviour
                 GameObject[] pointers = GameObject.FindGameObjectsWithTag("Pointer");
                 for (int i = 0; i < pointers.Length; i++)
                     Destroy(pointers[i]);
-                GetNamesPanel.SetActive(true);
                 this.SuspendInput = true;
                 Time.timeScale = 0f;
-                getNameScript.EndGame(this.Score);
-                return;
+
+                for (int i = scr.score.Length - 1; i > 0; i--)
+                {
+                    if (i == 0)
+                        continue;
+
+                    scr.score[i] = scr.score[i - 1];
+                    scr.date[i] = scr.date[i - 1];
+                    scr.name[i] = scr.name[i - 1];
+                }
+                scr.score[0] = this.Score;
+                scr.name[0] = SaveManager.instance.settings.name;
+                scr.date[0] = System.DateTime.Now.ToString("d", System.Globalization.CultureInfo.CreateSpecificCulture("fr-FR"));
+
+                SaveManager.instance.WriteChanges();
             }
             SceneManager.LoadScene("Menu");
 

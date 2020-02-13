@@ -6,24 +6,26 @@ using TMPro;
 
 public class ScoreboardScript : MonoBehaviour
 {
-    string ScoreText;
-    TextMeshProUGUI ScoreboardText;
-    SaveManager saveManager;
+    private string ScoreText;
+    private TextMeshProUGUI ScoreboardText;
+    private SaveManager saveManager;
 
 
     public void Start()
     {
-        saveManager = GameObject.Find("SaveManager").GetComponent<SaveManager>();
+        saveManager = SaveManager.instance;
+        ScoreText = "";
 
         for (int i = 0; i < 9; i++)
         {
-            ScoreText = ScoreText + "#" + (i + 1) + ".\t" + SaveManager.scores.name[i] + "\t" + SaveManager.scores.score[i] + "\n";
+            ScoreText = ScoreText + "#" + (i + 1) + ". \t " +
+            saveManager.scores.name[i] + " \t " +
+            saveManager.scores.date[i] + " \t " +
+            saveManager.scores.score[i] + "\n";
         }
 
         ScoreboardText = GameObject.Find("ScoreLabel").GetComponent<TextMeshProUGUI>();
         ScoreboardText.text = ScoreText;
-
-        saveManager.WriteScoreToFile();
     }
 
     public void OnButtonPress()

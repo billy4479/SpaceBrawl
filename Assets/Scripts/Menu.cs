@@ -21,5 +21,9 @@ public class Menu : MonoBehaviour
     {
         Application.Quit();
     }
+    public void OptionsButton()
+    {
+        SceneManager.LoadScene("Options");
+    }
 
 }

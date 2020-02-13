@@ -30,7 +30,7 @@ public class Weapon : MonoBehaviour
                 counter = Time.time;
                 Instantiate(bullet, FirePoint.position, FirePoint.rotation);
                 audioManager.PlaySound(shotSoundName);
-                rb.AddForce(transform.up * -strengh);
+                //rb.AddForce(transform.up * -strengh);
             }
         }
     }

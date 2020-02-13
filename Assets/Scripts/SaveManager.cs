@@ -6,18 +6,29 @@ using System.IO;
 public class SaveManager : MonoBehaviour
 {
     static public SaveManager instance;
-    private string path;
+    private string savePath;
+    private string optionPath;
 
-    public class Scores
+    public class SavedScores
     {
         public string[] name;
         public int[] score;
+        public string[] date;
     }
 
-    public static Scores scores;
+    public class Settings
+    {
+        public float VolumeSFX;
+        public float VolumeMusic;
+        public string name;
+    }
+
+    public SavedScores scores;
+    public Settings settings;
 
     void Awake()
     {
+        #region Create Instance
         if (instance == null)
         {
             instance = this;
@@ -25,47 +36,75 @@ public class SaveManager : MonoBehaviour
         }
         else if (instance != this)
             Destroy(this.gameObject);
-
+        #endregion
 
         if (Application.platform == RuntimePlatform.Android)
-            path = Application.persistentDataPath + "/save.json";
-        else
-            path = Application.dataPath + "/save.json";
-
-
-        if (scores == null)
         {
-            if (File.Exists(path)) //Il file esiste. Carico il salvataggio
+            savePath = Application.persistentDataPath + "/save.json";
+            optionPath = Application.persistentDataPath + "/options.json";
+        }
+        else
+        {
+            savePath = Application.dataPath + "/save.json";
+            optionPath = Application.dataPath + "/options.json";
+        }
+
+        if (File.Exists(savePath)) //Il file esiste. Carico il salvataggio
+        {
+            scores = JsonUtility.FromJson<SavedScores>(File.ReadAllText(savePath));
+        }
+        else
+        {   //Il file non esiste. Ne creo uno nuovo e carico i valori
+            Debug.LogWarning("Save not found! Creaing a new one...");
+
+            using (StreamWriter saveStream = new StreamWriter(savePath))
             {
-                scores = new Scores();
-                scores = JsonUtility.FromJson<Scores>(File.ReadAllText(path));
-            }
-            else
-            {   //Il file non esiste. Ne creo uno nuovo e carico i valori
-                Debug.LogWarning("Save not found! Creaing a new one...");
-                StreamWriter sw = new StreamWriter(path);
-                scores = new Scores
+                scores = new SavedScores
                 {
                     score = new int[10],
-                    name = new string[10]
+                    name = new string[10],
+                    date = new string[10]
                 };
                 for (int i = 0; i < 10; i++)
                 {
                     scores.name[i] = "Empty";
                     scores.score[i] = 0;
+                    scores.date[i] = "None";
                 }
                 string json = JsonUtility.ToJson(scores, false);
-                Debug.Log(json);
 
-                sw.Write(json);
-                sw.Flush();
-                sw.Close();
+                saveStream.Write(json);
+                saveStream.Flush();
+                saveStream.Close();
             }
         }
+        if (File.Exists(optionPath))
+        {
+            settings = JsonUtility.FromJson<Settings>(File.ReadAllText(optionPath));
+        }
+        else
+        {
+            Debug.LogWarning("Options not found! Creaing a new one...");
+            using (StreamWriter optionsStream = new StreamWriter(optionPath))
+            {
+                settings = new Settings
+                {
+                    name = "Player",
+                    VolumeMusic = 100f,
+                    VolumeSFX = 100f
+                };
+                string json = JsonUtility.ToJson(settings, false);
+                optionsStream.Write(json);
+                optionsStream.Flush();
+                optionsStream.Close();
+            }
+        }
+
     }
 
-    public void WriteScoreToFile()
+    public void WriteChanges()
     {
-        File.WriteAllText(path, JsonUtility.ToJson(scores));
+        File.WriteAllText(savePath, JsonUtility.ToJson(scores));
+        File.WriteAllText(optionPath, JsonUtility.ToJson(settings));
     }
 }

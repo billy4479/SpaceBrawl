@@ -51,6 +51,7 @@ MonoBehaviour:
     RandomVolume: 0
     RandomPitch: 0
     loop: 1
+    isMusic: 1
   - name: Shot
     clip: {fileID: 8300000, guid: 41f3817df914de249a08c1255315e099, type: 3}
     volume: 0.7
@@ -58,6 +59,7 @@ MonoBehaviour:
     RandomVolume: 0.1
     RandomPitch: 0.3
     loop: 0
+    isMusic: 0
   - name: PlayerExplosion
     clip: {fileID: 8300000, guid: 9a64643348e8b4c48a015bab60382d65, type: 3}
     volume: 0.7
@@ -65,3 +67,4 @@ MonoBehaviour:
     RandomVolume: 0.1
     RandomPitch: 0.3
     loop: 0
+    isMusic: 0
