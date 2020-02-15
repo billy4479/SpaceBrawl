@@ -28,7 +28,7 @@ public class SaveManager : MonoBehaviour
 
     void Awake()
     {
-        #region Create Instance
+        #region Singletone
         if (instance == null)
         {
             instance = this;

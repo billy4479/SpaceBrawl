@@ -22,6 +22,8 @@ public class EnemyBase : MonoBehaviour
     public bool isShooter = false;
     public bool isSummoner = false;
     public float fireDistance = 5f;
+
+    private const bool debug = false;
     #endregion
 
     private void FixedUpdate()
@@ -70,6 +72,8 @@ public class EnemyBase : MonoBehaviour
 
     private void Start()
     {
+        if (debug)
+            speed = 0f;
         if (gm.EnemyRBs == null)
             gm.EnemyRBs = new List<Rigidbody2D>();
         gm.EnemyRBs.Add(rb);
@@ -105,7 +109,7 @@ public class EnemyBase : MonoBehaviour
         Destroy(gameObject);
         gm.EnemyNumber--;
     }
-    
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (canMove == true)
@@ -125,5 +129,5 @@ public class EnemyBase : MonoBehaviour
             }
         }
     }
-    
+
 }

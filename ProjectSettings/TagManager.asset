@@ -10,6 +10,7 @@ TagManager:
   - EnemyExplosion
   - Anchor
   - Pointer
+  - Joystick
   layers:
   - Default
   - TransparentFX

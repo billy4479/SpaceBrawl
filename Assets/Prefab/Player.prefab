@@ -129,10 +129,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85852138681b61e41b54bcd19bfc059a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  speed: 300
   PlayerRB: {fileID: 2829543888804610159}
   gameManager: {fileID: 0}
   animator: {fileID: 2829543888804610158}
   maxSpeed: 5
+  turnSpeed: 0.1
 --- !u!114 &2829543888804610130
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -147,7 +149,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bullet: {fileID: 7483117115779252672, guid: 7717922c929515a40b65acf90deb293d, type: 3}
   FirePoint: {fileID: 2829543887904848089}
-  gameManager: {fileID: 0}
+  rb: {fileID: 2829543888804610159}
 --- !u!50 &2829543888804610159
 Rigidbody2D:
   serializedVersion: 4

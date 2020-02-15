@@ -6,9 +6,9 @@ public class Weapon : MonoBehaviour
 {
     public GameObject bullet;
     public Transform FirePoint;
-    public GameManager gameManager;
+    public Rigidbody2D rb;
+    private GameManager gameManager;
     private AudioManager audioManager;
-    private Rigidbody2D rb;
     private float strengh = 25f;
     private float counter = -1f;
     private float reloadTime = .25f;
@@ -18,20 +18,16 @@ public class Weapon : MonoBehaviour
     {
         audioManager = AudioManager.instance;
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
-        rb = GetComponent<Rigidbody2D>();
     }
-
-    void Update()
+    
+    public void Shoot()
     {
-        if ((Input.GetKey(KeyCode.Space) || Input.GetMouseButton(0)) && !gameManager.SuspendInput && counter + reloadTime <= Time.time)
+        if ( counter + reloadTime <= Time.time)
         {
-            if (!Pause.isPaused)
-            {
-                counter = Time.time;
-                Instantiate(bullet, FirePoint.position, FirePoint.rotation);
-                audioManager.PlaySound(shotSoundName);
-                //rb.AddForce(transform.up * -strengh);
-            }
+            counter = Time.time;
+            Instantiate(bullet, FirePoint.position, FirePoint.rotation);
+            audioManager.PlaySound(shotSoundName);
+            //rb.AddForce(transform.up * -strengh);
         }
     }
 }

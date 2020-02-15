@@ -15,6 +15,7 @@ public class GameManager : MonoBehaviour
     public TextMeshProUGUI LevelLabel;
     public List<Rigidbody2D> EnemyRBs;
     public List<Transform> anchors;
+    public ShootingHandler shootingHandler;
 
     public bool SuspendInput = false;
     public int Lifes = 3;
@@ -49,6 +50,7 @@ public class GameManager : MonoBehaviour
         audioManager = AudioManager.instance;
 
         CurrentPlayer = Instantiate(this.PlayerPrefab, new Vector3(0, 0, 0), Quaternion.identity);
+        shootingHandler.SetNewPlayer(CurrentPlayer);
 
         screenSize.x = Vector2.Distance(Camera.main.ScreenToWorldPoint(new Vector2(0, 0)), Camera.main.ScreenToWorldPoint(new Vector2(Screen.width, 0))) * 0.5f;
         screenSize.y = Vector2.Distance(Camera.main.ScreenToWorldPoint(new Vector2(0, 0)), Camera.main.ScreenToWorldPoint(new Vector2(0, Screen.height))) * 0.5f;
@@ -83,7 +85,6 @@ public class GameManager : MonoBehaviour
                 for (int i = 0; i < pointers.Length; i++)
                     Destroy(pointers[i]);
                 this.SuspendInput = true;
-                Time.timeScale = 0f;
 
                 for (int i = scr.score.Length - 1; i > 0; i--)
                 {
@@ -126,10 +127,13 @@ public class GameManager : MonoBehaviour
 
         playerAnimator.SetBool("Death", false);
         Destroy(CurrentPlayer);
+        shootingHandler.RemovePlayer();
 
         yield return new WaitForSeconds(3);
 
         CurrentPlayer = Instantiate(this.PlayerPrefab, new Vector3(0, 0, 0), Quaternion.identity);
+        shootingHandler.SetNewPlayer(CurrentPlayer);
+
         audioManager.StopSound("PlayerExplosion");
 
         yield return new WaitForSeconds(1);
