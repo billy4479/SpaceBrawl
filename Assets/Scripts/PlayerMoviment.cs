@@ -1,58 +1,75 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using CodeMonkey.Utils;
 using UnityEngine;
-using CodeMonkey.Utils;
 
 public class PlayerMoviment : MonoBehaviour
 {
     public float speed = 300f;
     public Rigidbody2D PlayerRB;
-    public GameManager gameManager;
     public Animator animator;
     public float maxSpeed;
-    public float turnSpeed;
+    public Weapon weapon;
 
+    private GameManager gameManager;
     private Joystick joystick;
+    private SaveManager sm;
 
-    void Start()
+    private void Start()
     {
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
-        joystick = GameObject.FindGameObjectWithTag("Joystick").GetComponent<Joystick>();
+        if (GameObject.FindGameObjectWithTag("Joystick") != null)
+            joystick = GameObject.FindGameObjectWithTag("Joystick").GetComponent<Joystick>();
+        sm = SaveManager.instance;
     }
 
-    void Update()
+    private void Update()
     {
         if (!gameManager.SuspendInput)
         {
-            Vector2 direction = new Vector2(joystick.Horizontal, joystick.Vertical);
-            float angle = UtilsClass.GetAngleFromVectorFloat(direction) - 90f;
-            if (direction == Vector2.zero)
-                angle = PlayerRB.rotation;
-            angle = Mathf.LerpAngle(PlayerRB.rotation, angle, turnSpeed);
-            PlayerRB.rotation = angle;
-            if (direction != Vector2.zero)
-                PlayerRB.AddForce(transform.up * speed * Time.deltaTime);
+            if (sm.settings.controllMethod == SaveManager.ControllMethod.Finger)
+            {
+                if (Input.GetMouseButton(0))
+                {
+                    PlayerRB.rotation = UtilsClass.GetAngleFromVector((Vector2)UtilsClass.GetMouseWorldPosition() - PlayerRB.position) - 90f;
+                    PlayerRB.AddForce(transform.up * speed * Time.deltaTime);
+                    weapon.Shoot();
 
-            if (direction != Vector2.zero)
-                animator.SetInteger("dir", 1);
+                    animator.SetInteger("dir", 1);
+                }
+                else
+                    animator.SetInteger("dir", 0);
+            }
             else
-                animator.SetInteger("dir", 0);
+            {
+                Vector2 direction = new Vector2(joystick.Horizontal, joystick.Vertical);
+                if (direction == Vector2.zero)
+                {
+                    animator.SetInteger("dir", 0);
+                }
+                else
+                {
+                    float angle = UtilsClass.GetAngleFromVectorFloat(direction) - 90f;
+                    PlayerRB.rotation = Mathf.LerpAngle(PlayerRB.rotation, angle, direction.magnitude);
+                    PlayerRB.AddForce(transform.up * speed * direction.magnitude * Time.deltaTime);
 
+                    animator.SetInteger("dir", 1);
+                }
+            }
+
+            #region setMaxSpeed
+
+            if (PlayerRB.velocity.x > maxSpeed)
+                PlayerRB.velocity = new Vector2(maxSpeed, PlayerRB.velocity.y);
+            if (PlayerRB.velocity.y > maxSpeed)
+                PlayerRB.velocity = new Vector2(PlayerRB.velocity.x, maxSpeed);
+            if (PlayerRB.velocity.x < -maxSpeed)
+                PlayerRB.velocity = new Vector2(-maxSpeed, PlayerRB.velocity.y);
+            if (PlayerRB.velocity.y < -maxSpeed)
+                PlayerRB.velocity = new Vector2(PlayerRB.velocity.x, -maxSpeed);
+
+            #endregion setMaxSpeed
         }
         else
             animator.SetInteger("dir", 0);
-
-        #region setMaxSpeed
-        if (PlayerRB.velocity.x > maxSpeed)
-            PlayerRB.velocity = new Vector2(maxSpeed, PlayerRB.velocity.y);
-        if (PlayerRB.velocity.y > maxSpeed)
-            PlayerRB.velocity = new Vector2(PlayerRB.velocity.x, maxSpeed);
-        if (PlayerRB.velocity.x < -maxSpeed)
-            PlayerRB.velocity = new Vector2(-maxSpeed, PlayerRB.velocity.y);
-        if (PlayerRB.velocity.y < -maxSpeed)
-            PlayerRB.velocity = new Vector2(PlayerRB.velocity.x, -maxSpeed);
-        #endregion
-
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

@@ -9,7 +9,6 @@ public class Weapon : MonoBehaviour
     public Rigidbody2D rb;
     private GameManager gameManager;
     private AudioManager audioManager;
-    private float strengh = 25f;
     private float counter = -1f;
     private float reloadTime = .25f;
     private string shotSoundName = "Shot";

@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using System.IO;
 
 public class SaveManager : MonoBehaviour
@@ -8,6 +6,7 @@ public class SaveManager : MonoBehaviour
     static public SaveManager instance;
     private string savePath;
     private string optionPath;
+    public enum ControllMethod { Finger, Joystick, ToggledJoystick};
 
     public class SavedScores
     {
@@ -21,6 +20,7 @@ public class SaveManager : MonoBehaviour
         public float VolumeSFX;
         public float VolumeMusic;
         public string name;
+        public ControllMethod controllMethod;
     }
 
     public SavedScores scores;
@@ -53,8 +53,9 @@ public class SaveManager : MonoBehaviour
         {
             scores = JsonUtility.FromJson<SavedScores>(File.ReadAllText(savePath));
         }
-        else
-        {   //Il file non esiste. Ne creo uno nuovo e carico i valori
+        //Il file non esiste. Ne creo uno nuovo e carico i valori
+        else 
+        {   
             Debug.LogWarning("Save not found! Creaing a new one...");
 
             using (StreamWriter saveStream = new StreamWriter(savePath))
@@ -78,6 +79,7 @@ public class SaveManager : MonoBehaviour
                 saveStream.Close();
             }
         }
+        
         if (File.Exists(optionPath))
         {
             settings = JsonUtility.FromJson<Settings>(File.ReadAllText(optionPath));

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class EnemyBase : MonoBehaviour
 {
-    #region variables
+    #region Variables
     private Rigidbody2D PlayerRB;
     private GameManager gm;
     private bool canMove = true;
@@ -23,7 +23,7 @@ public class EnemyBase : MonoBehaviour
     public bool isSummoner = false;
     public float fireDistance = 5f;
 
-    private const bool debug = false;
+    private const bool debug = true;
     #endregion
 
     private void FixedUpdate()

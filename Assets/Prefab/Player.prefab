@@ -131,10 +131,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 300
   PlayerRB: {fileID: 2829543888804610159}
-  gameManager: {fileID: 0}
   animator: {fileID: 2829543888804610158}
   maxSpeed: 5
-  turnSpeed: 0.1
+  weapon: {fileID: 2829543888804610130}
 --- !u!114 &2829543888804610130
 MonoBehaviour:
   m_ObjectHideFlags: 0
