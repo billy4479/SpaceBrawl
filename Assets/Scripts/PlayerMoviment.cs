@@ -36,7 +36,10 @@ public class PlayerMoviment : MonoBehaviour
                     animator.SetInteger("dir", 1);
                 }
                 else
+                {
+                    PlayerRB.angularVelocity = 0f;
                     animator.SetInteger("dir", 0);
+                }
             }
             else
             {
@@ -44,6 +47,7 @@ public class PlayerMoviment : MonoBehaviour
                 if (direction == Vector2.zero)
                 {
                     animator.SetInteger("dir", 0);
+                    PlayerRB.angularVelocity = 0f;
                 }
                 else
                 {

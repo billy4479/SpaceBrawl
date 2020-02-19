@@ -23,7 +23,7 @@ public class EnemyBase : MonoBehaviour
     public bool isSummoner = false;
     public float fireDistance = 5f;
 
-    private const bool debug = true;
+    private const bool debug = false;
     #endregion
 
     private void FixedUpdate()

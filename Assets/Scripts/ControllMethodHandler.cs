@@ -2,32 +2,55 @@
 
 public class ControllMethodHandler : MonoBehaviour
 {
+
     public RectTransform joystick;
     public RectTransform fireButton;
+    public Transform player;
 
     private SaveManager sm;
+    
+    #region AdjustUIPosition
     private float position = 200;
+    private readonly Vector2 standardResolution = new Vector2(1920, 1080);
+    private Vector2 currentResolution;
 
-    private Vector3 SetUIPositionRight(Vector3 givenPos)
+    private Vector3 SetUIPositionRight(Vector2 givenPos)
     {
         Vector3 result = new Vector3();
-        result.x = Screen.width/2 - givenPos.x;
-        result.y = -Screen.height/2 - givenPos.y;
-        result.z = givenPos.z;
+
+        result.x = standardResolution.x / 2 - givenPos.x;
+        result.y = -standardResolution.y / 2 - givenPos.y;
+        result.z = 0f;
         return result;
     }
-    private Vector3 SetUIPositionLeft(Vector3 givenPos)
+
+    private Vector3 SetUIPositionLeft(Vector2 givenPos)
     {
         Vector3 result = new Vector3();
-        result.x = -Screen.width / 2 + givenPos.x;
-        result.y = -Screen.height / 2 + givenPos.y;
-        result.z = givenPos.z;
+
+        result.x = -standardResolution.x / 2 + givenPos.x;
+        result.y = -standardResolution.y / 2 + givenPos.y;
+        result.z = 0f;
         return result;
     }
+
+    public void SetPosNormal()
+    {
+        joystick.localPosition = SetUIPositionRight(new Vector2(position, -position));
+        fireButton.localPosition = SetUIPositionLeft(new Vector2(position, position));
+    }
+
+    public void SetPosToggled()
+    {
+        joystick.localPosition = SetUIPositionLeft(new Vector2(position, position));
+        fireButton.localPosition = SetUIPositionRight(new Vector2(position, -position));
+    }
+    #endregion
 
     private void Start()
     {
         sm = SaveManager.instance;
+        currentResolution = new Vector2(Screen.width, Screen.height);
         switch (sm.settings.controllMethod)
         {
             default:
@@ -63,15 +86,5 @@ public class ControllMethodHandler : MonoBehaviour
 
                 break;
         }
-    }
-    private void SetPosNormal()
-    {
-        joystick.localPosition = SetUIPositionRight(new Vector3(position, -position));
-        fireButton.localPosition = SetUIPositionLeft(new Vector3(position, position));
-    }
-    private void SetPosToggled()
-    {
-        joystick.localPosition = SetUIPositionLeft(new Vector3(position, position));
-        fireButton.localPosition = SetUIPositionRight(new Vector3(position, -position));
     }
 }
