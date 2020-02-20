@@ -1,8 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.SceneManagement;
-using System.IO;
 
 public class Pause : MonoBehaviour
 {
@@ -11,9 +8,10 @@ public class Pause : MonoBehaviour
     public GameManager gameManager;
     public AudioManager audioManager;
 
-    void Start() { audioManager = AudioManager.instance; }
+    private void Start()
+    { audioManager = AudioManager.instance; }
 
-    void Update()
+    private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
@@ -56,5 +54,4 @@ public class Pause : MonoBehaviour
         Application.Quit();
         Debug.Log("Quitting...");
     }
-
 }

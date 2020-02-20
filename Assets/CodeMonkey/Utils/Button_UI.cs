@@ -1,4 +1,4 @@
-﻿/* 
+﻿/*
     ------------------- Code Monkey -------------------
 
     Thank you for downloading the Code Monkey Utilities
@@ -9,22 +9,23 @@
                unitycodemonkey.com
     --------------------------------------------------
  */
- 
+
 //#define SOUND_MANAGER // Has Sound_Manager in project
 //#define CURSOR_MANAGER // Has Cursor_Manager in project
 
 using System;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
-namespace CodeMonkey.Utils {
-    
+namespace CodeMonkey.Utils
+{
     /*
      * Button in the UI
      * */
-    public class Button_UI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler, IPointerDownHandler, IPointerUpHandler {
 
+    public class Button_UI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler, IPointerDownHandler, IPointerUpHandler
+    {
         public Action ClickFunc = null;
         public Action MouseRightClickFunc = null;
         public Action MouseMiddleClickFunc = null;
@@ -39,12 +40,14 @@ namespace CodeMonkey.Utils {
         public Action MouseUpdate = null;
         public Action<PointerEventData> OnPointerClickFunc;
 
-        public enum HoverBehaviour {
+        public enum HoverBehaviour
+        {
             Custom,
             Change_Color,
             Change_Image,
             Change_SetActive,
         }
+
         public HoverBehaviour hoverBehaviourType = HoverBehaviour.Custom;
         private Action hoverBehaviourFunc_Enter, hoverBehaviourFunc_Exit;
 
@@ -67,8 +70,8 @@ namespace CodeMonkey.Utils {
         public CursorManager.CursorType cursorMouseOver, cursorMouseOut;
 #endif
 
-
-        public virtual void OnPointerEnter(PointerEventData eventData) {
+        public virtual void OnPointerEnter(PointerEventData eventData)
+        {
             if (internalOnPointerEnterFunc != null) internalOnPointerEnterFunc();
             if (hoverBehaviour_Move) transform.localPosition = posEnter;
             if (hoverBehaviourFunc_Enter != null) hoverBehaviourFunc_Enter();
@@ -77,7 +80,9 @@ namespace CodeMonkey.Utils {
             mouseOver = true;
             mouseOverPerSecFuncTimer = 0f;
         }
-        public virtual void OnPointerExit(PointerEventData eventData) {
+
+        public virtual void OnPointerExit(PointerEventData eventData)
+        {
             if (internalOnPointerExitFunc != null) internalOnPointerExitFunc();
             if (hoverBehaviour_Move) transform.localPosition = posExit;
             if (hoverBehaviourFunc_Exit != null) hoverBehaviourFunc_Exit();
@@ -85,11 +90,15 @@ namespace CodeMonkey.Utils {
             if (MouseOutOnceTooltipFunc != null) MouseOutOnceTooltipFunc();
             mouseOver = false;
         }
-        public virtual void OnPointerClick(PointerEventData eventData) {
+
+        public virtual void OnPointerClick(PointerEventData eventData)
+        {
             if (internalOnPointerClickFunc != null) internalOnPointerClickFunc();
             if (OnPointerClickFunc != null) OnPointerClickFunc(eventData);
-            if (eventData.button == PointerEventData.InputButton.Left) {
-                if (triggerMouseOutFuncOnClick) {
+            if (eventData.button == PointerEventData.InputButton.Left)
+            {
+                if (triggerMouseOutFuncOnClick)
+                {
                     OnPointerExit(eventData);
                 }
                 if (ClickFunc != null) ClickFunc();
@@ -99,32 +108,44 @@ namespace CodeMonkey.Utils {
             if (eventData.button == PointerEventData.InputButton.Middle)
                 if (MouseMiddleClickFunc != null) MouseMiddleClickFunc();
         }
-        public void Manual_OnPointerExit() {
+
+        public void Manual_OnPointerExit()
+        {
             OnPointerExit(null);
         }
-        public bool IsMouseOver() {
+
+        public bool IsMouseOver()
+        {
             return mouseOver;
         }
-        public void OnPointerDown(PointerEventData eventData) {
+
+        public void OnPointerDown(PointerEventData eventData)
+        {
             if (MouseDownOnceFunc != null) MouseDownOnceFunc();
         }
-        public void OnPointerUp(PointerEventData eventData) {
+
+        public void OnPointerUp(PointerEventData eventData)
+        {
             if (MouseUpFunc != null) MouseUpFunc();
         }
 
-        void Update() {
-            if (mouseOver) {
+        private void Update()
+        {
+            if (mouseOver)
+            {
                 if (MouseOverFunc != null) MouseOverFunc();
                 mouseOverPerSecFuncTimer -= Time.unscaledDeltaTime;
-                if (mouseOverPerSecFuncTimer <= 0) {
+                if (mouseOverPerSecFuncTimer <= 0)
+                {
                     mouseOverPerSecFuncTimer += 1f;
                     if (MouseOverPerSecFunc != null) MouseOverPerSecFunc();
                 }
             }
             if (MouseUpdate != null) MouseUpdate();
-
         }
-        void Awake() {
+
+        private void Awake()
+        {
             posExit = transform.localPosition;
             posEnter = (Vector2)transform.localPosition + hoverBehaviour_Move_Amount;
             SetHoverBehaviourType(hoverBehaviourType);
@@ -141,58 +162,67 @@ namespace CodeMonkey.Utils {
             internalOnPointerExitFunc += () => { if (cursorMouseOut != CursorManager.CursorType.None) CursorManager.SetCursor(cursorMouseOut); };
 #endif
         }
-        public void SetHoverBehaviourType(HoverBehaviour hoverBehaviourType) {
+
+        public void SetHoverBehaviourType(HoverBehaviour hoverBehaviourType)
+        {
             this.hoverBehaviourType = hoverBehaviourType;
-            switch (hoverBehaviourType) {
-            case HoverBehaviour.Change_Color:
-                hoverBehaviourFunc_Enter = delegate () { hoverBehaviour_Image.color = hoverBehaviour_Color_Enter; };
-                hoverBehaviourFunc_Exit = delegate () { hoverBehaviour_Image.color = hoverBehaviour_Color_Exit; };
-                break;
-            case HoverBehaviour.Change_Image:
-                hoverBehaviourFunc_Enter = delegate () { hoverBehaviour_Image.sprite = hoverBehaviour_Sprite_Enter; };
-                hoverBehaviourFunc_Exit = delegate () { hoverBehaviour_Image.sprite = hoverBehaviour_Sprite_Exit; };
-                break;
-            case HoverBehaviour.Change_SetActive:
-                hoverBehaviourFunc_Enter = delegate () { hoverBehaviour_Image.gameObject.SetActive(true); };
-                hoverBehaviourFunc_Exit = delegate () { hoverBehaviour_Image.gameObject.SetActive(false); };
-                break;
+            switch (hoverBehaviourType)
+            {
+                case HoverBehaviour.Change_Color:
+                    hoverBehaviourFunc_Enter = delegate () { hoverBehaviour_Image.color = hoverBehaviour_Color_Enter; };
+                    hoverBehaviourFunc_Exit = delegate () { hoverBehaviour_Image.color = hoverBehaviour_Color_Exit; };
+                    break;
+
+                case HoverBehaviour.Change_Image:
+                    hoverBehaviourFunc_Enter = delegate () { hoverBehaviour_Image.sprite = hoverBehaviour_Sprite_Enter; };
+                    hoverBehaviourFunc_Exit = delegate () { hoverBehaviour_Image.sprite = hoverBehaviour_Sprite_Exit; };
+                    break;
+
+                case HoverBehaviour.Change_SetActive:
+                    hoverBehaviourFunc_Enter = delegate () { hoverBehaviour_Image.gameObject.SetActive(true); };
+                    hoverBehaviourFunc_Exit = delegate () { hoverBehaviour_Image.gameObject.SetActive(false); };
+                    break;
             }
         }
-
-
-
-
-
-
-
-
 
         /*
          * Class for temporarily intercepting a button action
          * Useful for Tutorial disabling specific buttons
          * */
-        public class InterceptActionHandler {
 
+        public class InterceptActionHandler
+        {
             private Action removeInterceptFunc;
 
-            public InterceptActionHandler(Action removeInterceptFunc) {
+            public InterceptActionHandler(Action removeInterceptFunc)
+            {
                 this.removeInterceptFunc = removeInterceptFunc;
             }
-            public void RemoveIntercept() {
+
+            public void RemoveIntercept()
+            {
                 removeInterceptFunc();
             }
         }
-        public InterceptActionHandler InterceptActionClick(Func<bool> testPassthroughFunc) {
+
+        public InterceptActionHandler InterceptActionClick(Func<bool> testPassthroughFunc)
+        {
             return InterceptAction("ClickFunc", testPassthroughFunc);
         }
-        public InterceptActionHandler InterceptAction(string fieldName, Func<bool> testPassthroughFunc) {
+
+        public InterceptActionHandler InterceptAction(string fieldName, Func<bool> testPassthroughFunc)
+        {
             return InterceptAction(GetType().GetField(fieldName), testPassthroughFunc);
         }
-        public InterceptActionHandler InterceptAction(System.Reflection.FieldInfo fieldInfo, Func<bool> testPassthroughFunc) {
+
+        public InterceptActionHandler InterceptAction(System.Reflection.FieldInfo fieldInfo, Func<bool> testPassthroughFunc)
+        {
             Action backFunc = fieldInfo.GetValue(this) as Action;
             InterceptActionHandler interceptActionHandler = new InterceptActionHandler(() => fieldInfo.SetValue(this, backFunc));
-            fieldInfo.SetValue(this, (Action)delegate () {
-                if (testPassthroughFunc()) {
+            fieldInfo.SetValue(this, (Action)delegate ()
+            {
+                if (testPassthroughFunc())
+                {
                     // Passthrough
                     interceptActionHandler.RemoveIntercept();
                     backFunc();

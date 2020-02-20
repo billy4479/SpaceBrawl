@@ -53,7 +53,7 @@ public class PlayerMoviment : MonoBehaviour
                 {
                     float angle = UtilsClass.GetAngleFromVectorFloat(direction) - 90f;
                     PlayerRB.rotation = Mathf.LerpAngle(PlayerRB.rotation, angle, direction.magnitude);
-                    PlayerRB.AddForce(transform.up * speed * direction.magnitude * Time.deltaTime);
+                    PlayerRB.AddForce(transform.up * speed * Mathf.Pow(direction.magnitude, 2f) * Time.deltaTime);
 
                     animator.SetInteger("dir", 1);
                 }
@@ -78,7 +78,7 @@ public class PlayerMoviment : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.tag == "Bullet")
+        if (collision.tag == "EnemyBullet")
             gameManager.PlayerLose();
     }
 }

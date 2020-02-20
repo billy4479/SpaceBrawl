@@ -1,15 +1,12 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using TMPro;
 
 public class ScoreboardScript : MonoBehaviour
 {
     private string ScoreText;
     private TextMeshProUGUI ScoreboardText;
     private SaveManager saveManager;
-
 
     public void Start()
     {
@@ -32,5 +29,4 @@ public class ScoreboardScript : MonoBehaviour
     {
         SceneManager.LoadScene("Menu");
     }
-
 }

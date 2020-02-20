@@ -2,17 +2,17 @@
 
 public class ControllMethodHandler : MonoBehaviour
 {
-
     public RectTransform joystick;
     public RectTransform fireButton;
     public Transform player;
+    public RectTransform canvas;
 
     private SaveManager sm;
-    
+
     #region AdjustUIPosition
+
     private float position = 200;
-    private readonly Vector2 standardResolution = new Vector2(1920, 1080);
-    private Vector2 currentResolution;
+    private Vector2 standardResolution;
 
     private Vector3 SetUIPositionRight(Vector2 givenPos)
     {
@@ -45,12 +45,13 @@ public class ControllMethodHandler : MonoBehaviour
         joystick.localPosition = SetUIPositionLeft(new Vector2(position, position));
         fireButton.localPosition = SetUIPositionRight(new Vector2(position, -position));
     }
-    #endregion
+
+    #endregion AdjustUIPosition
 
     private void Start()
     {
         sm = SaveManager.instance;
-        currentResolution = new Vector2(Screen.width, Screen.height);
+        standardResolution = new Vector2(canvas.rect.width, canvas.rect.height);
         switch (sm.settings.controllMethod)
         {
             default:

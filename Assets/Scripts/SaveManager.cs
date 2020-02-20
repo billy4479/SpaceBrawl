@@ -1,12 +1,13 @@
-﻿using UnityEngine;
-using System.IO;
+﻿using System.IO;
+using UnityEngine;
 
 public class SaveManager : MonoBehaviour
 {
     static public SaveManager instance;
     private string savePath;
     private string optionPath;
-    public enum ControllMethod { Finger, Joystick, ToggledJoystick};
+
+    public enum ControllMethod { Finger, Joystick, ToggledJoystick };
 
     public class SavedScores
     {
@@ -26,9 +27,10 @@ public class SaveManager : MonoBehaviour
     public SavedScores scores;
     public Settings settings;
 
-    void Awake()
+    private void Awake()
     {
         #region Singletone
+
         if (instance == null)
         {
             instance = this;
@@ -36,7 +38,8 @@ public class SaveManager : MonoBehaviour
         }
         else if (instance != this)
             Destroy(this.gameObject);
-        #endregion
+
+        #endregion Singletone
 
         if (Application.platform == RuntimePlatform.Android)
         {
@@ -54,8 +57,8 @@ public class SaveManager : MonoBehaviour
             scores = JsonUtility.FromJson<SavedScores>(File.ReadAllText(savePath));
         }
         //Il file non esiste. Ne creo uno nuovo e carico i valori
-        else 
-        {   
+        else
+        {
             Debug.LogWarning("Save not found! Creaing a new one...");
 
             using (StreamWriter saveStream = new StreamWriter(savePath))
@@ -79,7 +82,7 @@ public class SaveManager : MonoBehaviour
                 saveStream.Close();
             }
         }
-        
+
         if (File.Exists(optionPath))
         {
             settings = JsonUtility.FromJson<Settings>(File.ReadAllText(optionPath));
@@ -101,7 +104,6 @@ public class SaveManager : MonoBehaviour
                 optionsStream.Close();
             }
         }
-
     }
 
     public void WriteChanges()

@@ -5,11 +5,13 @@ using UnityEngine;
 public class EnemyBase : MonoBehaviour
 {
     #region Variables
+
     private Rigidbody2D PlayerRB;
     private GameManager gm;
     private bool canMove = true;
     private float repelRange = 1f;
     private float repelStrenght = 1f;
+    private float lastShoot = float.MinValue;
 
     public Rigidbody2D rb;
     public Animator animator;
@@ -19,12 +21,19 @@ public class EnemyBase : MonoBehaviour
     public int HP;
     public int prob;
     public int pointsAtDeath = 1;
+
     public bool isShooter = false;
     public bool isSummoner = false;
+
     public float fireDistance = 5f;
+    public float starfeSpeed = 2f;
+    public float fireRate = 1f;
+    public GameObject bullet;
+    public Transform firePos;
+
+    #endregion Variables
 
     private const bool debug = false;
-    #endregion
 
     private void FixedUpdate()
     {
@@ -41,17 +50,32 @@ public class EnemyBase : MonoBehaviour
                     rb.MovePosition(MoveNormally());
                 else
                 {
-
+                    rb.MovePosition(MoveStarfing());
+                    Shoot();
                 }
             }
             else
                 rb.MovePosition(MoveNormally());
-
         }
 
         if (HP <= 0 && canMove)
             StartCoroutine(EnemyDeath());
+    }
 
+    private void Shoot()
+    {
+        if (Time.time - lastShoot > 1f / fireRate)
+        {
+            Instantiate(bullet, firePos.position, firePos.rotation);
+            lastShoot = Time.time;
+        }
+    }
+
+    #region Moviment
+
+    private Vector2 MoveStarfing()
+    {
+        return transform.position + transform.right * Time.fixedDeltaTime * starfeSpeed;
     }
 
     private Vector2 MoveNormally()
@@ -62,13 +86,15 @@ public class EnemyBase : MonoBehaviour
             if (enemy == rb)
                 continue;
             if (Vector2.Distance(enemy.position, rb.position) <= repelRange)
-                repelForce += (rb.position - enemy.position).normalized; //<=== direction         
+                repelForce += (rb.position - enemy.position).normalized; //<=== direction
         }
 
         Vector2 newPos = transform.position + transform.up * Time.fixedDeltaTime * speed;
         newPos += repelForce * Time.fixedDeltaTime * repelStrenght;
         return newPos;
     }
+
+    #endregion Moviment
 
     private void Start()
     {
@@ -121,7 +147,7 @@ public class EnemyBase : MonoBehaviour
             {
                 foreach (GameObject enemies in GameObject.FindGameObjectsWithTag("Enemy"))
                 {
-                    gm.EnemyRBs = new List<Rigidbody2D>();
+                    gm.EnemyRBs.Clear();
                     Destroy(enemies);
                 }
                 Destroy(pointer);
@@ -129,5 +155,4 @@ public class EnemyBase : MonoBehaviour
             }
         }
     }
-
 }

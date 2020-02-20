@@ -6,8 +6,9 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    #region variables
-    public GameObject[] Enemies;
+    #region Variables
+
+    public List<GameObject> Enemies = new List<GameObject>();
 
     public GameObject PlayerPrefab;
     public TextMeshProUGUI LifesLabel;
@@ -22,10 +23,13 @@ public class GameManager : MonoBehaviour
     public int Score = 0;
     public int Level = 1;
     public int EnemyNumber = 0;
+
     [Range(0f, 1f)]
     public float bounciness;
+
     [Range(0f, 1f)]
     public float friction;
+
     public GameObject CurrentPlayer;
     private AudioManager audioManager;
 
@@ -33,7 +37,8 @@ public class GameManager : MonoBehaviour
 
     public Vector2 screenSize;
     private Vector3 cameraPos;
-    #endregion
+
+    #endregion Variables
 
     private void Awake()
     {
@@ -141,14 +146,13 @@ public class GameManager : MonoBehaviour
         this.SuspendInput = false;
 
         this.SpawnNewEnemies(this.Level);
-
     }
 
     private void SpawnNewEnemies(int EnemiesToSpawn)
     {
         for (int i = 0; i < EnemiesToSpawn; i++)
         {
-            int arrLen = Enemies.Length;
+            int arrLen = Enemies.Count;
             int totProb = 0;
             for (int j = 0; j < arrLen; j++)
             {
@@ -190,15 +194,19 @@ public class GameManager : MonoBehaviour
             case sides.UP:
                 result = new Vector3(Random.Range(anchors[0].position.x, -anchors[0].position.x), anchors[0].position.y, 0);
                 break;
+
             case sides.DOWN:
                 result = new Vector3(Random.Range(anchors[1].position.x, -anchors[1].position.x), anchors[1].position.y, 0);
                 break;
+
             case sides.RIGHT:
                 result = new Vector3(Random.Range(anchors[0].position.y, -anchors[0].position.y), anchors[0].position.x, 0);
                 break;
+
             case sides.LEFT:
                 result = new Vector3(Random.Range(anchors[1].position.y, -anchors[1].position.y), anchors[1].position.x, 0);
                 break;
+
             default:
                 Debug.LogError("No random number in enemy spawning function");
                 result = new Vector3(0, 0, 0);
@@ -214,7 +222,6 @@ public class GameManager : MonoBehaviour
         this.LevelLabel.text = "Level: " + this.Level;
         screenSize.x = Vector2.Distance(Camera.main.ScreenToWorldPoint(new Vector2(0, 0)), Camera.main.ScreenToWorldPoint(new Vector2(Screen.width, 0))) * 0.5f;
         screenSize.y = Vector2.Distance(Camera.main.ScreenToWorldPoint(new Vector2(0, 0)), Camera.main.ScreenToWorldPoint(new Vector2(0, Screen.height))) * 0.5f;
-
 
         if (this.EnemyNumber == 0)
             StartCoroutine(this.PlayerWon());

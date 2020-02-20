@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class CameraScript : MonoBehaviour
@@ -10,12 +9,12 @@ public class CameraScript : MonoBehaviour
     private Vector3 oldPlayer;
     public List<GameObject> anchors;
 
-    void Start()
+    private void Start()
     {
         transform.position = new Vector3(0, 0, -10);
     }
 
-    void FixedUpdate()
+    private void FixedUpdate()
     {
         try
         {
@@ -64,6 +63,4 @@ public class CameraScript : MonoBehaviour
         }
         oldPlayer = player;
     }
-
-
 }

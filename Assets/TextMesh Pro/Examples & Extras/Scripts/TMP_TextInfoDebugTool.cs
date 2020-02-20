@@ -1,21 +1,19 @@
 ﻿using UnityEngine;
-using System.Collections;
-
 
 namespace TMPro.Examples
 {
-
     public class TMP_TextInfoDebugTool : MonoBehaviour
     {
         // Since this script is used for debugging, we exclude it from builds.
         // TODO: Rework this script to make it into an editor utility.
-        #if UNITY_EDITOR
+#if UNITY_EDITOR
         public bool ShowCharacters;
         public bool ShowWords;
         public bool ShowLinks;
         public bool ShowLines;
         public bool ShowMeshBounds;
         public bool ShowTextBounds;
+
         [Space(10)]
         [TextArea(2, 2)]
         public string ObjectStats;
@@ -26,8 +24,7 @@ namespace TMPro.Examples
         [SerializeField]
         private Transform m_Transform;
 
-
-        void OnDrawGizmos()
+        private void OnDrawGizmos()
         {
             if (m_TextComponent == null)
             {
@@ -46,54 +43,66 @@ namespace TMPro.Examples
             ObjectStats = "Characters: " + textInfo.characterCount + "   Words: " + textInfo.wordCount + "   Spaces: " + textInfo.spaceCount + "   Sprites: " + textInfo.spriteCount + "   Links: " + textInfo.linkCount
                       + "\nLines: " + textInfo.lineCount + "   Pages: " + textInfo.pageCount;
 
-
             // Draw Quads around each of the Characters
+
             #region Draw Characters
+
             if (ShowCharacters)
                 DrawCharactersBounds();
-            #endregion
 
+            #endregion Draw Characters
 
             // Draw Quads around each of the words
+
             #region Draw Words
+
             if (ShowWords)
                 DrawWordBounds();
-            #endregion
 
+            #endregion Draw Words
 
             // Draw Quads around each of the words
+
             #region Draw Links
+
             if (ShowLinks)
                 DrawLinkBounds();
-            #endregion
 
+            #endregion Draw Links
 
             // Draw Quads around each line
+
             #region Draw Lines
+
             if (ShowLines)
                 DrawLineBounds();
-            #endregion
 
+            #endregion Draw Lines
 
             // Draw Quad around the bounds of the text
+
             #region Draw Bounds
+
             if (ShowMeshBounds)
                 DrawBounds();
-            #endregion
+
+            #endregion Draw Bounds
 
             // Draw Quad around the rendered region of the text.
+
             #region Draw Text Bounds
+
             if (ShowTextBounds)
                 DrawTextBounds();
-            #endregion
-        }
 
+            #endregion Draw Text Bounds
+        }
 
         /// <summary>
         /// Method to draw a rectangle around each character.
         /// </summary>
         /// <param name="text"></param>
-        void DrawCharactersBounds()
+        private void DrawCharactersBounds()
         {
             TMP_TextInfo textInfo = m_TextComponent.textInfo;
 
@@ -123,7 +132,6 @@ namespace TMPro.Examples
 
                 Gizmos.color = Color.cyan;
                 Gizmos.DrawLine(baselineStart, baselineEnd);
-
 
                 // Draw Ascender & Descender for each character.
                 Vector3 ascenderStart = new Vector3(topLeft.x, m_Transform.TransformPoint(new Vector3(0, cInfo.ascender, 0)).y, 0);
@@ -179,12 +187,11 @@ namespace TMPro.Examples
             }
         }
 
-
         /// <summary>
         /// Method to draw rectangles around each word of the text.
         /// </summary>
         /// <param name="text"></param>
-        void DrawWordBounds()
+        private void DrawWordBounds()
         {
             TMP_TextInfo textInfo = m_TextComponent.textInfo;
 
@@ -275,22 +282,18 @@ namespace TMPro.Examples
                         //Debug.Log("End Word Region at [" + currentCharInfo.character + "]");
                         maxAscender = -Mathf.Infinity;
                         minDescender = Mathf.Infinity;
-
                     }
                 }
 
                 //Debug.Log(wInfo.GetWord(m_TextMeshPro.textInfo.characterInfo));
             }
-
-
         }
-
 
         /// <summary>
         /// Draw rectangle around each of the links contained in the text.
         /// </summary>
         /// <param name="text"></param>
-        void DrawLinkBounds()
+        private void DrawLinkBounds()
         {
             TMP_TextInfo textInfo = m_TextComponent.textInfo;
 
@@ -389,12 +392,11 @@ namespace TMPro.Examples
             }
         }
 
-
         /// <summary>
         /// Draw Rectangles around each lines of the text.
         /// </summary>
         /// <param name="text"></param>
-        void DrawLineBounds()
+        private void DrawLineBounds()
         {
             TMP_TextInfo textInfo = m_TextComponent.textInfo;
 
@@ -464,10 +466,10 @@ namespace TMPro.Examples
         /// <summary>
         /// Draw Rectangle around the bounds of the text object.
         /// </summary>
-        void DrawBounds()
+        private void DrawBounds()
         {
             Bounds meshBounds = m_TextComponent.bounds;
-            
+
             // Get Bottom Left and Top Right position of each word
             Vector3 bottomLeft = m_TextComponent.transform.position + (meshBounds.center - meshBounds.extents);
             Vector3 topRight = m_TextComponent.transform.position + (meshBounds.center + meshBounds.extents);
@@ -475,8 +477,7 @@ namespace TMPro.Examples
             DrawRectangle(bottomLeft, topRight, new Color(1, 0.5f, 0));
         }
 
-
-        void DrawTextBounds()
+        private void DrawTextBounds()
         {
             Bounds textBounds = m_TextComponent.textBounds;
 
@@ -486,9 +487,8 @@ namespace TMPro.Examples
             DrawRectangle(bottomLeft, topRight, new Color(0f, 0.5f, 0.5f));
         }
 
-
         // Draw Rectangles
-        void DrawRectangle(Vector3 BL, Vector3 TR, Color color)
+        private void DrawRectangle(Vector3 BL, Vector3 TR, Color color)
         {
             Gizmos.color = color;
 
@@ -498,9 +498,8 @@ namespace TMPro.Examples
             Gizmos.DrawLine(new Vector3(TR.x, BL.y, 0), new Vector3(BL.x, BL.y, 0));
         }
 
-
         // Draw Rectangles
-        void DrawRectangle(Vector3 bl, Vector3 tl, Vector3 tr, Vector3 br, Color color)
+        private void DrawRectangle(Vector3 bl, Vector3 tl, Vector3 tr, Vector3 br, Color color)
         {
             Gizmos.color = color;
 
@@ -510,9 +509,8 @@ namespace TMPro.Examples
             Gizmos.DrawLine(br, bl);
         }
 
-
         // Draw Rectangles
-        void DrawDottedRectangle(Vector3 bl, Vector3 tl, Vector3 tr, Vector3 br, Color color)
+        private void DrawDottedRectangle(Vector3 bl, Vector3 tl, Vector3 tr, Vector3 br, Color color)
         {
             var cam = Camera.current;
             float dotSpacing = (cam.WorldToScreenPoint(br).x - cam.WorldToScreenPoint(bl).x) / 75f;
@@ -527,4 +525,3 @@ namespace TMPro.Examples
 #endif
     }
 }
-

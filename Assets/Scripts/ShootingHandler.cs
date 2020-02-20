@@ -11,6 +11,7 @@ public class ShootingHandler : MonoBehaviour
     {
         weapon = player.GetComponent<Weapon>();
     }
+
     public void RemovePlayer()
     {
         weapon = null;

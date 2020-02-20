@@ -11,6 +11,7 @@ TagManager:
   - Anchor
   - Pointer
   - Joystick
+  - EnemyBullet
   layers:
   - Default
   - TransparentFX

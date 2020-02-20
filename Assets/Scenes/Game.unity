@@ -438,6 +438,7 @@ MonoBehaviour:
   Enemies:
   - {fileID: 5355085466133539871, guid: 2327614cfb10e144b9b1b34a6de626f7, type: 3}
   - {fileID: 5355085466133539871, guid: 2713d7b61587cfd4788f6e201bd8f8b2, type: 3}
+  - {fileID: 5355085466133539871, guid: a3dcdf8e9e4ebc446994aa59770ec57d, type: 3}
   PlayerPrefab: {fileID: 2829543888804610132, guid: 962d69adea3fb93b385a0a70abbfdcf4,
     type: 3}
   LifesLabel: {fileID: 1196039569}
@@ -1238,7 +1239,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &946108644
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2186,6 +2187,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   joystick: {fileID: 759717427}
   fireButton: {fileID: 946108644}
+  player: {fileID: 0}
+  canvas: {fileID: 1525900974}
 --- !u!114 &1525900971
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2577,6 +2580,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_TagString
       value: Joystick
+      objectReference: {fileID: 0}
+    - target: {fileID: 2929252283123773939, guid: aaa2c939c0359ac4dbce3f49e8b90252,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2929252285020698103, guid: aaa2c939c0359ac4dbce3f49e8b90252,
         type: 3}

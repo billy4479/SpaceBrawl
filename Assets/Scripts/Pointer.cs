@@ -1,11 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Pointer : MonoBehaviour
 {
+    public Rigidbody2D enemy;
     private GameManager gm;
-    private Rigidbody2D enemy;
     private Rigidbody2D player;
 
     private float coeff = 3f;
@@ -15,14 +13,10 @@ public class Pointer : MonoBehaviour
     private float[] angles;
     private Transform cam;
 
-    private void Awake()
-    {
-        gm = GameObject.Find("GameManager").GetComponent<GameManager>();
-        enemy = transform.GetComponentInParent<Rigidbody2D>();
-    }
-
     private void Start()
     {
+        gm = GameObject.Find("GameManager").GetComponent<GameManager>();
+
         transform.parent = null;
         cam = Camera.main.transform;
 
@@ -30,7 +24,6 @@ public class Pointer : MonoBehaviour
         points[1] = new Vector2(-gm.screenSize.x, gm.screenSize.y);
         points[2] = new Vector2(-gm.screenSize.x, -gm.screenSize.y);
         points[3] = new Vector2(gm.screenSize.x, -gm.screenSize.y);
-
 
         float[] dotProd = {
         points[0].x * points[1].x + points[0].y * points[1].y,
@@ -42,7 +35,6 @@ public class Pointer : MonoBehaviour
             Mathf.Acos(dotProd[1] / (points[1].magnitude * points[2].magnitude)) * Mathf.Rad2Deg,
         };
         angles = _angles;
-
     }
 
     private void FixedUpdate()
@@ -78,7 +70,9 @@ public class Pointer : MonoBehaviour
         float angleDeg = angleRad * Mathf.Rad2Deg;
 
         //Chose the correct side and compute the position
+
         #region IF
+
         //Bottom
         if ((angleDeg > 180f - angles[0] * .5f && angleDeg < 180f) || (angleDeg < -180f + angles[0] * .5f && angleDeg > -180f))
         {
@@ -106,10 +100,13 @@ public class Pointer : MonoBehaviour
             cat = Mathf.Tan(angleRad) * (gm.screenSize.y - (player.position.y - cam.position.y)) + player.position.x;
             realPos = new Vector2(cat, gm.screenSize.y + cam.position.y);
         }
-        #endregion
+
+        #endregion IF
 
         //Taking nearer to the player
+
         #region OnScreen
+
         ratio = ((realPos.x - Camera.main.transform.position.x) / (realPos.y - Camera.main.transform.position.y));
 
         float finY = Mathf.Sqrt(Mathf.Pow(sub, 2f) / (Mathf.Pow(ratio, 2f) + 1f));
@@ -119,7 +116,8 @@ public class Pointer : MonoBehaviour
             finalPos = realPos - new Vector2(finX, finY);
         else
             finalPos = realPos + new Vector2(finX, finY);
-        #endregion
+
+        #endregion OnScreen
 
         if (Vector2.Distance(player.position, enemy.position) > Vector2.Distance(player.position, realPos))
             GetComponent<Renderer>().enabled = true;
@@ -132,19 +130,14 @@ public class Pointer : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawLine(enemy.position, player.position);
+        try
+        {
+            Gizmos.color = Color.yellow;
+            Gizmos.DrawLine(enemy.position, player.position);
 
-        Gizmos.color = Color.red;
-        Gizmos.DrawLine(enemy.position, realPos);
-
-        /*
-        Gizmos.color = Color.green;
-        Gizmos.DrawLine(player.position, points[0]);
-        Gizmos.DrawLine(player.position, points[1]);
-        Gizmos.DrawLine(player.position, points[2]);
-        Gizmos.DrawLine(player.position, points[3]);
-        */
+            Gizmos.color = Color.red;
+            Gizmos.DrawLine(enemy.position, realPos);
+        }
+        catch { }
     }
-
 }

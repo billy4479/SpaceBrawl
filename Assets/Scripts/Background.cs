@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Background : MonoBehaviour
 {
@@ -9,15 +7,14 @@ public class Background : MonoBehaviour
     private float divider = 4f;
     private float starSize = 3f;
 
-    void Awake()
+    private void Awake()
     {
         foreach (var anchor in anchors)
             anchor.parent = null;
     }
 
-    void Start()
+    private void Start()
     {
-
         int starNumX = Mathf.RoundToInt((Mathf.Abs(anchors[0].transform.position.x) + Mathf.Abs(anchors[1].transform.position.x)) / divider);
         int starNumy = Mathf.RoundToInt((Mathf.Abs(anchors[0].transform.position.y) + Mathf.Abs(anchors[1].transform.position.y)) / divider);
         star.transform.localScale = new Vector3(starSize, starSize, 1f);

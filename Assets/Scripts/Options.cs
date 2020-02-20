@@ -1,7 +1,7 @@
-﻿using UnityEngine;
-using UnityEngine.UI;
+﻿using TMPro;
+using UnityEngine;
 using UnityEngine.SceneManagement;
-using TMPro;
+using UnityEngine.UI;
 
 public class Options : MonoBehaviour
 {
@@ -45,9 +45,9 @@ public class Options : MonoBehaviour
         sm.settings.VolumeMusic = musicSlider.value;
         am.SetMusicVolume(musicSlider.value);
     }
+
     public void OnSFXChange()
     {
         sm.settings.VolumeSFX = sfxSlider.value;
     }
-
 }

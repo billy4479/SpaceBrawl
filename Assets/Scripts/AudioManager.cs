@@ -1,7 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
+﻿using UnityEngine;
 
 [System.Serializable]
 public class Sound
@@ -12,13 +9,16 @@ public class Sound
 
     [Range(0f, 1f)]
     public float volume = .7f;
+
     [Range(.5f, 1.5f)]
     public float pitch = 1f;
 
     [Range(0f, .5f)]
     public float RandomVolume = .1f;
+
     [Range(0f, .5f)]
     public float RandomPitch = .1f;
+
     public bool loop;
     public bool isMusic;
 
@@ -35,9 +35,22 @@ public class Sound
         source.pitch = pitch * (1 + Random.Range(-RandomPitch / 2, RandomPitch / 2));
         source.Play();
     }
-    public void Stop() { source.Stop(); }
-    public void Pause() { source.Pause(); }
-    public void Unpause() { source.UnPause(); }
+
+    public void Stop()
+    {
+        source.Stop();
+    }
+
+    public void Pause()
+    {
+        source.Pause();
+    }
+
+    public void Unpause()
+    {
+        source.UnPause();
+    }
+
     public void SetVolume(float volume)
     { this.source.volume = this.volume * (1 + Random.Range(-RandomVolume / 2, RandomVolume / 2)) * (volume / 100f); }
 }
@@ -45,13 +58,14 @@ public class Sound
 public class AudioManager : MonoBehaviour
 {
     [SerializeField]
-    Sound[] sounds;
+    private Sound[] sounds;
+
     private float musicVolume;
     private float sfxVolume;
 
-
     public static AudioManager instance;
-    void Awake()
+
+    private void Awake()
     {
         if (instance == null)
         {
@@ -62,7 +76,7 @@ public class AudioManager : MonoBehaviour
             Destroy(gameObject);
     }
 
-    void Start()
+    private void Start()
     {
         for (int i = 0; i < sounds.Length; i++)
         {

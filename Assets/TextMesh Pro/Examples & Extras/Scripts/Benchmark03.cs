@@ -1,13 +1,9 @@
 using UnityEngine;
-using System.Collections;
-
 
 namespace TMPro.Examples
 {
-    
     public class Benchmark03 : MonoBehaviour
     {
-
         public int SpawnType = 0;
         public int NumberOfNPC = 12;
 
@@ -15,13 +11,11 @@ namespace TMPro.Examples
 
         //private TextMeshProFloatingText floatingText_Script;
 
-        void Awake()
+        private void Awake()
         {
-
         }
 
-
-        void Start()
+        private void Start()
         {
             for (int i = 0; i < NumberOfNPC; i++)
             {
@@ -45,7 +39,6 @@ namespace TMPro.Examples
                     textMeshPro.text = "@";
                     textMeshPro.color = new Color32(255, 255, 0, 255);
                     //textMeshPro.Text = "!";
-
 
                     // Spawn Floating Text
                     //floatingText_Script = go.AddComponent<TextMeshProFloatingText>();
@@ -74,6 +67,5 @@ namespace TMPro.Examples
                 }
             }
         }
-
     }
 }
