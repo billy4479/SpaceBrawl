@@ -184,9 +184,9 @@ public class GameManager : MonoBehaviour
         this.EnemyNumber = this.Level;
     }
 
-    private Vector3 RandomSpawnPosOnBorders()
+    public Vector3 RandomSpawnPosOnBorders()
     {
-        Vector3 result = new Vector3(0, 0, 0);
+        Vector3 result;
         sides side = (sides)Random.Range(0, 4);
 
         switch (side)
@@ -200,11 +200,11 @@ public class GameManager : MonoBehaviour
                 break;
 
             case sides.RIGHT:
-                result = new Vector3(Random.Range(anchors[0].position.y, -anchors[0].position.y), anchors[0].position.x, 0);
+                result = new Vector3(anchors[0].position.x, Random.Range(anchors[0].position.y, -anchors[0].position.y), 0);
                 break;
 
             case sides.LEFT:
-                result = new Vector3(Random.Range(anchors[1].position.y, -anchors[1].position.y), anchors[1].position.x, 0);
+                result = new Vector3(anchors[1].position.x, Random.Range(anchors[1].position.y, -anchors[1].position.y), 0);
                 break;
 
             default:

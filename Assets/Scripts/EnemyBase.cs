@@ -9,7 +9,7 @@ public class EnemyBase : MonoBehaviour
     private Rigidbody2D PlayerRB;
     private GameManager gm;
     private bool canMove = true;
-    private float repelRange = 1f;
+    private float repelRange = 1.5f;
     private float repelStrenght = 1f;
     private float lastShoot = float.MinValue;
 
