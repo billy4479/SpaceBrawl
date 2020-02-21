@@ -15,9 +15,9 @@ public class ScoreboardScript : MonoBehaviour
 
         for (int i = 0; i < 9; i++)
         {
-            ScoreText = ScoreText + "#" + (i + 1) + ". \t " +
-            saveManager.scores.name[i] + " \t " +
-            saveManager.scores.date[i] + " \t " +
+            ScoreText = ScoreText + "#" + (i + 1) + ".    " +
+            saveManager.scores.name[i] + "    " +
+            saveManager.scores.date[i] + "    " +
             saveManager.scores.score[i] + "\n";
         }
 
