@@ -121,10 +121,11 @@ public class EnemyBase : MonoBehaviour
         CapsuleCollider2D[] coll = gameObject.GetComponents<CapsuleCollider2D>();
         for (int i = 0; i < coll.Length; i++)
         {
-            coll[i].isTrigger = true;
+            Destroy(coll[i]);
         }
         rb.velocity = Vector2.zero;
         rb.angularVelocity = 0;
+        Destroy(rb);
 
         animator.SetBool("Death", true);
         Destroy(pointer);
@@ -132,8 +133,8 @@ public class EnemyBase : MonoBehaviour
 
         yield return new WaitForSeconds(1);
 
-        Destroy(gameObject);
         gm.EnemyNumber--;
+        Destroy(gameObject);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

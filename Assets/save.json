@@ -1,1 +1,60 @@
-{"name":["Billy","Empty","Empty","Empty","Empty","Empty","Empty","Empty","Empty","Empty"],"score":[9,0,0,0,0,0,0,0,0,0],"date":["13/02/2020","None","None","None","None","None","None","None","None","None"]}
+{
+    "savedScores": [
+        {
+            "name": "Empty",
+            "score": 0,
+            "date": "None"
+        },
+        {
+            "name": "Empty",
+            "score": 0,
+            "date": "None"
+        },
+        {
+            "name": "Empty",
+            "score": 0,
+            "date": "None"
+        },
+        {
+            "name": "Empty",
+            "score": 0,
+            "date": "None"
+        },
+        {
+            "name": "Empty",
+            "score": 0,
+            "date": "None"
+        },
+        {
+            "name": "Empty",
+            "score": 0,
+            "date": "None"
+        },
+        {
+            "name": "Empty",
+            "score": 0,
+            "date": "None"
+        },
+        {
+            "name": "Empty",
+            "score": 0,
+            "date": "None"
+        },
+        {
+            "name": "Empty",
+            "score": 0,
+            "date": "None"
+        },
+        {
+            "name": "Empty",
+            "score": 0,
+            "date": "None"
+        }
+    ],
+    "settings": {
+        "VolumeSFX": 100.0,
+        "VolumeMusic": 100.0,
+        "name": "Billy",
+        "controllMethod": 0
+    }
+}

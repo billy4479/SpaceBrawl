@@ -5,17 +5,21 @@ public class SaveManager : MonoBehaviour
 {
     static public SaveManager instance;
     private string savePath;
-    private string optionPath;
+    private string oldSavePath;
+
+    #region Classes and Types
 
     public enum ControllMethod { Finger, Joystick, ToggledJoystick };
 
+    [System.Serializable]
     public class SavedScores
     {
-        public string[] name;
-        public int[] score;
-        public string[] date;
+        public string name;
+        public int score;
+        public string date;
     }
 
+    [System.Serializable]
     public class Settings
     {
         public float VolumeSFX;
@@ -24,7 +28,17 @@ public class SaveManager : MonoBehaviour
         public ControllMethod controllMethod;
     }
 
-    public SavedScores scores;
+    [System.Serializable]
+    private class SaveCollection
+    {
+        public SavedScores[] savedScores;
+        public Settings settings;
+    }
+
+    #endregion Classes and Types
+
+    private SaveCollection saveCollection;
+    public SavedScores[] scores;
     public Settings settings;
 
     private void Awake()
@@ -41,74 +55,85 @@ public class SaveManager : MonoBehaviour
 
         #endregion Singletone
 
+        #region Select Path
+
         if (Application.platform == RuntimePlatform.Android)
         {
             savePath = Application.persistentDataPath + "/save.json";
-            optionPath = Application.persistentDataPath + "/options.json";
+            oldSavePath = Application.persistentDataPath + "/options.json";
         }
         else
         {
             savePath = Application.dataPath + "/save.json";
-            optionPath = Application.dataPath + "/options.json";
+            oldSavePath = Application.persistentDataPath + "/options.json";
         }
 
-        if (File.Exists(savePath)) //Il file esiste. Carico il salvataggio
+        #endregion Select Path
+
+        if (File.Exists(savePath))
         {
-            scores = JsonUtility.FromJson<SavedScores>(File.ReadAllText(savePath));
+            saveCollection = JsonUtility.FromJson<SaveCollection>(File.ReadAllText(savePath));
+            if (saveCollection != null)
+            {
+                scores = saveCollection.savedScores;
+                settings = saveCollection.settings;
+            }
+            else
+            {
+                Debug.LogWarning("Il file esiste ma non viene letto correttamente...");
+                File.Delete(savePath);
+                if (File.Exists(oldSavePath))
+                    File.Delete(oldSavePath);
+                CreateSaveFile();
+            }
         }
-        //Il file non esiste. Ne creo uno nuovo e carico i valori
         else
         {
             Debug.LogWarning("Save not found! Creaing a new one...");
-
-            using (StreamWriter saveStream = new StreamWriter(savePath))
-            {
-                scores = new SavedScores
-                {
-                    score = new int[10],
-                    name = new string[10],
-                    date = new string[10]
-                };
-                for (int i = 0; i < 10; i++)
-                {
-                    scores.name[i] = "Empty";
-                    scores.score[i] = 0;
-                    scores.date[i] = "None";
-                }
-                string json = JsonUtility.ToJson(scores, false);
-
-                saveStream.Write(json);
-                saveStream.Flush();
-                saveStream.Close();
-            }
-        }
-
-        if (File.Exists(optionPath))
-        {
-            settings = JsonUtility.FromJson<Settings>(File.ReadAllText(optionPath));
-        }
-        else
-        {
-            Debug.LogWarning("Options not found! Creaing a new one...");
-            using (StreamWriter optionsStream = new StreamWriter(optionPath))
-            {
-                settings = new Settings
-                {
-                    name = "Player",
-                    VolumeMusic = 100f,
-                    VolumeSFX = 100f
-                };
-                string json = JsonUtility.ToJson(settings, false);
-                optionsStream.Write(json);
-                optionsStream.Flush();
-                optionsStream.Close();
-            }
+            CreateSaveFile();
         }
     }
 
+    private void CreateSaveFile()
+    {
+        using (StreamWriter saveStream = new StreamWriter(savePath))
+        {
+            scores = new SavedScores[10];
+            for (int i = 0; i < 10; i++)
+            {
+                scores[i] = new SavedScores();
+                scores[i].name = "Empty";
+                scores[i].score = 0;
+                scores[i].date = "None";
+            }
+
+            settings = new Settings
+            {
+                name = "Player",
+                VolumeMusic = 100f,
+                VolumeSFX = 100f
+            };
+
+            saveCollection = new SaveCollection
+            {
+                savedScores = scores,
+                settings = settings
+            };
+
+            string json = JsonUtility.ToJson(saveCollection, true);
+
+            saveStream.Write(json);
+            saveStream.Flush();
+            saveStream.Close();
+        }
+    }
     public void WriteChanges()
     {
-        File.WriteAllText(savePath, JsonUtility.ToJson(scores));
-        File.WriteAllText(optionPath, JsonUtility.ToJson(settings));
+        saveCollection = new SaveCollection
+        {
+            savedScores = scores,
+            settings = settings
+        };
+        File.WriteAllText(savePath, JsonUtility.ToJson(saveCollection, true));
     }
 }

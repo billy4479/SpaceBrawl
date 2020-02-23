@@ -13,12 +13,12 @@ public class ScoreboardScript : MonoBehaviour
         saveManager = SaveManager.instance;
         ScoreText = "";
 
-        for (int i = 0; i < 9; i++)
+        for (int i = 0; i < 10; i++)
         {
-            ScoreText = ScoreText + "#" + (i + 1) + ".    " +
-            saveManager.scores.name[i] + "    " +
-            saveManager.scores.date[i] + "    " +
-            saveManager.scores.score[i] + "\n";
+            ScoreText = ScoreText + "#" + (i + 1) + ".\t" +
+            saveManager.scores[i].name + "    " +
+            saveManager.scores[i].date + "    " +
+            saveManager.scores[i].score + "\n";
         }
 
         ScoreboardText = GameObject.Find("ScoreLabel").GetComponent<TextMeshProUGUI>();

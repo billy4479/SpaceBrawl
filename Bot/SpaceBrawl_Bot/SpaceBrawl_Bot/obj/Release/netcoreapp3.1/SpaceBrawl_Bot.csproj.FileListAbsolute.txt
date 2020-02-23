@@ -1,0 +1,13 @@
+D:\Desktop\SpaceBrawl\Bot\SpaceBrawl_Bot\SpaceBrawl_Bot\bin\Release\netcoreapp3.1\SpaceBrawl_Bot.exe
+D:\Desktop\SpaceBrawl\Bot\SpaceBrawl_Bot\SpaceBrawl_Bot\bin\Release\netcoreapp3.1\SpaceBrawl_Bot.deps.json
+D:\Desktop\SpaceBrawl\Bot\SpaceBrawl_Bot\SpaceBrawl_Bot\bin\Release\netcoreapp3.1\SpaceBrawl_Bot.runtimeconfig.json
+D:\Desktop\SpaceBrawl\Bot\SpaceBrawl_Bot\SpaceBrawl_Bot\bin\Release\netcoreapp3.1\SpaceBrawl_Bot.runtimeconfig.dev.json
+D:\Desktop\SpaceBrawl\Bot\SpaceBrawl_Bot\SpaceBrawl_Bot\bin\Release\netcoreapp3.1\SpaceBrawl_Bot.dll
+D:\Desktop\SpaceBrawl\Bot\SpaceBrawl_Bot\SpaceBrawl_Bot\bin\Release\netcoreapp3.1\SpaceBrawl_Bot.pdb
+D:\Desktop\SpaceBrawl\Bot\SpaceBrawl_Bot\SpaceBrawl_Bot\bin\Release\netcoreapp3.1\Newtonsoft.Json.dll
+D:\Desktop\SpaceBrawl\Bot\SpaceBrawl_Bot\SpaceBrawl_Bot\bin\Release\netcoreapp3.1\Telegram.Bot.dll
+D:\Desktop\SpaceBrawl\Bot\SpaceBrawl_Bot\SpaceBrawl_Bot\obj\Release\netcoreapp3.1\SpaceBrawl_Bot.AssemblyInfoInputs.cache
+D:\Desktop\SpaceBrawl\Bot\SpaceBrawl_Bot\SpaceBrawl_Bot\obj\Release\netcoreapp3.1\SpaceBrawl_Bot.AssemblyInfo.cs
+D:\Desktop\SpaceBrawl\Bot\SpaceBrawl_Bot\SpaceBrawl_Bot\obj\Release\netcoreapp3.1\SpaceBrawl_Bot.csproj.CopyComplete
+D:\Desktop\SpaceBrawl\Bot\SpaceBrawl_Bot\SpaceBrawl_Bot\obj\Release\netcoreapp3.1\SpaceBrawl_Bot.dll
+D:\Desktop\SpaceBrawl\Bot\SpaceBrawl_Bot\SpaceBrawl_Bot\obj\Release\netcoreapp3.1\SpaceBrawl_Bot.pdb

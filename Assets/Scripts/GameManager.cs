@@ -30,13 +30,15 @@ public class GameManager : MonoBehaviour
     [Range(0f, 1f)]
     public float friction;
 
+    [HideInInspector]
     public GameObject CurrentPlayer;
+
     private AudioManager audioManager;
 
     private enum sides { UP, DOWN, RIGHT, LEFT };
 
+    [HideInInspector]
     public Vector2 screenSize;
-    private Vector3 cameraPos;
 
     #endregion Variables
 
@@ -47,7 +49,6 @@ public class GameManager : MonoBehaviour
         this.Level = 1;
         this.EnemyNumber = 0;
         this.SuspendInput = false;
-        cameraPos = Camera.main.transform.position;
     }
 
     private void Start()
@@ -75,13 +76,14 @@ public class GameManager : MonoBehaviour
 
     public void PlayerLose()
     {
-        this.Lifes -= 1;
+        Lifes -= 1;
 
-        if (this.Lifes == 0)
+        if (Lifes == 0)
         {
-            if (this.Score > SaveManager.instance.scores.score[0])
+            if (Score > SaveManager.instance.scores[9].score)
             {
-                SaveManager.SavedScores scr = SaveManager.instance.scores;
+                #region Destroy obj and suspend input
+
                 Destroy(CurrentPlayer);
                 GameObject[] bullets = GameObject.FindGameObjectsWithTag("Bullet");
                 for (int i = 0; i < bullets.Length; i++)
@@ -89,20 +91,25 @@ public class GameManager : MonoBehaviour
                 GameObject[] pointers = GameObject.FindGameObjectsWithTag("Pointer");
                 for (int i = 0; i < pointers.Length; i++)
                     Destroy(pointers[i]);
-                this.SuspendInput = true;
+                SuspendInput = true;
 
-                for (int i = scr.score.Length - 1; i > 0; i--)
+                #endregion Destroy obj and suspend input
+
+                SaveManager.SavedScores[] scr = SaveManager.instance.scores;
+
+                int position = GetScoreboardPosition(Score, scr);
+
+                for (int i = 9; i >= position; i--)
                 {
-                    if (i == 0)
+                    if (i == 9)
                         continue;
-
-                    scr.score[i] = scr.score[i - 1];
-                    scr.date[i] = scr.date[i - 1];
-                    scr.name[i] = scr.name[i - 1];
+                    scr[i + 1].score = scr[i].score;
+                    scr[i + 1].date = scr[i].date;
+                    scr[i + 1].name = scr[i].name;
                 }
-                scr.score[0] = this.Score;
-                scr.name[0] = SaveManager.instance.settings.name;
-                scr.date[0] = System.DateTime.Now.ToString("d", System.Globalization.CultureInfo.CreateSpecificCulture("fr-FR"));
+                scr[position].score = Score;
+                scr[position].name = SaveManager.instance.settings.name;
+                scr[position].date = System.DateTime.Now.ToString("d", System.Globalization.CultureInfo.CreateSpecificCulture("fr-FR"));
 
                 SaveManager.instance.WriteChanges();
             }
@@ -111,7 +118,7 @@ public class GameManager : MonoBehaviour
             return;
         }
 
-        StartCoroutine(this.PlayerRespawning());
+        StartCoroutine(PlayerRespawning());
     }
 
     private IEnumerator PlayerRespawning()
@@ -184,6 +191,18 @@ public class GameManager : MonoBehaviour
         this.EnemyNumber = this.Level;
     }
 
+    private void FixedUpdate()
+    {
+        this.LifesLabel.text = "Lifes: " + this.Lifes;
+        this.ScoreLabel.text = "Score: " + this.Score;
+        this.LevelLabel.text = "Level: " + this.Level;
+        screenSize.x = Vector2.Distance(Camera.main.ScreenToWorldPoint(new Vector2(0, 0)), Camera.main.ScreenToWorldPoint(new Vector2(Screen.width, 0))) * 0.5f;
+        screenSize.y = Vector2.Distance(Camera.main.ScreenToWorldPoint(new Vector2(0, 0)), Camera.main.ScreenToWorldPoint(new Vector2(0, Screen.height))) * 0.5f;
+
+        if (this.EnemyNumber == 0)
+            StartCoroutine(this.PlayerWon());
+    }
+
     public Vector3 RandomSpawnPosOnBorders()
     {
         Vector3 result;
@@ -215,15 +234,21 @@ public class GameManager : MonoBehaviour
         return result;
     }
 
-    private void FixedUpdate()
+    private int GetScoreboardPosition(int score, SaveManager.SavedScores[] savedScores)
     {
-        this.LifesLabel.text = "Lifes: " + this.Lifes;
-        this.ScoreLabel.text = "Score: " + this.Score;
-        this.LevelLabel.text = "Level: " + this.Level;
-        screenSize.x = Vector2.Distance(Camera.main.ScreenToWorldPoint(new Vector2(0, 0)), Camera.main.ScreenToWorldPoint(new Vector2(Screen.width, 0))) * 0.5f;
-        screenSize.y = Vector2.Distance(Camera.main.ScreenToWorldPoint(new Vector2(0, 0)), Camera.main.ScreenToWorldPoint(new Vector2(0, Screen.height))) * 0.5f;
-
-        if (this.EnemyNumber == 0)
-            StartCoroutine(this.PlayerWon());
+        int[] scores = new int[10];
+        for (int i = 0; i < savedScores.Length; i++)
+        {
+            scores[i] = savedScores[i].score;
+        }
+        for (int i = 0; i < savedScores.Length; i++)
+        {
+            if (score > scores[i])
+            {
+                return i;
+            }
+        }
+        Debug.LogError("Error while getting position");
+        return -1;
     }
 }
