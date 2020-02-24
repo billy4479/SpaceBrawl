@@ -12,6 +12,7 @@
 /Builds/
 /Musics/
 /Site/
+/Bot/
 UploadToGit.py
 
 # Asset meta data should only be ignored when the corresponding asset is also ignored

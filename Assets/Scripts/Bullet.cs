@@ -4,12 +4,11 @@ public class Bullet : MonoBehaviour
 {
     public float speed = 10f;
     public float timeAlive = 2f;
-    private GameManager gm;
+    public int damage = 10;
 
     private void Start()
     {
         Destroy(gameObject, timeAlive);
-        gm = FindObjectOfType<GameManager>();
     }
 
     private void FixedUpdate()
@@ -17,21 +16,10 @@ public class Bullet : MonoBehaviour
         transform.position += transform.up * speed * Time.fixedDeltaTime;
     }
 
-    private void OnTriggerEnter2D(Collider2D info)
+    private void OnTriggerEnter2D(Collider2D collider)
     {
-        if (info.tag != "EnemyExplosion")
+        if (collider.tag != "EnemyExplosion")
             Destroy(gameObject);
-        if (info.tag == "Player")
-        {
-            foreach (GameObject enemies in GameObject.FindGameObjectsWithTag("Enemy"))
-            {
-                gm.EnemyRBs.Clear();
-                Destroy(enemies);
-            }
-            foreach (GameObject pointer in GameObject.FindGameObjectsWithTag("Pointer"))
-            {
-                Destroy(pointer);
-            }
-        }
+
     }
 }

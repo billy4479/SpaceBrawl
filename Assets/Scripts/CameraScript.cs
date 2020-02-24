@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class CameraScript : MonoBehaviour
 {
-    public GameManager gm;
+    public Transform playerTransform;
 
     private Vector3 player;
     private Vector3 oldPlayer;
@@ -18,7 +18,7 @@ public class CameraScript : MonoBehaviour
     {
         try
         {
-            player = gm.CurrentPlayer.transform.position;
+            player = playerTransform.position;
         }
         catch
         {
@@ -30,19 +30,19 @@ public class CameraScript : MonoBehaviour
         bool followOnlyY = false;
         bool followOnlyX = false;
 
-        if (distFromOne.x > -gm.screenSize.x)
+        if (distFromOne.x > -GameManager.screenSize.x)
         {
             followOnlyY = true;
         }
-        if (distFromOne.y > -gm.screenSize.y)
+        if (distFromOne.y > -GameManager.screenSize.y)
         {
             followOnlyX = true;
         }
-        if (distFromTwo.x < gm.screenSize.x)
+        if (distFromTwo.x < GameManager.screenSize.x)
         {
             followOnlyY = true;
         }
-        if (distFromTwo.y < gm.screenSize.y)
+        if (distFromTwo.y < GameManager.screenSize.y)
         {
             followOnlyX = true;
         }

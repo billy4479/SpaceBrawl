@@ -4,36 +4,24 @@ public class ShootingHandler : MonoBehaviour
 {
     public GameManager gm;
 
-    private Weapon weapon;
+    public Weapon playerWeapon;
     private bool hold = false;
-
-    public void SetNewPlayer(GameObject player)
-    {
-        weapon = player.GetComponent<Weapon>();
-    }
-
-    public void RemovePlayer()
-    {
-        weapon = null;
-    }
-
-    private void Shoot()
-    {
-        if (weapon != null && !gm.SuspendInput && !Pause.isPaused)
-            weapon.Shoot();
-    }
 
     private void Update()
     {
         if (hold)
             Shoot();
     }
-
+    
+    private void Shoot()
+    {
+        if (playerWeapon != null && !gm.SuspendInput && !Pause.isPaused)
+            playerWeapon.Shoot();
+    }
     public void StartShooting()
     {
         hold = true;
     }
-
     public void StopShooting()
     {
         hold = false;

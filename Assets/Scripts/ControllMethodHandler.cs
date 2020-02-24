@@ -4,7 +4,6 @@ public class ControllMethodHandler : MonoBehaviour
 {
     public RectTransform joystick;
     public RectTransform fireButton;
-    public Transform player;
     public RectTransform canvas;
 
     private SaveManager sm;

@@ -4,26 +4,26 @@ public class Pointer : MonoBehaviour
 {
     public Rigidbody2D enemy;
     private GameManager gm;
-    private Rigidbody2D player;
+    private Transform player;
 
-    private float coeff = 3f;
+    private readonly float coeff = 3f;
     private Vector2 realPos = new Vector2();
 
-    private Vector2[] points = new Vector2[4];
+    private readonly Vector2[] points = new Vector2[4];
     private float[] angles;
     private Transform cam;
 
     private void Start()
     {
         gm = GameObject.Find("GameManager").GetComponent<GameManager>();
-
-        transform.parent = null;
+        player = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
         cam = Camera.main.transform;
+        transform.parent = null;
 
-        points[0] = new Vector2(gm.screenSize.x, gm.screenSize.y);
-        points[1] = new Vector2(-gm.screenSize.x, gm.screenSize.y);
-        points[2] = new Vector2(-gm.screenSize.x, -gm.screenSize.y);
-        points[3] = new Vector2(gm.screenSize.x, -gm.screenSize.y);
+        points[0] = new Vector2(GameManager.screenSize.x, GameManager.screenSize.y);
+        points[1] = new Vector2(-GameManager.screenSize.x, GameManager.screenSize.y);
+        points[2] = new Vector2(-GameManager.screenSize.x, -GameManager.screenSize.y);
+        points[3] = new Vector2(GameManager.screenSize.x, -GameManager.screenSize.y);
 
         float[] dotProd = {
         points[0].x * points[1].x + points[0].y * points[1].y,
@@ -40,18 +40,9 @@ public class Pointer : MonoBehaviour
     private void FixedUpdate()
     {
         cam = Camera.main.transform;
-        //Find the player or destroy gameObject
-        try
-        {
-            player = gm.CurrentPlayer.GetComponent<Rigidbody2D>();
-        }
-        catch
-        {
-            Destroy(gameObject);
-        }
 
         //Set Direction
-        Vector2 direction = (enemy.position - player.position).normalized;
+        Vector2 direction = (enemy.position - (Vector2)player.position).normalized;
         transform.eulerAngles = new Vector3(0, 0, Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg + 90);
 
         //Set Scale
@@ -62,9 +53,9 @@ public class Pointer : MonoBehaviour
 
         //Variables
         Vector2 finalPos;
-        float cat = 0f;
+        float cat;
+        float ratio;
         float sub = .5f;
-        float ratio = 1f;
 
         float angleRad = Mathf.Atan2(enemy.position.x - player.position.x, enemy.position.y - player.position.y);
         float angleDeg = angleRad * Mathf.Rad2Deg;
@@ -76,29 +67,29 @@ public class Pointer : MonoBehaviour
         //Bottom
         if ((angleDeg > 180f - angles[0] * .5f && angleDeg < 180f) || (angleDeg < -180f + angles[0] * .5f && angleDeg > -180f))
         {
-            cat = Mathf.Tan(angleRad) * (gm.screenSize.y + (player.position.y - cam.position.y)) - player.position.x;
-            realPos = new Vector2(-cat, -gm.screenSize.y + cam.position.y);
+            cat = Mathf.Tan(angleRad) * (GameManager.screenSize.y + (player.position.y - cam.position.y)) - player.position.x;
+            realPos = new Vector2(-cat, -GameManager.screenSize.y + cam.position.y);
         }
 
         //Right
         if (angleDeg < 180f - angles[0] * .5 && angleDeg > angles[0] - angles[1])
         {
-            cat = Mathf.Tan(angleRad - Mathf.PI / 2f) * (-gm.screenSize.x + (player.position.x - cam.position.x)) + player.position.y;
-            realPos = new Vector2(gm.screenSize.x + cam.position.x, cat);
+            cat = Mathf.Tan(angleRad - Mathf.PI / 2f) * (-GameManager.screenSize.x + (player.position.x - cam.position.x)) + player.position.y;
+            realPos = new Vector2(GameManager.screenSize.x + cam.position.x, cat);
         }
 
         //Left
         if (angleDeg < -angles[0] + angles[1] && angleDeg > -180f + angles[0] * .5f)
         {
-            cat = Mathf.Tan(angleRad - Mathf.PI / 2f) * (-gm.screenSize.x - (player.position.x - cam.position.x)) - player.position.y;
-            realPos = new Vector2(-gm.screenSize.x + cam.position.x, -cat);
+            cat = Mathf.Tan(angleRad - Mathf.PI / 2f) * (-GameManager.screenSize.x - (player.position.x - cam.position.x)) - player.position.y;
+            realPos = new Vector2(-GameManager.screenSize.x + cam.position.x, -cat);
         }
 
         //Up
         if ((angleDeg < angles[0] * .5f && angleDeg > 0f) || (angleDeg > -angles[0] * .5f && angleDeg < 0f))
         {
-            cat = Mathf.Tan(angleRad) * (gm.screenSize.y - (player.position.y - cam.position.y)) + player.position.x;
-            realPos = new Vector2(cat, gm.screenSize.y + cam.position.y);
+            cat = Mathf.Tan(angleRad) * (GameManager.screenSize.y - (player.position.y - cam.position.y)) + player.position.x;
+            realPos = new Vector2(cat, GameManager.screenSize.y + cam.position.y);
         }
 
         #endregion IF
@@ -130,14 +121,10 @@ public class Pointer : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        try
-        {
-            Gizmos.color = Color.yellow;
-            Gizmos.DrawLine(enemy.position, player.position);
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawLine(enemy.position, player.position);
 
-            Gizmos.color = Color.red;
-            Gizmos.DrawLine(enemy.position, realPos);
-        }
-        catch { }
+        Gizmos.color = Color.red;
+        Gizmos.DrawLine(enemy.position, realPos);
     }
 }

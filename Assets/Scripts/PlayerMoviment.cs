@@ -75,10 +75,4 @@ public class PlayerMoviment : MonoBehaviour
         else
             animator.SetInteger("dir", 0);
     }
-
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.tag == "EnemyBullet")
-            gameManager.PlayerLose();
-    }
 }

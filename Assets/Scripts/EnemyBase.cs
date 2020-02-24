@@ -16,11 +16,16 @@ public class EnemyBase : MonoBehaviour
     public Rigidbody2D rb;
     public Animator animator;
     public GameObject pointer;
+    public GameObject bullet;
+    public Transform firePos;
+
+    [Space]
+
     public float speed = 5f;
     public float turnSpeed = .1f;
-    public int HP;
     public int prob;
     public int pointsAtDeath = 1;
+    public int damage;
 
     public bool isShooter = false;
     public bool isSummoner = false;
@@ -28,8 +33,6 @@ public class EnemyBase : MonoBehaviour
     public float fireDistance = 5f;
     public float starfeSpeed = 2f;
     public float fireRate = 1f;
-    public GameObject bullet;
-    public Transform firePos;
 
     #endregion Variables
 
@@ -57,9 +60,6 @@ public class EnemyBase : MonoBehaviour
             else
                 rb.MovePosition(MoveNormally());
         }
-
-        if (HP <= 0 && canMove)
-            StartCoroutine(EnemyDeath());
     }
 
     private void Shoot()
@@ -98,6 +98,9 @@ public class EnemyBase : MonoBehaviour
 
     private void Start()
     {
+        PlayerRB = GameObject.FindGameObjectWithTag("Player").GetComponent<Rigidbody2D>();
+        gm = GameObject.Find("GameManager").GetComponent<GameManager>();
+        GetComponent<HeathSystem>().DieEvent += Die;
         if (debug)
             speed = 0f;
         if (gm.EnemyRBs == null)
@@ -105,55 +108,38 @@ public class EnemyBase : MonoBehaviour
         gm.EnemyRBs.Add(rb);
     }
 
-    private void Awake()
+    public void RemoveEnemy()
     {
-        PlayerRB = GameObject.FindGameObjectWithTag("Player").GetComponent<Rigidbody2D>();
-        gm = GameObject.Find("GameManager").GetComponent<GameManager>();
-    }
-
-    private IEnumerator EnemyDeath()
-    {
-        canMove = false;
-        gameObject.name = "EnemyExplosion";
-        gameObject.tag = "EnemyExplosion";
-        gm.EnemyRBs.Remove(rb);
-
-        CapsuleCollider2D[] coll = gameObject.GetComponents<CapsuleCollider2D>();
-        for (int i = 0; i < coll.Length; i++)
-        {
-            Destroy(coll[i]);
-        }
-        rb.velocity = Vector2.zero;
-        rb.angularVelocity = 0;
-        Destroy(rb);
-
-        animator.SetBool("Death", true);
         Destroy(pointer);
-        gm.Score += pointsAtDeath;
-
-        yield return new WaitForSeconds(1);
-
-        gm.EnemyNumber--;
+        gm.EnemyRBs.Remove(rb);
         Destroy(gameObject);
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private IEnumerator AnimateDeath()
     {
-        if (canMove == true)
-        {
-            if (collision.name == "Bullet(Clone)")
-                HP -= 10;
+        animator.SetBool("Death", true);
+        canMove = false;
+        gameObject.name = "EnemyExplosion";
+        gameObject.tag = "EnemyExplosion";
+        yield return new WaitForSeconds(1);
+        Destroy(gameObject);
+    }
 
-            if (collision.tag == "Player")
-            {
-                foreach (GameObject enemies in GameObject.FindGameObjectsWithTag("Enemy"))
-                {
-                    gm.EnemyRBs.Clear();
-                    Destroy(enemies);
-                }
-                Destroy(pointer);
-                gm.PlayerLose();
-            }
-        }
+    public void Die(object sender, HeathSystem.DieEventArgs e)
+    {
+        gm.EnemyRBs.Remove(rb);
+        tag = "EnemyExplosion";
+        Destroy(rb);
+        Destroy(pointer);
+
+        CapsuleCollider2D[] coll = gameObject.GetComponents<CapsuleCollider2D>();
+        for (int i = 0; i < coll.Length; i++)
+            Destroy(coll[i]);
+
+        if (e.defeated)
+            gm.Score += pointsAtDeath;
+        gm.EnemyNumber--;
+
+        StartCoroutine(AnimateDeath());
     }
 }

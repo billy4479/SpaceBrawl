@@ -6,7 +6,7 @@ public class Pause : MonoBehaviour
     public static bool isPaused = false;
     public GameObject PauseMenu;
     public GameManager gameManager;
-    public AudioManager audioManager;
+    private AudioManager audioManager;
 
     private void Start()
     { audioManager = AudioManager.instance; }
