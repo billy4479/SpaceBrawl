@@ -12,6 +12,7 @@ public class EnemyBase : MonoBehaviour
     private float repelRange = 1.5f;
     private float repelStrenght = 1f;
     private float lastShoot = float.MinValue;
+    private AudioManager am;
 
     public Rigidbody2D rb;
     public Animator animator;
@@ -67,6 +68,7 @@ public class EnemyBase : MonoBehaviour
         if (Time.time - lastShoot > 1f / fireRate)
         {
             Instantiate(bullet, firePos.position, firePos.rotation);
+            am.PlaySound("EnemyShot");
             lastShoot = Time.time;
         }
     }
@@ -98,6 +100,7 @@ public class EnemyBase : MonoBehaviour
 
     private void Start()
     {
+        am = AudioManager.instance;
         PlayerRB = GameObject.FindGameObjectWithTag("Player").GetComponent<Rigidbody2D>();
         gm = GameObject.Find("GameManager").GetComponent<GameManager>();
         GetComponent<HeathSystem>().DieEvent += Die;
@@ -139,7 +142,7 @@ public class EnemyBase : MonoBehaviour
         if (e.defeated)
             gm.Score += pointsAtDeath;
         gm.EnemyNumber--;
-
+        am.PlaySound("EnemyExplosion");
         StartCoroutine(AnimateDeath());
     }
 }

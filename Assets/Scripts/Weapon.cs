@@ -9,7 +9,7 @@ public class Weapon : MonoBehaviour
     private AudioManager audioManager;
     private float counter = -1f;
     private float reloadTime = .25f;
-    private string shotSoundName = "Shot";
+    private string shotSoundName = "PlayerShot";
 
     private void Start()
     {
