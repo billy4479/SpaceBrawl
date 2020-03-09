@@ -2,10 +2,10 @@
 
 public class ControllMethodHandler : MonoBehaviour
 {
-    public RectTransform joystick;
-    public RectTransform fireButton;
-    public RectTransform canvas;
-
+    private AssetsHolder assetsHolder;
+    private RectTransform joystick;
+    private RectTransform fireButton;
+    private RectTransform canvas;
     private SaveManager sm;
 
     #region AdjustUIPosition
@@ -50,6 +50,11 @@ public class ControllMethodHandler : MonoBehaviour
     private void Start()
     {
         sm = SaveManager.instance;
+        assetsHolder = AssetsHolder.instance;
+        joystick = assetsHolder.Joystick_Transform;
+        fireButton = assetsHolder.FireButton_Transform;
+        canvas = assetsHolder.Canvas;
+
         standardResolution = new Vector2(canvas.rect.width, canvas.rect.height);
         switch (sm.settings.controllMethod)
         {

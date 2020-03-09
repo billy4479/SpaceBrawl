@@ -82,8 +82,7 @@ public class SaveManager : MonoBehaviour
             {
                 Debug.LogWarning("Il file esiste ma non viene letto correttamente...");
                 File.Delete(savePath);
-                if (File.Exists(oldSavePath))
-                    File.Delete(oldSavePath);
+                
                 CreateSaveFile();
             }
         }
@@ -96,15 +95,19 @@ public class SaveManager : MonoBehaviour
 
     private void CreateSaveFile()
     {
+        if (File.Exists(oldSavePath))
+            File.Delete(oldSavePath);
         using (StreamWriter saveStream = new StreamWriter(savePath))
         {
             scores = new SavedScores[10];
             for (int i = 0; i < 10; i++)
             {
-                scores[i] = new SavedScores();
-                scores[i].name = "Empty";
-                scores[i].score = 0;
-                scores[i].date = "None";
+                scores[i] = new SavedScores
+                {
+                    name = "Empty",
+                    score = 0,
+                    date = "None"
+                };
             }
 
             settings = new Settings

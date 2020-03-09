@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyBase : MonoBehaviour
+public class EnemyBase : MonoBehaviour, IHealth
 {
     #region Variables
 
@@ -14,26 +14,27 @@ public class EnemyBase : MonoBehaviour
     private float lastShoot = float.MinValue;
     private AudioManager am;
 
-    public Rigidbody2D rb;
-    public Animator animator;
-    public GameObject pointer;
-    public GameObject bullet;
-    public Transform firePos;
+    private AssetsHolder assetsHolder;
+    private Rigidbody2D rb;
+    private Animator animator;
+    private GameObject pointer;
+    private Transform firePos;
 
+    private GameObject bullet;
     [Space]
+    [SerializeField] private float speed = 5f;
+    [SerializeField] private float turnSpeed = .1f;
+    [SerializeField] private int pointsAtDeath = 1;
 
-    public float speed = 5f;
-    public float turnSpeed = .1f;
     public int prob;
-    public int pointsAtDeath = 1;
     public int damage;
-
-    public bool isShooter = false;
-    public bool isSummoner = false;
-
-    public float fireDistance = 5f;
-    public float starfeSpeed = 2f;
-    public float fireRate = 1f;
+    [Space]
+    [SerializeField] private bool isShooter = false;
+    [SerializeField] private bool isSummoner = false;
+    [Space]
+    [SerializeField] private float fireDistance = 5f;
+    [SerializeField] private float starfeSpeed = 2f;
+    [SerializeField] private float fireRate = 1f;
 
     #endregion Variables
 
@@ -101,9 +102,15 @@ public class EnemyBase : MonoBehaviour
     private void Start()
     {
         am = AudioManager.instance;
-        PlayerRB = GameObject.FindGameObjectWithTag("Player").GetComponent<Rigidbody2D>();
-        gm = GameObject.Find("GameManager").GetComponent<GameManager>();
-        GetComponent<HeathSystem>().DieEvent += Die;
+        assetsHolder = AssetsHolder.instance;
+        gm = GameManager.instance;
+        rb = GetComponent<Rigidbody2D>();
+        animator = GetComponent<Animator>();
+        pointer = transform.Find("Pointer").gameObject;
+        firePos = transform.Find("FirePosition");
+        PlayerRB = assetsHolder.Player.GetComponent<Rigidbody2D>();
+        bullet = assetsHolder.Bullet_Enemy;
+
         if (debug)
             speed = 0f;
         if (gm.EnemyRBs == null)
@@ -115,34 +122,38 @@ public class EnemyBase : MonoBehaviour
     {
         Destroy(pointer);
         gm.EnemyRBs.Remove(rb);
+        gm.EnemyNumber--;
         Destroy(gameObject);
     }
 
     private IEnumerator AnimateDeath()
     {
         animator.SetBool("Death", true);
-        canMove = false;
-        gameObject.name = "EnemyExplosion";
-        gameObject.tag = "EnemyExplosion";
+        
         yield return new WaitForSeconds(1);
         Destroy(gameObject);
     }
 
-    public void Die(object sender, HeathSystem.DieEventArgs e)
+    public void OnDeath(bool defeated)
     {
-        gm.EnemyRBs.Remove(rb);
         tag = "EnemyExplosion";
+
+        gm.EnemyRBs.Remove(rb);
+        canMove = false;
         Destroy(rb);
         Destroy(pointer);
+        CapsuleCollider2D[] capsuleColl = GetComponents<CapsuleCollider2D>();
+        for (int i = 0; i < capsuleColl.Length; i++)
+            Destroy(capsuleColl[i]);
+        PolygonCollider2D[] polColl = GetComponents<PolygonCollider2D>();
+        for (int i = 0; i < polColl.Length; i++)
+            Destroy(polColl[i]);
 
-        CapsuleCollider2D[] coll = gameObject.GetComponents<CapsuleCollider2D>();
-        for (int i = 0; i < coll.Length; i++)
-            Destroy(coll[i]);
-
-        if (e.defeated)
+        if (defeated)
             gm.Score += pointsAtDeath;
         gm.EnemyNumber--;
         am.PlaySound("EnemyExplosion");
         StartCoroutine(AnimateDeath());
     }
+    public bool IsPlayer() => false;
 }

@@ -3,14 +3,19 @@ using UnityEngine;
 
 public class CameraScript : MonoBehaviour
 {
-    public Transform playerTransform;
-
+    private AssetsHolder assetsHolder;
+    private GameManager gameManager;
     private Vector3 player;
     private Vector3 oldPlayer;
-    public List<GameObject> anchors;
+    private Transform[] anchors;
+    private Transform playerTransform;
 
     private void Start()
     {
+        gameManager = GameManager.instance;
+        assetsHolder = AssetsHolder.instance;
+        playerTransform = assetsHolder.Player.transform;
+        anchors = assetsHolder.Anchors;
         transform.position = new Vector3(0, 0, -10);
     }
 
@@ -24,25 +29,26 @@ public class CameraScript : MonoBehaviour
         {
             player = oldPlayer;
         }
+
         Vector3 distFromOne = player - anchors[0].transform.position;
         Vector3 distFromTwo = player - anchors[1].transform.position;
 
         bool followOnlyY = false;
         bool followOnlyX = false;
 
-        if (distFromOne.x > -GameManager.screenSize.x)
+        if (distFromOne.x > -gameManager.screenSize.x)
         {
             followOnlyY = true;
         }
-        if (distFromOne.y > -GameManager.screenSize.y)
+        if (distFromOne.y > -gameManager.screenSize.y)
         {
             followOnlyX = true;
         }
-        if (distFromTwo.x < GameManager.screenSize.x)
+        if (distFromTwo.x < gameManager.screenSize.x)
         {
             followOnlyY = true;
         }
-        if (distFromTwo.y < GameManager.screenSize.y)
+        if (distFromTwo.y < gameManager.screenSize.y)
         {
             followOnlyX = true;
         }

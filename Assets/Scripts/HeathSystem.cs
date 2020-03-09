@@ -1,30 +1,18 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class HeathSystem : MonoBehaviour
 {
-    private enum OnWho { Player, Enemy };
-
     [SerializeField] private int maxHealth;
     [SerializeField] private GameObject healtBar;
     [SerializeField] private GameObject healthBarContainer;
-    [SerializeField] private OnWho onWho;
     [SerializeField] private int currentHeath;
+
+    private AssetsHolder assetsHolder;
     private GameObject player;
-
-    #region DieEvent
-
-    public event EventHandler<DieEventArgs> DieEvent;
-
-    public class DieEventArgs : EventArgs
-    {
-        public bool defeated;
-    }
-
-    #endregion DieEvent
-
+    private bool isPlayer;
     private bool hasDied = false;
     private int lastID = 0;
+    private IHealth health;
 
     private float regenTime = 5f;
     private float regenRate = 2f;
@@ -33,10 +21,11 @@ public class HeathSystem : MonoBehaviour
 
     private void Start()
     {
+        assetsHolder = AssetsHolder.instance;
+        player = assetsHolder.Player;
+        health = GetComponent<IHealth>();
+        isPlayer = health.IsPlayer();
         currentHeath = maxHealth;
-        if (onWho == OnWho.Player)
-            player = gameObject;
-        else player = GameObject.FindGameObjectWithTag("Player");
     }
 
     private void Update()
@@ -78,32 +67,37 @@ public class HeathSystem : MonoBehaviour
     {
         hasDied = true;
         healthBarContainer.SetActive(false);
-        DieEvent?.Invoke(this, new DieEventArgs { defeated = hasBeenDefeated });
+        health.OnDeath(hasBeenDefeated);
     }
 
-    private void EnemyHitPlayer()
+    public void EnemyHasHitPlayer(int id, int damage)
     {
-        player.GetComponent<HeathSystem>().TakeDamage(GetComponent<EnemyBase>().damage);
-        Die(false);
+        if (id != lastID)
+        {
+            lastID = id;
+            TakeDamage(damage);
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collider)
     {
-        if (onWho == OnWho.Enemy && collider.tag == "Bullet" && collider.GetInstanceID() != lastID)
+        if (collider.tag == "Bullet" && collider.GetInstanceID() != lastID && !isPlayer)
         {
             lastID = collider.GetInstanceID();
             TakeDamage(collider.GetComponent<Bullet>().damage);
             Destroy(collider.gameObject);
         }
-        if (onWho == OnWho.Player && collider.tag == "EnemyBullet" && collider.GetInstanceID() != lastID)
+        if (collider.tag == "EnemyBullet" && collider.GetInstanceID() != lastID && isPlayer)
         {
             lastID = collider.GetInstanceID();
             TakeDamage(collider.GetComponent<Bullet>().damage);
+            Destroy(collider.gameObject);
         }
-        if (onWho == OnWho.Enemy && collider.tag == "Player" && collider.GetInstanceID() != lastID)
+        if (collider.tag == "Player" && collider.GetInstanceID() != lastID && !isPlayer)
         {
             lastID = collider.GetInstanceID();
-            EnemyHitPlayer();
+            player.GetComponent<HeathSystem>().EnemyHasHitPlayer(GetInstanceID(), GetComponent<EnemyBase>().damage);
+            Die(false);
         }
     }
 }

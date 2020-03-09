@@ -2,9 +2,10 @@
 
 public class Pointer : MonoBehaviour
 {
-    public Rigidbody2D enemy;
+    private Rigidbody2D enemy;
     private GameManager gm;
     private Transform player;
+    private AssetsHolder assetsHolder;
 
     private readonly float coeff = 3f;
     private Vector2 realPos = new Vector2();
@@ -15,15 +16,17 @@ public class Pointer : MonoBehaviour
 
     private void Start()
     {
-        gm = GameObject.Find("GameManager").GetComponent<GameManager>();
-        player = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
+        assetsHolder = AssetsHolder.instance;
+        gm = GameManager.instance;
+        player = assetsHolder.Player.transform;
         cam = Camera.main.transform;
+        enemy = transform.parent.GetComponent<Rigidbody2D>();
         transform.parent = null;
 
-        points[0] = new Vector2(GameManager.screenSize.x, GameManager.screenSize.y);
-        points[1] = new Vector2(-GameManager.screenSize.x, GameManager.screenSize.y);
-        points[2] = new Vector2(-GameManager.screenSize.x, -GameManager.screenSize.y);
-        points[3] = new Vector2(GameManager.screenSize.x, -GameManager.screenSize.y);
+        points[0] = new Vector2(gm.screenSize.x, gm.screenSize.y);
+        points[1] = new Vector2(-gm.screenSize.x, gm.screenSize.y);
+        points[2] = new Vector2(-gm.screenSize.x, -gm.screenSize.y);
+        points[3] = new Vector2(gm.screenSize.x, -gm.screenSize.y);
 
         float[] dotProd = {
         points[0].x * points[1].x + points[0].y * points[1].y,
@@ -67,29 +70,29 @@ public class Pointer : MonoBehaviour
         //Bottom
         if ((angleDeg > 180f - angles[0] * .5f && angleDeg < 180f) || (angleDeg < -180f + angles[0] * .5f && angleDeg > -180f))
         {
-            cat = Mathf.Tan(angleRad) * (GameManager.screenSize.y + (player.position.y - cam.position.y)) - player.position.x;
-            realPos = new Vector2(-cat, -GameManager.screenSize.y + cam.position.y);
+            cat = Mathf.Tan(angleRad) * (gm.screenSize.y + (player.position.y - cam.position.y)) - player.position.x;
+            realPos = new Vector2(-cat, -gm.screenSize.y + cam.position.y);
         }
 
         //Right
         if (angleDeg < 180f - angles[0] * .5 && angleDeg > angles[0] - angles[1])
         {
-            cat = Mathf.Tan(angleRad - Mathf.PI / 2f) * (-GameManager.screenSize.x + (player.position.x - cam.position.x)) + player.position.y;
-            realPos = new Vector2(GameManager.screenSize.x + cam.position.x, cat);
+            cat = Mathf.Tan(angleRad - Mathf.PI / 2f) * (-gm.screenSize.x + (player.position.x - cam.position.x)) + player.position.y;
+            realPos = new Vector2(gm.screenSize.x + cam.position.x, cat);
         }
 
         //Left
         if (angleDeg < -angles[0] + angles[1] && angleDeg > -180f + angles[0] * .5f)
         {
-            cat = Mathf.Tan(angleRad - Mathf.PI / 2f) * (-GameManager.screenSize.x - (player.position.x - cam.position.x)) - player.position.y;
-            realPos = new Vector2(-GameManager.screenSize.x + cam.position.x, -cat);
+            cat = Mathf.Tan(angleRad - Mathf.PI / 2f) * (-gm.screenSize.x - (player.position.x - cam.position.x)) - player.position.y;
+            realPos = new Vector2(-gm.screenSize.x + cam.position.x, -cat);
         }
 
         //Up
         if ((angleDeg < angles[0] * .5f && angleDeg > 0f) || (angleDeg > -angles[0] * .5f && angleDeg < 0f))
         {
-            cat = Mathf.Tan(angleRad) * (GameManager.screenSize.y - (player.position.y - cam.position.y)) + player.position.x;
-            realPos = new Vector2(cat, GameManager.screenSize.y + cam.position.y);
+            cat = Mathf.Tan(angleRad) * (gm.screenSize.y - (player.position.y - cam.position.y)) + player.position.x;
+            realPos = new Vector2(cat, gm.screenSize.y + cam.position.y);
         }
 
         #endregion IF
@@ -121,10 +124,13 @@ public class Pointer : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawLine(enemy.position, player.position);
+        if (enemy != null && player != null)
+        {
+            Gizmos.color = Color.yellow;
+            Gizmos.DrawLine(enemy.position, player.position);
 
-        Gizmos.color = Color.red;
-        Gizmos.DrawLine(enemy.position, realPos);
+            Gizmos.color = Color.red;
+            Gizmos.DrawLine(enemy.position, realPos);
+        }
     }
 }

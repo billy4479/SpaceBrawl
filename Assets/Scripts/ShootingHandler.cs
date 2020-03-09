@@ -2,10 +2,15 @@
 
 public class ShootingHandler : MonoBehaviour
 {
-    public GameManager gm;
-
-    public Weapon playerWeapon;
+    private GameManager gm;
+    private Weapon playerWeapon;
     private bool hold = false;
+
+    private void Start()
+    {
+        gm = GameManager.instance;
+        playerWeapon = AssetsHolder.instance.Player.GetComponent<Weapon>();
+    }
 
     private void Update()
     {
@@ -15,7 +20,7 @@ public class ShootingHandler : MonoBehaviour
     
     private void Shoot()
     {
-        if (playerWeapon != null && !gm.SuspendInput && !Pause.isPaused)
+        if (playerWeapon != null && !gm.SuspendInput && !PauseMenu.isPaused)
             playerWeapon.Shoot();
     }
     public void StartShooting()

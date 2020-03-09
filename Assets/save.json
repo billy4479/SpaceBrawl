@@ -7,6 +7,11 @@
         },
         {
             "name": "Billy",
+            "score": 63,
+            "date": "08/03/2020"
+        },
+        {
+            "name": "Billy",
             "score": 23,
             "date": "24/02/2020"
         },
@@ -22,6 +27,11 @@
         },
         {
             "name": "Billy",
+            "score": 9,
+            "date": "08/03/2020"
+        },
+        {
+            "name": "Billy",
             "score": 5,
             "date": "24/02/2020"
         },
@@ -34,16 +44,6 @@
             "name": "Billy",
             "score": 1,
             "date": "23/02/2020"
-        },
-        {
-            "name": "Billy",
-            "score": 1,
-            "date": "24/02/2020"
-        },
-        {
-            "name": "Billy",
-            "score": 1,
-            "date": "24/02/2020"
         },
         {
             "name": "Billy",

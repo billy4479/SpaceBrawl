@@ -1,25 +1,35 @@
 ﻿using CodeMonkey.Utils;
 using UnityEngine;
 
-public class PlayerMoviment : MonoBehaviour
+public class PlayerMoviment : MonoBehaviour, IHealth
 {
-    public float speed = 300f;
-    public Rigidbody2D PlayerRB;
-    public Animator animator;
-    public float maxSpeed;
-    public Weapon weapon;
+    [SerializeField] float speed = 300f;
+    [SerializeField] float maxSpeed;
+    private Rigidbody2D PlayerRB;
+    private Animator animator;
+    private Weapon weapon;
 
+    private AssetsHolder assetsHolder;
     private GameManager gameManager;
     private Joystick joystick;
     private SaveManager sm;
 
     private void Start()
     {
-        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
-        if (GameObject.FindGameObjectWithTag("Joystick") != null)
-            joystick = GameObject.FindGameObjectWithTag("Joystick").GetComponent<Joystick>();
+        assetsHolder = AssetsHolder.instance;
+        gameManager = GameManager.instance;
+        joystick = assetsHolder.joystick;
         sm = SaveManager.instance;
+        PlayerRB = GetComponent<Rigidbody2D>();
+        animator = GetComponent<Animator>();
+        weapon = GetComponent<Weapon>();
     }
+
+    public void OnDeath(bool defeated)
+    {
+        gameManager.PlayerLose();
+    }
+    public bool IsPlayer() => true;
 
     private void Update()
     {
