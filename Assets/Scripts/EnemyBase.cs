@@ -6,6 +6,8 @@ public class EnemyBase : MonoBehaviour, IHealth
 {
     #region Variables
 
+    public EnemyStats stats;
+
     private Rigidbody2D PlayerRB;
     private GameManager gm;
     private bool canMove = true;
@@ -21,20 +23,17 @@ public class EnemyBase : MonoBehaviour, IHealth
     private Transform firePos;
 
     private GameObject bullet;
-    [Space]
-    [SerializeField] private float speed = 5f;
-    [SerializeField] private float turnSpeed = .1f;
-    [SerializeField] private int pointsAtDeath = 1;
+    private float speed;
+    private float turnSpeed;
+    private int pointsAtDeath;
 
-    public int prob;
-    public int damage;
-    [Space]
-    [SerializeField] private bool isShooter = false;
-    [SerializeField] private bool isSummoner = false;
-    [Space]
-    [SerializeField] private float fireDistance = 5f;
-    [SerializeField] private float starfeSpeed = 2f;
-    [SerializeField] private float fireRate = 1f;
+    private int prob;
+    private int damage;
+    private bool isShooter;
+    private bool isSummoner;
+    private float fireDistance;
+    private float starfeSpeed;
+    private float fireRate;
 
     #endregion Variables
 
@@ -106,10 +105,23 @@ public class EnemyBase : MonoBehaviour, IHealth
         gm = GameManager.instance;
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
+        animator.runtimeAnimatorController = stats.aoc;
         pointer = transform.Find("Pointer").gameObject;
         firePos = transform.Find("FirePosition");
         PlayerRB = assetsHolder.Player.GetComponent<Rigidbody2D>();
         bullet = assetsHolder.Bullet_Enemy;
+        speed = stats.speed;
+        turnSpeed = stats.rotationSpeed;
+        pointsAtDeath = stats.pointAtDeath;
+        prob = stats.probability;
+        damage = stats.damage;
+        isShooter = stats.enemyType == EnemyType.Shooter ? true : false;
+        isSummoner = stats.enemyType == EnemyType.Summoner ? true : false;
+        fireDistance = stats.fireDistance;
+        starfeSpeed = stats.starfeSpeed;
+        fireRate = stats.fireRate;
+        pointer.GetComponent<SpriteRenderer>().color = stats.arrowColor;
+        transform.localScale *= stats.scale;
 
         if (debug)
             speed = 0f;
@@ -129,7 +141,7 @@ public class EnemyBase : MonoBehaviour, IHealth
     private IEnumerator AnimateDeath()
     {
         animator.SetBool("Death", true);
-        
+
         yield return new WaitForSeconds(1);
         Destroy(gameObject);
     }

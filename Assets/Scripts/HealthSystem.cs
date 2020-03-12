@@ -1,11 +1,14 @@
 ﻿using UnityEngine;
 
-public class HeathSystem : MonoBehaviour
+public class HealthSystem : MonoBehaviour
 {
-    [SerializeField] private int maxHealth;
     [SerializeField] private GameObject healtBar;
     [SerializeField] private GameObject healthBarContainer;
-    [SerializeField] private int currentHeath;
+    [HideInInspector]
+    public EnemyStats enemyStats;
+    public PlayerStats playerStats;
+    private int maxHealth;
+    private int currentHeath;
 
     private AssetsHolder assetsHolder;
     private GameObject player;
@@ -25,6 +28,28 @@ public class HeathSystem : MonoBehaviour
         player = assetsHolder.Player;
         health = GetComponent<IHealth>();
         isPlayer = health.IsPlayer();
+        if(playerStats != null && enemyStats != null)
+        {
+            Debug.LogError("This HeathSystem is used for player and enemy simultaneusly!");
+            throw new System.Exception();
+        }
+        if(playerStats == null && enemyStats == null)
+        {
+            Debug.LogError("This HealthSystem does not have any stats");
+            throw new System.Exception();
+        }
+        if(enemyStats != null && !isPlayer)
+        {
+            maxHealth = enemyStats.life;
+            regenTime = enemyStats.timeToStartRegen;
+            regenRate = enemyStats.regenSpeed;
+        }
+        if(playerStats != null && isPlayer)
+        {
+            maxHealth = playerStats.life;
+            regenTime = playerStats.timeToStartRegen;
+            regenRate = playerStats.regenSpeed;
+        }
         currentHeath = maxHealth;
     }
 
@@ -96,7 +121,7 @@ public class HeathSystem : MonoBehaviour
         if (collider.tag == "Player" && collider.GetInstanceID() != lastID && !isPlayer)
         {
             lastID = collider.GetInstanceID();
-            player.GetComponent<HeathSystem>().EnemyHasHitPlayer(GetInstanceID(), GetComponent<EnemyBase>().damage);
+            player.GetComponent<HealthSystem>().EnemyHasHitPlayer(GetInstanceID(), GetComponent<EnemyBase>().stats.damage);
             Die(false);
         }
     }

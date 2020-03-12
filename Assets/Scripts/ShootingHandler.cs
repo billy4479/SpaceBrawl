@@ -3,32 +3,21 @@
 public class ShootingHandler : MonoBehaviour
 {
     private GameManager gm;
+    private AssetsHolder assetsHolder;
     private Weapon playerWeapon;
-    private bool hold = false;
+    private Joystick fire;
 
     private void Start()
     {
         gm = GameManager.instance;
-        playerWeapon = AssetsHolder.instance.Player.GetComponent<Weapon>();
+        assetsHolder = AssetsHolder.instance;
+        fire = assetsHolder.Joystick_Fire;
+        playerWeapon = assetsHolder.Player.GetComponent<Weapon>();
     }
 
     private void Update()
     {
-        if (hold)
-            Shoot();
-    }
-    
-    private void Shoot()
-    {
-        if (playerWeapon != null && !gm.SuspendInput && !PauseMenu.isPaused)
+        if (fire.Direction != Vector2.zero && playerWeapon != null && !gm.SuspendInput && !PauseMenu.isPaused)
             playerWeapon.Shoot();
-    }
-    public void StartShooting()
-    {
-        hold = true;
-    }
-    public void StopShooting()
-    {
-        hold = false;
     }
 }

@@ -3,8 +3,8 @@
 public class ControllMethodHandler : MonoBehaviour
 {
     private AssetsHolder assetsHolder;
-    private RectTransform joystick;
-    private RectTransform fireButton;
+    private RectTransform positionJoystickTransform;
+    private RectTransform fireJoystickTransform;
     private RectTransform canvas;
     private SaveManager sm;
 
@@ -35,14 +35,14 @@ public class ControllMethodHandler : MonoBehaviour
 
     public void SetPosNormal()
     {
-        joystick.localPosition = SetUIPositionRight(new Vector2(position, -position));
-        fireButton.localPosition = SetUIPositionLeft(new Vector2(position, position));
+        positionJoystickTransform.localPosition = SetUIPositionRight(new Vector2(position, -position));
+        fireJoystickTransform.localPosition = SetUIPositionLeft(new Vector2(position, position));
     }
 
     public void SetPosToggled()
     {
-        joystick.localPosition = SetUIPositionLeft(new Vector2(position, position));
-        fireButton.localPosition = SetUIPositionRight(new Vector2(position, -position));
+        positionJoystickTransform.localPosition = SetUIPositionLeft(new Vector2(position, position));
+        fireJoystickTransform.localPosition = SetUIPositionRight(new Vector2(position, -position));
     }
 
     #endregion AdjustUIPosition
@@ -51,8 +51,8 @@ public class ControllMethodHandler : MonoBehaviour
     {
         sm = SaveManager.instance;
         assetsHolder = AssetsHolder.instance;
-        joystick = assetsHolder.Joystick_Transform;
-        fireButton = assetsHolder.FireButton_Transform;
+        positionJoystickTransform = assetsHolder.Joystick_Position_Transform;
+        fireJoystickTransform = assetsHolder.Joystick_Fire_Transform;
         canvas = assetsHolder.Canvas;
 
         standardResolution = new Vector2(canvas.rect.width, canvas.rect.height);
@@ -62,30 +62,30 @@ public class ControllMethodHandler : MonoBehaviour
                 break;
 
             case SaveManager.ControllMethod.Finger:
-                joystick.gameObject.SetActive(false);
-                fireButton.gameObject.SetActive(false);
+                positionJoystickTransform.gameObject.SetActive(false);
+                fireJoystickTransform.gameObject.SetActive(false);
                 break;
 
             case SaveManager.ControllMethod.Joystick:
-                joystick.gameObject.SetActive(true);
-                fireButton.gameObject.SetActive(true);
+                positionJoystickTransform.gameObject.SetActive(true);
+                fireJoystickTransform.gameObject.SetActive(true);
 
-                joystick.anchorMin = new Vector2(1f, 0f);
-                joystick.anchorMax = new Vector2(1f, 0f);
-                fireButton.anchorMin = new Vector2(0f, 0f);
-                fireButton.anchorMax = new Vector2(0f, 0f);
+                positionJoystickTransform.anchorMin = new Vector2(1f, 0f);
+                positionJoystickTransform.anchorMax = new Vector2(1f, 0f);
+                fireJoystickTransform.anchorMin = new Vector2(0f, 0f);
+                fireJoystickTransform.anchorMax = new Vector2(0f, 0f);
 
                 SetPosNormal();
                 break;
 
             case SaveManager.ControllMethod.ToggledJoystick:
-                joystick.gameObject.SetActive(true);
-                fireButton.gameObject.SetActive(true);
+                positionJoystickTransform.gameObject.SetActive(true);
+                fireJoystickTransform.gameObject.SetActive(true);
 
-                joystick.anchorMin = new Vector2(0f, 0f);
-                joystick.anchorMax = new Vector2(0f, 0f);
-                fireButton.anchorMin = new Vector2(1f, 0f);
-                fireButton.anchorMax = new Vector2(1f, 0f);
+                positionJoystickTransform.anchorMin = new Vector2(0f, 0f);
+                positionJoystickTransform.anchorMax = new Vector2(0f, 0f);
+                fireJoystickTransform.anchorMin = new Vector2(1f, 0f);
+                fireJoystickTransform.anchorMax = new Vector2(1f, 0f);
 
                 SetPosToggled();
 

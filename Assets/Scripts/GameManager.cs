@@ -5,8 +5,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class GameManager : MonoBehaviour
-{
+public class GameManager : MonoBehaviour {
     #region Variables
 
     private AssetsHolder assetsHolder = AssetsHolder.instance;
@@ -16,7 +15,8 @@ public class GameManager : MonoBehaviour
     private Transform[] anchors;
     private TextMeshProUGUI ScoreLabel;
     private TextMeshProUGUI LevelLabel;
-    private GameObject[] EnemyTypes;
+    private EnemyStats[] EnemyTypes;
+    private GameObject baseEnemy;
 
     public List<Rigidbody2D> EnemyRBs;
     public ShootingHandler shootingHandler;
@@ -28,7 +28,7 @@ public class GameManager : MonoBehaviour
 
     private AudioManager audioManager;
 
-    private enum Side { UP, DOWN, RIGHT, LEFT };
+    private enum Side { UP, DOWN, RIGHT, LEFT }
 
     [HideInInspector]
     public Vector2 screenSize { get; private set; }
@@ -39,22 +39,21 @@ public class GameManager : MonoBehaviour
 
     public static GameManager instance;
 
-    private void Awake()
-    {
+    private void Awake () {
         instance = this;
     }
 
     #endregion Singleton
 
-    private void Start()
-    {
+    private void Start () {
         assetsHolder = AssetsHolder.instance;
         player = assetsHolder.Player;
-        playerAnimator = player.GetComponent<Animator>();
+        playerAnimator = player.GetComponent<Animator> ();
         anchors = assetsHolder.Anchors;
         ScoreLabel = assetsHolder.Label_Score;
         LevelLabel = assetsHolder.Label_Level;
-        EnemyTypes = assetsHolder.Enemy_List;
+        EnemyTypes = assetsHolder.EnemyStats;
+        baseEnemy = assetsHolder.Enemy_Base;
 
         Score = 0;
         Level = 1;
@@ -63,48 +62,44 @@ public class GameManager : MonoBehaviour
 
         audioManager = AudioManager.instance;
 
-        screenSize = new Vector2(
-            Vector2.Distance(Camera.main.ScreenToWorldPoint(new Vector2(0, 0)), Camera.main.ScreenToWorldPoint(new Vector2(Screen.width, 0))) * 0.5f,
-            Vector2.Distance(Camera.main.ScreenToWorldPoint(new Vector2(0, 0)), Camera.main.ScreenToWorldPoint(new Vector2(0, Screen.height))) * 0.5f
+        screenSize = new Vector2 (
+            Vector2.Distance (Camera.main.ScreenToWorldPoint (new Vector2 (0, 0)), Camera.main.ScreenToWorldPoint (new Vector2 (Screen.width, 0))) * 0.5f,
+            Vector2.Distance (Camera.main.ScreenToWorldPoint (new Vector2 (0, 0)), Camera.main.ScreenToWorldPoint (new Vector2 (0, Screen.height))) * 0.5f
         );
-        SpawnNewEnemies(Level);
+        SpawnNewEnemies (Level);
     }
 
-    private IEnumerator PlayerWon()
-    {
+    private IEnumerator PlayerWon () {
         EnemyNumber = -1;
         Level++;
 
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds (2);
 
-        SpawnNewEnemies(Level);
+        SpawnNewEnemies (Level);
     }
 
-    public void PlayerLose()
-    {
+    public void PlayerLose () {
         SuspendInput = true;
-        foreach (GameObject pointer in GameObject.FindGameObjectsWithTag("Pointer"))
-            Destroy(pointer);
-        foreach (GameObject bullet in GameObject.FindGameObjectsWithTag("Bullet"))
-            Destroy(bullet);
-        foreach (EnemyBase enemy in GameObject.FindObjectsOfType<EnemyBase>())
-            enemy.RemoveEnemy();
+        foreach (GameObject pointer in GameObject.FindGameObjectsWithTag ("Pointer"))
+            Destroy (pointer);
+        foreach (GameObject bullet in GameObject.FindGameObjectsWithTag ("Bullet"))
+            Destroy (bullet);
+        foreach (EnemyBase enemy in GameObject.FindObjectsOfType<EnemyBase> ())
+            enemy.RemoveEnemy ();
 
-        Rigidbody2D PlayerRB = player.GetComponent<Rigidbody2D>();
+        Rigidbody2D PlayerRB = player.GetComponent<Rigidbody2D> ();
         PlayerRB.velocity = Vector2.zero;
         PlayerRB.angularVelocity = 0;
 
-        audioManager.PlaySound("PlayerExplosion");
-        playerAnimator.SetBool("Death", true);
+        audioManager.PlaySound ("PlayerExplosion");
+        playerAnimator.SetBool ("Death", true);
 
-        if (Score > SaveManager.instance.scores[9].score)
-        {
+        if (Score > SaveManager.instance.scores[9].score) {
             SaveManager.SavedScores[] scr = SaveManager.instance.scores;
 
-            int position = GetScoreboardPosition(Score, scr);
+            int position = GetScoreboardPosition (Score, scr);
 
-            for (int i = 9; i >= position; i--)
-            {
+            for (int i = 9; i >= position; i--) {
                 if (i == 9)
                     continue;
                 scr[i + 1].score = scr[i].score;
@@ -113,22 +108,20 @@ public class GameManager : MonoBehaviour
             }
             scr[position].score = Score;
             scr[position].name = SaveManager.instance.settings.name;
-            scr[position].date = System.DateTime.Now.ToString("d", System.Globalization.CultureInfo.CreateSpecificCulture("fr-FR"));
+            scr[position].date = System.DateTime.Now.ToString ("d", System.Globalization.CultureInfo.CreateSpecificCulture ("fr-FR"));
 
-            SaveManager.instance.WriteChanges();
+            SaveManager.instance.WriteChanges ();
         }
 
-        StartCoroutine(WaitForPlayerDeathAnimation());
+        StartCoroutine (WaitForPlayerDeathAnimation ());
     }
 
-    private IEnumerator WaitForPlayerDeathAnimation()
-    {
-        yield return new WaitForSeconds(1);
-        SceneManager.LoadScene("Menu");
+    private IEnumerator WaitForPlayerDeathAnimation () {
+        yield return new WaitForSeconds (1);
+        SceneManager.LoadScene ("Menu");
     }
 
-    private void FixedUpdate()
-    {
+    private void FixedUpdate () {
         #region GUI
 
         ScoreLabel.text = "Score: " + Score;
@@ -136,87 +129,76 @@ public class GameManager : MonoBehaviour
         #endregion GUI
 
         if (EnemyNumber == 0)
-            StartCoroutine(PlayerWon());
+            StartCoroutine (PlayerWon ());
         //Debug.Log(screenSize);
     }
 
-    private void SpawnNewEnemies(int EnemiesToSpawn)
-    {
-        for (int i = 0; i < EnemiesToSpawn; i++)
-        {
+    private void SpawnNewEnemies (int EnemiesToSpawn) {
+        for (int i = 0; i < EnemiesToSpawn; i++) {
             int arrLen = EnemyTypes.Length;
             int totProb = 0;
-            for (int j = 0; j < arrLen; j++)
-            {
-                totProb += EnemyTypes[j].GetComponent<EnemyBase>().prob;
+            for (int j = 0; j < arrLen; j++) {
+                totProb += EnemyTypes[j].probability;
             }
-            int randNum = UnityEngine.Random.Range(0, totProb);
+            int randNum = UnityEngine.Random.Range (0, totProb);
 
             int finalIndex = -1;
             int accumulo = 0;
 
-            for (int j = 0; j < arrLen; j++)
-            {
-                if (randNum < EnemyTypes[j].GetComponent<EnemyBase>().prob + accumulo)
-                {
+            for (int j = 0; j < arrLen; j++) {
+                if (randNum < EnemyTypes[j].probability + accumulo) {
                     finalIndex = j;
                     break;
-                }
-                else
-                    accumulo += EnemyTypes[j].GetComponent<EnemyBase>().prob;
+                } else
+                    accumulo += EnemyTypes[j].probability;
             }
-            if (finalIndex == -1)
-            {
-                Debug.LogError("No Enemy Selection");
+            if (finalIndex == -1) {
+                Debug.LogError ("No Enemy Selection");
                 break;
             }
-            Vector3 pos = RandomSpawnPosOnBorders();
-            Instantiate(EnemyTypes[finalIndex], pos, Quaternion.AngleAxis(Mathf.Atan2((player.transform.position - pos).normalized.y, (player.transform.position - pos).normalized.x) * Mathf.Rad2Deg - 90f, new Vector3(0, 0, 1)));
+            Vector3 pos = RandomSpawnPosOnBorders ();
+            GameObject enemy = Instantiate (baseEnemy, pos, Quaternion.AngleAxis (Mathf.Atan2 ((player.transform.position - pos).normalized.y, (player.transform.position - pos).normalized.x) * Mathf.Rad2Deg - 90f, new Vector3 (0, 0, 1)));
+            enemy.GetComponent<EnemyBase>().stats = EnemyTypes[finalIndex];
+            enemy.GetComponent<HealthSystem>().enemyStats = EnemyTypes[finalIndex];
         }
         EnemyNumber = Level;
     }
 
     #region UtilityFunctions
 
-    public Vector3 RandomSpawnPosOnBorders()
-    {
-        Side side = (Side)UnityEngine.Random.Range(0, 4);
+    public Vector3 RandomSpawnPosOnBorders () {
+        Side side = (Side) UnityEngine.Random.Range (0, 4);
 
-        switch (side)
-        {
+        switch (side) {
             case Side.UP:
-                return new Vector3(UnityEngine.Random.Range(anchors[0].position.x, -anchors[0].position.x), anchors[0].position.y, 0);
+                return new Vector3 (UnityEngine.Random.Range (anchors[0].position.x, -anchors[0].position.x), anchors[0].position.y, 0);
 
             case Side.DOWN:
-                return new Vector3(UnityEngine.Random.Range(anchors[1].position.x, -anchors[1].position.x), anchors[1].position.y, 0);
+                return new Vector3 (UnityEngine.Random.Range (anchors[1].position.x, -anchors[1].position.x), anchors[1].position.y, 0);
 
             case Side.RIGHT:
-                return new Vector3(anchors[0].position.x, UnityEngine.Random.Range(anchors[0].position.y, -anchors[0].position.y), 0);
+                return new Vector3 (anchors[0].position.x, UnityEngine.Random.Range (anchors[0].position.y, -anchors[0].position.y), 0);
 
             case Side.LEFT:
-                return new Vector3(anchors[1].position.x, UnityEngine.Random.Range(anchors[1].position.y, -anchors[1].position.y), 0);
+                return new Vector3 (anchors[1].position.x, UnityEngine.Random.Range (anchors[1].position.y, -anchors[1].position.y), 0);
 
             default:
-                Debug.LogError("No random number in enemy spawning function");
+                Debug.LogError ("No random number in enemy spawning function");
                 return Vector3.zero;
         }
     }
 
-    private int GetScoreboardPosition(int score, SaveManager.SavedScores[] savedScores)
-    {
+    private int GetScoreboardPosition (int score, SaveManager.SavedScores[] savedScores) {
         int[] scores = new int[10];
-        for (int i = 0; i < savedScores.Length; i++)
-        {
+        for (int i = 0; i < savedScores.Length; i++) {
             scores[i] = savedScores[i].score;
         }
-        for (int i = 0; i < savedScores.Length; i++)
-        {
-            if (score > scores[i])
-            {
+        for (int i = 0; i < savedScores.Length; i++) {
+            if (score > scores[i]) {
                 return i;
             }
         }
-        Debug.LogError("Error while getting position");
+        Debug.LogError ("Error while getting position");
         return -1;
     }
 

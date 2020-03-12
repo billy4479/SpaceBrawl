@@ -15,10 +15,8 @@ public class AssetsHolder : MonoBehaviour
 
     #endregion Singleton
 
-    public GameObject Enemy_1;
-    public GameObject Enemy_2;
-    public GameObject Enemy_3;
-    public GameObject[] Enemy_List;
+    public EnemyStats[] EnemyStats;
+    public GameObject Enemy_Base;
     public GameObject Bullet_Player;
     public GameObject Bullet_Enemy;
     public GameObject Stella;
@@ -27,9 +25,11 @@ public class AssetsHolder : MonoBehaviour
     public TextMeshProUGUI Label_Score;
     public TextMeshProUGUI Label_Level;
     public GameObject Pause_Menu;
-    public Joystick joystick;
-    public RectTransform Joystick_Transform;
-    public RectTransform FireButton_Transform;
+
+    public Joystick Joystick_Position;
+    public Joystick Joystick_Fire;
+    public RectTransform Joystick_Position_Transform;
+    public RectTransform Joystick_Fire_Transform;
     public RectTransform Canvas;
 
     public Transform[] Anchors;

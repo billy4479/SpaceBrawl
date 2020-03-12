@@ -96,7 +96,10 @@ public class SaveManager : MonoBehaviour
     private void CreateSaveFile()
     {
         if (File.Exists(oldSavePath))
+        {
             File.Delete(oldSavePath);
+            File.Delete(savePath);
+        }
         using (StreamWriter saveStream = new StreamWriter(savePath))
         {
             scores = new SavedScores[10];

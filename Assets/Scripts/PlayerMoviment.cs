@@ -3,32 +3,40 @@ using UnityEngine;
 
 public class PlayerMoviment : MonoBehaviour, IHealth
 {
-    [SerializeField] float speed = 300f;
-    [SerializeField] float maxSpeed;
+    public PlayerStats stats;
+    private float speed;
+    private float maxSpeed;
     private Rigidbody2D PlayerRB;
     private Animator animator;
     private Weapon weapon;
 
     private AssetsHolder assetsHolder;
     private GameManager gameManager;
-    private Joystick joystick;
+    private Joystick positionJoystick;
+    private Joystick fireJoystick;
     private SaveManager sm;
+
+    private float lastAngle;
 
     private void Start()
     {
         assetsHolder = AssetsHolder.instance;
         gameManager = GameManager.instance;
-        joystick = assetsHolder.joystick;
+        positionJoystick = assetsHolder.Joystick_Position;
+        fireJoystick = assetsHolder.Joystick_Fire;
         sm = SaveManager.instance;
         PlayerRB = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         weapon = GetComponent<Weapon>();
+        speed = stats.acceleration;
+        maxSpeed = stats.maxSpeed;
     }
 
     public void OnDeath(bool defeated)
     {
         gameManager.PlayerLose();
     }
+
     public bool IsPlayer() => true;
 
     private void Update()
@@ -40,7 +48,7 @@ public class PlayerMoviment : MonoBehaviour, IHealth
                 if (Input.GetMouseButton(0))
                 {
                     PlayerRB.rotation = UtilsClass.GetAngleFromVector((Vector2)UtilsClass.GetMouseWorldPosition() - PlayerRB.position) - 90f;
-                    PlayerRB.AddForce(transform.up * speed * Time.deltaTime);
+                    PlayerRB.AddForce(transform.up * speed);
                     weapon.Shoot();
 
                     animator.SetInteger("dir", 1);
@@ -53,18 +61,24 @@ public class PlayerMoviment : MonoBehaviour, IHealth
             }
             else
             {
-                Vector2 direction = new Vector2(joystick.Horizontal, joystick.Vertical);
-                if (direction == Vector2.zero)
+                if (fireJoystick.Direction != Vector2.zero)
+                {
+                    float angle = UtilsClass.GetAngleFromVectorFloat(fireJoystick.Direction) - 90f;
+                    PlayerRB.rotation = Mathf.LerpAngle(PlayerRB.rotation, angle, fireJoystick.Direction.magnitude);
+                    lastAngle = PlayerRB.rotation;
+                }
+                else
+                {
+                    PlayerRB.rotation = lastAngle;
+                }
+                if (positionJoystick.Direction == Vector2.zero)
                 {
                     animator.SetInteger("dir", 0);
                     PlayerRB.angularVelocity = 0f;
                 }
                 else
                 {
-                    float angle = UtilsClass.GetAngleFromVectorFloat(direction) - 90f;
-                    PlayerRB.rotation = Mathf.LerpAngle(PlayerRB.rotation, angle, direction.magnitude);
-                    PlayerRB.AddForce(transform.up * speed * Mathf.Pow(direction.magnitude, 2f) * Time.deltaTime);
-
+                    PlayerRB.AddForce(positionJoystick.Direction * speed * Mathf.Pow(positionJoystick.Direction.magnitude, 3f) * Time.deltaTime);
                     animator.SetInteger("dir", 1);
                 }
             }

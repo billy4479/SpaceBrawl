@@ -2,6 +2,11 @@
     "savedScores": [
         {
             "name": "Billy",
+            "score": 81,
+            "date": "12/03/2020"
+        },
+        {
+            "name": "Billy",
             "score": 63,
             "date": "24/02/2020"
         },
@@ -12,8 +17,18 @@
         },
         {
             "name": "Billy",
+            "score": 25,
+            "date": "12/03/2020"
+        },
+        {
+            "name": "Billy",
             "score": 23,
             "date": "24/02/2020"
+        },
+        {
+            "name": "Billy",
+            "score": 23,
+            "date": "12/03/2020"
         },
         {
             "name": "Billy",
@@ -33,21 +48,6 @@
         {
             "name": "Billy",
             "score": 5,
-            "date": "24/02/2020"
-        },
-        {
-            "name": "Billy",
-            "score": 3,
-            "date": "24/02/2020"
-        },
-        {
-            "name": "Billy",
-            "score": 1,
-            "date": "23/02/2020"
-        },
-        {
-            "name": "Billy",
-            "score": 1,
             "date": "24/02/2020"
         }
     ],
