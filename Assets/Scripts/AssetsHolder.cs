@@ -15,12 +15,14 @@ public class AssetsHolder : MonoBehaviour
 
     #endregion Singleton
 
-    public EnemyStats[] EnemyStats;
+    public EnemyStats[] Enemy_Stats;
     public GameObject Enemy_Base;
     public GameObject Bullet_Player;
     public GameObject Bullet_Enemy;
     public GameObject Stella;
-    public GameObject Player;
+    public GameObject Player_Current;
+    public PlayerStats[] Player_Stats;
+    public int Player_Stats_Insex;
 
     public TextMeshProUGUI Label_Score;
     public TextMeshProUGUI Label_Level;

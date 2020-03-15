@@ -13,9 +13,15 @@ public class EnemyStats : ScriptableObject
     public int pointAtDeath = 1;
     public float rotationSpeed = .1f;
     public int probability = 10;
+    [Space]
     public float fireDistance = 5f;
     public float starfeSpeed = 1f;
     public float fireRate = 1f;
+    [Space]
+    public float spawnRate;
+    public int enemyToSpawnNumber;
+    public int enemyToSpawnIndex;
+    [Space]
     public Color arrowColor = Color.white;
     public AnimatorOverrideController aoc;
 

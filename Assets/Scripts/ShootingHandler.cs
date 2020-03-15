@@ -12,7 +12,7 @@ public class ShootingHandler : MonoBehaviour
         gm = GameManager.instance;
         assetsHolder = AssetsHolder.instance;
         fire = assetsHolder.Joystick_Fire;
-        playerWeapon = assetsHolder.Player.GetComponent<Weapon>();
+        playerWeapon = assetsHolder.Player_Current.GetComponent<Weapon>();
     }
 
     private void Update()

@@ -18,7 +18,7 @@ public class Pointer : MonoBehaviour
     {
         assetsHolder = AssetsHolder.instance;
         gm = GameManager.instance;
-        player = assetsHolder.Player.transform;
+        player = assetsHolder.Player_Current.transform;
         cam = Camera.main.transform;
         enemy = transform.parent.GetComponent<Rigidbody2D>();
         transform.parent = null;

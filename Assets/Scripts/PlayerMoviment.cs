@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class PlayerMoviment : MonoBehaviour, IHealth
 {
+    [HideInInspector]
     public PlayerStats stats;
     private float speed;
     private float maxSpeed;
@@ -78,7 +79,7 @@ public class PlayerMoviment : MonoBehaviour, IHealth
                 }
                 else
                 {
-                    PlayerRB.AddForce(positionJoystick.Direction * speed * Mathf.Pow(positionJoystick.Direction.magnitude, 3f) * Time.deltaTime);
+                    PlayerRB.AddForce(positionJoystick.Direction * speed * Mathf.Pow(positionJoystick.Direction.magnitude, 3f));
                     animator.SetInteger("dir", 1);
                 }
             }

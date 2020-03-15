@@ -416,6 +416,7 @@ GameObject:
   m_Component:
   - component: {fileID: 172112024}
   - component: {fileID: 172112022}
+  - component: {fileID: 172112023}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -441,6 +442,18 @@ MonoBehaviour:
   Score: 0
   Level: 1
   EnemyNumber: 0
+--- !u!114 &172112023
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 172112021}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 632f71e9bc8b38340ac52de9afb6396c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &172112024
 Transform:
   m_ObjectHideFlags: 0
@@ -1264,10 +1277,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f7983e79b5939848972da9d5f5abbfd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  EnemyStats:
+  Enemy_Stats:
   - {fileID: 11400000, guid: 3a6fb559723606f4f882fb333a435237, type: 2}
   - {fileID: 11400000, guid: 5631d7cf6393871499ea5536a9d7f469, type: 2}
   - {fileID: 11400000, guid: 1df9a44615a2d3b4e80f776f49bb11d4, type: 2}
+  - {fileID: 11400000, guid: afa1068b819a968458f7157b181f0d00, type: 2}
+  - {fileID: 11400000, guid: 554b11fe04b73004c9da6d4436c56cca, type: 2}
   Enemy_Base: {fileID: 5355085466133539871, guid: 2327614cfb10e144b9b1b34a6de626f7,
     type: 3}
   Bullet_Player: {fileID: 7483117115779252672, guid: 7717922c929515a40b65acf90deb293d,
@@ -1275,7 +1290,10 @@ MonoBehaviour:
   Bullet_Enemy: {fileID: 8939543187775377237, guid: 85c057f449893fd49a8a7c9a46fdb159,
     type: 3}
   Stella: {fileID: 6556389919488989655, guid: 22130d84efcd66fd2b1019716b392841, type: 3}
-  Player: {fileID: 1353386398}
+  Player_Current: {fileID: 1353386398}
+  Player_Stats:
+  - {fileID: 11400000, guid: 26786ee4be8815140be21d555be0dd20, type: 2}
+  Player_Stats_Insex: 0
   Label_Score: {fileID: 5969383}
   Label_Level: {fileID: 1945195145}
   Pause_Menu: {fileID: 1066499257}
@@ -1299,7 +1317,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 9
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1066499257
 GameObject:
@@ -3004,7 +3022,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &334879132145096002
 PrefabInstance:

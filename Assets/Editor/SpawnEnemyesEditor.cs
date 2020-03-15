@@ -1,12 +1,13 @@
 ﻿using UnityEditor;
 using UnityEngine;
 
-[CustomEditor(typeof(GameManager))]
+[CustomEditor(typeof(EnemySpawner))]
 public class SpawnEnemyesEditor : Editor
 {
     public override void OnInspectorGUI()
     {
-        GameManager gm = (GameManager)target;
+        EnemySpawner enemySpawner = (EnemySpawner)target;
+        GameManager gm = GameManager.instance;
         AssetsHolder assetsHolder = AssetsHolder.instance;
         base.OnInspectorGUI();
 
@@ -14,21 +15,23 @@ public class SpawnEnemyesEditor : Editor
 
         if (GUILayout.Button("Normal"))
         {
-            GameObject obj = Instantiate(assetsHolder.Enemy_Base, gm.RandomSpawnPosOnBorders(), Quaternion.identity);
-            obj.GetComponent<EnemyBase>().stats = assetsHolder.EnemyStats[0];
-            obj.GetComponent<HealthSystem>().enemyStats = assetsHolder.EnemyStats[0];
+            enemySpawner.SpawnEnemy(gm.RandomSpawnPosOnBorders(), Quaternion.identity, assetsHolder.Enemy_Stats[0]);
         }
         if (GUILayout.Button("Big"))
         {
-            GameObject obj = Instantiate(assetsHolder.Enemy_Base, gm.RandomSpawnPosOnBorders(), Quaternion.identity);
-            obj.GetComponent<EnemyBase>().stats = assetsHolder.EnemyStats[1];
-            obj.GetComponent<HealthSystem>().enemyStats = assetsHolder.EnemyStats[1];
+            enemySpawner.SpawnEnemy(gm.RandomSpawnPosOnBorders(), Quaternion.identity, assetsHolder.Enemy_Stats[1]);
         }
         if (GUILayout.Button("Shooter"))
         {
-            GameObject obj = Instantiate(assetsHolder.Enemy_Base, gm.RandomSpawnPosOnBorders(), Quaternion.identity);
-            obj.GetComponent<EnemyBase>().stats = assetsHolder.EnemyStats[2];
-            obj.GetComponent<HealthSystem>().enemyStats = assetsHolder.EnemyStats[2];
+            enemySpawner.SpawnEnemy(gm.RandomSpawnPosOnBorders(), Quaternion.identity, assetsHolder.Enemy_Stats[2]);
+        }
+        if (GUILayout.Button("Summoner"))
+        {
+            enemySpawner.SpawnEnemy(gm.RandomSpawnPosOnBorders(), Quaternion.identity, assetsHolder.Enemy_Stats[3]);
+        }
+        if (GUILayout.Button("Spawned"))
+        {
+            enemySpawner.SpawnEnemy(gm.RandomSpawnPosOnBorders(), Quaternion.identity, assetsHolder.Enemy_Stats[4]);
         }
         if (GUILayout.Button("Clear Enemies"))
         {

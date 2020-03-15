@@ -14,7 +14,7 @@ public class CameraScript : MonoBehaviour
     {
         gameManager = GameManager.instance;
         assetsHolder = AssetsHolder.instance;
-        playerTransform = assetsHolder.Player.transform;
+        playerTransform = assetsHolder.Player_Current.transform;
         anchors = assetsHolder.Anchors;
         transform.position = new Vector3(0, 0, -10);
     }

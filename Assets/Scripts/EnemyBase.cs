@@ -35,6 +35,13 @@ public class EnemyBase : MonoBehaviour, IHealth
     private float starfeSpeed;
     private float fireRate;
 
+    private GameObject enemyToSpawn;
+    private EnemyStats enemyToSpawnStats;
+    private float lastSpawn = float.MinValue;
+    private int enemyToSpawnNumber;
+    private float spawnRate;
+    private EnemySpawner enemySpawner;
+
     #endregion Variables
 
     private const bool debug = false;
@@ -58,9 +65,45 @@ public class EnemyBase : MonoBehaviour, IHealth
                     Shoot();
                 }
             }
+            else if (isSummoner)
+            {
+                rb.MovePosition(MoveNormally());
+                if (Time.time - lastSpawn > 1f / spawnRate && !debug)
+                {
+                    lastSpawn = Time.time;
+                    Spawn();
+                }
+            }
             else
                 rb.MovePosition(MoveNormally());
         }
+    }
+
+    private void Spawn()
+    {
+        for (int i = 0; i < enemyToSpawnNumber; i++)
+        {
+            Vector3 randomOffset = GetRandomOffset();
+            Vector3 position = transform.position + randomOffset.normalized * 2f;
+            EnemySpawner.instance.SpawnEnemy(position, Quaternion.identity, enemyToSpawnStats);
+        }
+    }
+
+    private Vector3 GetRandomOffset()
+    {
+        Vector3 randomOffset = new Vector3(Random.Range(1f, 5f), Random.Range(1f, 5f));
+        if (Random.Range(0, 2) == 1)
+            randomOffset.x = randomOffset.x * -1f;
+        if (Random.Range(0, 2) == 1)
+            randomOffset.y = randomOffset.y * -1f;
+        
+        float max = Mathf.Abs(assetsHolder.Anchors[0].transform.position.x);
+        if (randomOffset.x > max - 1f || randomOffset.x < -max + 1f || randomOffset.y > max - 1f || randomOffset.y < -max + 1f)
+        {
+            randomOffset = GetRandomOffset();
+        }
+
+        return randomOffset;
     }
 
     private void Shoot()
@@ -108,7 +151,7 @@ public class EnemyBase : MonoBehaviour, IHealth
         animator.runtimeAnimatorController = stats.aoc;
         pointer = transform.Find("Pointer").gameObject;
         firePos = transform.Find("FirePosition");
-        PlayerRB = assetsHolder.Player.GetComponent<Rigidbody2D>();
+        PlayerRB = assetsHolder.Player_Current.GetComponent<Rigidbody2D>();
         bullet = assetsHolder.Bullet_Enemy;
         speed = stats.speed;
         turnSpeed = stats.rotationSpeed;
@@ -122,12 +165,14 @@ public class EnemyBase : MonoBehaviour, IHealth
         fireRate = stats.fireRate;
         pointer.GetComponent<SpriteRenderer>().color = stats.arrowColor;
         transform.localScale *= stats.scale;
+        enemyToSpawn = assetsHolder.Enemy_Base;
+        enemyToSpawnNumber = stats.enemyToSpawnNumber;
+        enemyToSpawnStats = assetsHolder.Enemy_Stats[stats.enemyToSpawnIndex];
+        spawnRate = stats.spawnRate;
+        enemySpawner = EnemySpawner.instance;
 
         if (debug)
             speed = 0f;
-        if (gm.EnemyRBs == null)
-            gm.EnemyRBs = new List<Rigidbody2D>();
-        gm.EnemyRBs.Add(rb);
     }
 
     public void RemoveEnemy()

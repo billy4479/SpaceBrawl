@@ -4,9 +4,8 @@ public class HealthSystem : MonoBehaviour
 {
     [SerializeField] private GameObject healtBar;
     [SerializeField] private GameObject healthBarContainer;
-    [HideInInspector]
-    public EnemyStats enemyStats;
-    public PlayerStats playerStats;
+    [HideInInspector] public EnemyStats enemyStats;
+    [HideInInspector] public PlayerStats playerStats;
     private int maxHealth;
     private int currentHeath;
 
@@ -25,7 +24,7 @@ public class HealthSystem : MonoBehaviour
     private void Start()
     {
         assetsHolder = AssetsHolder.instance;
-        player = assetsHolder.Player;
+        player = assetsHolder.Player_Current;
         health = GetComponent<IHealth>();
         isPlayer = health.IsPlayer();
         if(playerStats != null && enemyStats != null)
@@ -51,6 +50,12 @@ public class HealthSystem : MonoBehaviour
             regenRate = playerStats.regenSpeed;
         }
         currentHeath = maxHealth;
+        if(!isPlayer && enemyStats == assetsHolder.Enemy_Stats[3])
+        {
+            healthBarContainer.transform.localPosition *= enemyStats.scale;
+            healthBarContainer.transform.localScale *= enemyStats.scale;
+        }
+
     }
 
     private void Update()
