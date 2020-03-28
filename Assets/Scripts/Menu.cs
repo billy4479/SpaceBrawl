@@ -5,17 +5,17 @@ public class Menu : MonoBehaviour
 {
     public void StartButton()
     {
-        SceneManager.LoadScene("Game");
+        SceneManager.LoadScene((int)Scenes.Game);
     }
 
     public void ScoreBoardButton()
     {
-        SceneManager.LoadScene("ScoreBoard");
+        SceneManager.LoadScene((int)Scenes.Scoreboard);
     }
 
     public void CreditsButton()
     {
-        SceneManager.LoadScene("Credits");
+        SceneManager.LoadScene((int)Scenes.Credits);
     }
 
     public void QuitButton()
@@ -25,6 +25,10 @@ public class Menu : MonoBehaviour
 
     public void OptionsButton()
     {
-        SceneManager.LoadScene("Options");
+        SceneManager.LoadScene((int)Scenes.Options);
+    }
+    public void StoryModeButton()
+    {
+        SceneManager.LoadScene((int)Scenes.StoryMode);
     }
 }

@@ -25,5 +25,8 @@ MonoBehaviour:
   fireDistance: 5
   starfeSpeed: 1
   fireRate: 1
-  arrowColor: {r: 1, g: 0, b: 0, a: 1}
+  spawnRate: 0
+  enemyToSpawnNumber: 0
+  enemyToSpawnIndex: 0
+  arrowColor: {r: 0, g: 0.7051564, b: 0.8679245, a: 1}
   aoc: {fileID: 22100000, guid: ea6901828afdb7d6aaef798ae28b4681, type: 2}

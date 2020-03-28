@@ -28,5 +28,5 @@ MonoBehaviour:
   spawnRate: 0.1
   enemyToSpawnNumber: 4
   enemyToSpawnIndex: 4
-  arrowColor: {r: 0.1462264, g: 0.150486, b: 1, a: 1}
+  arrowColor: {r: 0.9150943, g: 0.07338022, b: 0.11373702, a: 1}
   aoc: {fileID: 22100000, guid: 0124b3252af2d2f44b04eb0100ce03ea, type: 2}

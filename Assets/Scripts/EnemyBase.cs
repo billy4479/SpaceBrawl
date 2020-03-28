@@ -44,7 +44,7 @@ public class EnemyBase : MonoBehaviour, IHealth
 
     #endregion Variables
 
-    private const bool debug = false;
+    private const bool debug = true;
 
     private void FixedUpdate()
     {
@@ -96,7 +96,7 @@ public class EnemyBase : MonoBehaviour, IHealth
             randomOffset.x = randomOffset.x * -1f;
         if (Random.Range(0, 2) == 1)
             randomOffset.y = randomOffset.y * -1f;
-        
+
         float max = Mathf.Abs(assetsHolder.Anchors[0].transform.position.x);
         if (randomOffset.x > max - 1f || randomOffset.x < -max + 1f || randomOffset.y > max - 1f || randomOffset.y < -max + 1f)
         {
@@ -108,7 +108,7 @@ public class EnemyBase : MonoBehaviour, IHealth
 
     private void Shoot()
     {
-        if (Time.time - lastShoot > 1f / fireRate)
+        if (Time.time - lastShoot > 1f / fireRate && !debug)
         {
             Instantiate(bullet, firePos.position, firePos.rotation);
             am.PlaySound("EnemyShot");
@@ -172,7 +172,10 @@ public class EnemyBase : MonoBehaviour, IHealth
         enemySpawner = EnemySpawner.instance;
 
         if (debug)
+        {
+            starfeSpeed = 0f;
             speed = 0f;
+        }
     }
 
     public void RemoveEnemy()

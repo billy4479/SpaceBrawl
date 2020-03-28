@@ -20,4 +20,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Options.unity
     guid: b2ced242873a10449b3fc4d6f421e083
+  - enabled: 1
+    path: Assets/Scenes/StoryMode.unity
+    guid: 9d4e05dfbf92bb54e9a9224f7a45ca8e
   m_configObjects: {}
