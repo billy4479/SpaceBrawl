@@ -35,7 +35,7 @@ public class PauseMenu : MonoBehaviour
     {
         isPaused = false;
         Time.timeScale = 1f;
-        gameManager.SuspendInput = false;
+        gameManager.suspendInput = false;
         audioManager.UnpauseSound("Music");
         pauseMenu.SetActive(false);
     }
@@ -44,7 +44,7 @@ public class PauseMenu : MonoBehaviour
     {
         isPaused = true;
         Time.timeScale = 0f;
-        gameManager.SuspendInput = true;
+        gameManager.suspendInput = true;
         audioManager.PauseSound("Music");
         pauseMenu.SetActive(true);
     }

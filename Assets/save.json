@@ -2,6 +2,11 @@
     "savedScores": [
         {
             "name": "Billy",
+            "score": 165,
+            "date": "01/04/2020"
+        },
+        {
+            "name": "Billy",
             "score": 93,
             "date": "13/03/2020"
         },
@@ -32,6 +37,11 @@
         },
         {
             "name": "Billy",
+            "score": 62,
+            "date": "01/04/2020"
+        },
+        {
+            "name": "Billy",
             "score": 55,
             "date": "01/04/2020"
         },
@@ -39,16 +49,6 @@
             "name": "Billy",
             "score": 38,
             "date": "01/04/2020"
-        },
-        {
-            "name": "Billy",
-            "score": 25,
-            "date": "12/03/2020"
-        },
-        {
-            "name": "Billy",
-            "score": 23,
-            "date": "24/02/2020"
         }
     ],
     "settings": {

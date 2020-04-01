@@ -21,10 +21,10 @@ public class GameManager : MonoBehaviour
     public List<Rigidbody2D> EnemyRBs;
     public ShootingHandler shootingHandler;
 
-    public bool SuspendInput = false;
-    public int Score = 0;
-    public int Level = 1;
-    public int EnemyNumber = 0;
+    public bool suspendInput = false;
+    public int score = 0;
+    public int level = 1;
+    public int enemyNumber = 0;
 
     private AudioManager audioManager;
 
@@ -59,10 +59,10 @@ public class GameManager : MonoBehaviour
         player.GetComponent<PlayerMoviment>().stats = assetsHolder.Player_Stats[assetsHolder.Player_Stats_Insex];
         player.GetComponent<HealthSystem>().playerStats = assetsHolder.Player_Stats[assetsHolder.Player_Stats_Insex];
 
-        Score = 0;
-        Level = 1;
-        EnemyNumber = 0;
-        SuspendInput = false;
+        score = 0;
+        level = 1;
+        enemyNumber = 0;
+        suspendInput = false;
 
         audioManager = AudioManager.instance;
 
@@ -70,22 +70,22 @@ public class GameManager : MonoBehaviour
             Vector2.Distance(Camera.main.ScreenToWorldPoint(new Vector2(0, 0)), Camera.main.ScreenToWorldPoint(new Vector2(Screen.width, 0))) * 0.5f,
             Vector2.Distance(Camera.main.ScreenToWorldPoint(new Vector2(0, 0)), Camera.main.ScreenToWorldPoint(new Vector2(0, Screen.height))) * 0.5f
         );
-        SpawnNewEnemies(Level);
+        SpawnNewEnemies(level);
     }
 
     private IEnumerator PlayerWon()
     {
-        EnemyNumber = -1;
-        Level++;
+        enemyNumber = -1;
+        level++;
 
         yield return new WaitForSeconds(2);
 
-        SpawnNewEnemies(Level);
+        SpawnNewEnemies(level);
     }
 
     public void PlayerLose()
     {
-        SuspendInput = true;
+        suspendInput = true;
         foreach (GameObject pointer in GameObject.FindGameObjectsWithTag("Pointer"))
             Destroy(pointer);
         foreach (GameObject bullet in GameObject.FindGameObjectsWithTag("Bullet"))
@@ -100,11 +100,11 @@ public class GameManager : MonoBehaviour
         audioManager.PlaySound("PlayerExplosion");
         playerAnimator.SetBool("Death", true);
 
-        if (Score > SaveManager.instance.scores[9].score)
+        if (score > SaveManager.instance.scores[9].score)
         {
             SaveManager.SavedScores[] scr = SaveManager.instance.scores;
 
-            int position = GetScoreboardPosition(Score, scr);
+            int position = GetScoreboardPosition(score, scr);
 
             for (int i = 9; i >= position; i--)
             {
@@ -114,7 +114,7 @@ public class GameManager : MonoBehaviour
                 scr[i + 1].date = scr[i].date;
                 scr[i + 1].name = scr[i].name;
             }
-            scr[position].score = Score;
+            scr[position].score = score;
             scr[position].name = SaveManager.instance.settings.name;
             scr[position].date = System.DateTime.Now.ToString("d", System.Globalization.CultureInfo.CreateSpecificCulture("fr-FR"));
 
@@ -134,40 +134,52 @@ public class GameManager : MonoBehaviour
     {
         #region GUI
 
-        ScoreLabel.text = "Score: " + Score;
-        LevelLabel.text = "Level: " + Level;
+        ScoreLabel.text = "Score: " + score;
+        LevelLabel.text = "Level: " + level;
 
         #endregion GUI
 
-        if (EnemyNumber == 0)
+        if (enemyNumber == 0)
             StartCoroutine(PlayerWon());
         //Debug.Log(screenSize);
     }
 
     private void SpawnNewEnemies(int EnemiesToSpawn)
     {
+        enemyNumber = 0;
+        List<EnemyStats> enemyList = new List<EnemyStats>(EnemyTypes);
+        List<EnemyStats> enemyToRemove = new List<EnemyStats>();
+        foreach (var enemy in enemyList)
+        {
+            if (enemy.minLevel > level)
+                enemyToRemove.Add(enemy);
+        }
+        foreach (var enemy in enemyToRemove)
+        {
+            enemyList.Remove(enemy);
+        }
+
+        int totProb = 0;
+        int arrLen = enemyList.Count;
+        for (int j = 0; j < arrLen; j++)
+            totProb += enemyList[j].probability;
+        
         for (int i = 0; i < EnemiesToSpawn; i++)
         {
-            int arrLen = EnemyTypes.Length;
-            int totProb = 0;
-            for (int j = 0; j < arrLen; j++)
-            {
-                totProb += EnemyTypes[j].probability;
-            }
-            int randNum = UnityEngine.Random.Range(0, totProb);
+            int randNum = Random.Range(0, totProb);
 
             int finalIndex = -1;
             int accumulo = 0;
 
             for (int j = 0; j < arrLen; j++)
             {
-                if (randNum < EnemyTypes[j].probability + accumulo)
+                if (randNum < enemyList[j].probability + accumulo)
                 {
                     finalIndex = j;
                     break;
                 }
                 else
-                    accumulo += EnemyTypes[j].probability;
+                    accumulo += enemyList[j].probability;
             }
             if (finalIndex == -1)
             {
@@ -175,9 +187,8 @@ public class GameManager : MonoBehaviour
                 break;
             }
             Vector3 pos = RandomSpawnPosOnBorders();
-            enemySpawner.SpawnEnemy(pos, Quaternion.identity, EnemyTypes[finalIndex]);
+            enemySpawner.SpawnEnemy(pos, Quaternion.identity, enemyList[finalIndex]);
         }
-        EnemyNumber = Level;
     }
 
     #region UtilityFunctions

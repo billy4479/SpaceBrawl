@@ -240,7 +240,7 @@ public class EnemyBase : MonoBehaviour, IHealth
     {
         Destroy(pointer);
         gm.EnemyRBs.Remove(rb);
-        gm.EnemyNumber--;
+        gm.enemyNumber--;
         Destroy(gameObject);
     }
     private IEnumerator AnimateDeath()
@@ -266,8 +266,8 @@ public class EnemyBase : MonoBehaviour, IHealth
             Destroy(polColl[i]);
 
         if (defeated)
-            gm.Score += pointsAtDeath;
-        gm.EnemyNumber--;
+            gm.score += pointsAtDeath;
+        gm.enemyNumber--;
         am.PlaySound("EnemyExplosion");
         StartCoroutine(AnimateDeath());
     }

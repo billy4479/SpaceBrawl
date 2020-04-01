@@ -13,6 +13,7 @@ public class EnemyStats : ScriptableObject
     public int pointAtDeath = 1;
     public float rotationSpeed = .1f;
     public int probability = 10;
+    public int minLevel;
     [Space]
     public float fireDistance = 5f;
     public float starfeSpeed = 1f;

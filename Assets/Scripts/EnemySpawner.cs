@@ -21,7 +21,7 @@ public class EnemySpawner : MonoBehaviour
         obj.GetComponent<HealthSystem>().enemyStats = stats;
         foreach (CapsuleCollider2D collider in obj.GetComponents<CapsuleCollider2D>())
             collider.size *= stats.scale;
-        gm.EnemyNumber++;
+        gm.enemyNumber++;
         if (gm.EnemyRBs == null)
             gm.EnemyRBs = new System.Collections.Generic.List<Rigidbody2D>();
         gm.EnemyRBs.Add(obj.GetComponent<Rigidbody2D>());

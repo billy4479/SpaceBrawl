@@ -17,7 +17,7 @@ public class ShootingHandler : MonoBehaviour
 
     private void Update()
     {
-        if (fire.Direction != Vector2.zero && playerWeapon != null && !gm.SuspendInput && !PauseMenu.isPaused)
+        if (fire.Direction != Vector2.zero && playerWeapon != null && !gm.suspendInput && !PauseMenu.isPaused)
             playerWeapon.Shoot();
     }
 }

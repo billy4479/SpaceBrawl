@@ -42,7 +42,7 @@ public class PlayerMoviment : MonoBehaviour, IHealth
 
     private void Update()
     {
-        if (!gameManager.SuspendInput)
+        if (!gameManager.suspendInput)
         {
             if (sm.settings.controllMethod == SaveManager.ControllMethod.Finger)
             {
