@@ -27,4 +27,4 @@ public class EnemyStats : ScriptableObject
 
 }
 
-public enum EnemyType {Normal, Shooter, Summoner}
+public enum EnemyType {Normal, Shooter, Summoner, Charger}

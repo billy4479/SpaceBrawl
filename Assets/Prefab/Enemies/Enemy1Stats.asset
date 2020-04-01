@@ -21,7 +21,7 @@ MonoBehaviour:
   damage: 10
   pointAtDeath: 1
   rotationSpeed: 0.1
-  probability: 20
+  probability: 35
   fireDistance: 5
   starfeSpeed: 1
   fireRate: 1

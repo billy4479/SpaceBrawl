@@ -13,32 +13,24 @@ public class SpawnEnemyesEditor : Editor
 
         EditorGUILayout.Space();
 
-        if (GUILayout.Button("Normal"))
+        try
         {
-            enemySpawner.SpawnEnemy(gm.RandomSpawnPosOnBorders(), Quaternion.identity, assetsHolder.Enemy_Stats[0]);
-        }
-        if (GUILayout.Button("Big"))
-        {
-            enemySpawner.SpawnEnemy(gm.RandomSpawnPosOnBorders(), Quaternion.identity, assetsHolder.Enemy_Stats[1]);
-        }
-        if (GUILayout.Button("Shooter"))
-        {
-            enemySpawner.SpawnEnemy(gm.RandomSpawnPosOnBorders(), Quaternion.identity, assetsHolder.Enemy_Stats[2]);
-        }
-        if (GUILayout.Button("Summoner"))
-        {
-            enemySpawner.SpawnEnemy(gm.RandomSpawnPosOnBorders(), Quaternion.identity, assetsHolder.Enemy_Stats[3]);
-        }
-        if (GUILayout.Button("Spawned"))
-        {
-            enemySpawner.SpawnEnemy(gm.RandomSpawnPosOnBorders(), Quaternion.identity, assetsHolder.Enemy_Stats[4]);
-        }
-        if (GUILayout.Button("Clear Enemies"))
-        {
-            foreach (GameObject enemy in GameObject.FindGameObjectsWithTag("Enemy"))
+            for (int i = 0; i < assetsHolder.Enemy_Stats.Length; i++)
             {
-                enemy.GetComponent<EnemyBase>().RemoveEnemy();
+                if (GUILayout.Button(i.ToString()))
+                {
+                    enemySpawner.SpawnEnemy(gm.RandomSpawnPosOnBorders(), Quaternion.identity, assetsHolder.Enemy_Stats[i]);
+                }
+            }
+
+            if (GUILayout.Button("Clear Enemies"))
+            {
+                foreach (GameObject enemy in GameObject.FindGameObjectsWithTag("Enemy"))
+                {
+                    enemy.GetComponent<EnemyBase>().RemoveEnemy();
+                }
             }
         }
+        catch { }
     }
 }

@@ -17,6 +17,11 @@
         },
         {
             "name": "Billy",
+            "score": 66,
+            "date": "01/04/2020"
+        },
+        {
+            "name": "Billy",
             "score": 63,
             "date": "24/02/2020"
         },
@@ -27,27 +32,22 @@
         },
         {
             "name": "Billy",
+            "score": 55,
+            "date": "01/04/2020"
+        },
+        {
+            "name": "Billy",
+            "score": 38,
+            "date": "01/04/2020"
+        },
+        {
+            "name": "Billy",
             "score": 25,
             "date": "12/03/2020"
         },
         {
             "name": "Billy",
             "score": 23,
-            "date": "24/02/2020"
-        },
-        {
-            "name": "Billy",
-            "score": 23,
-            "date": "12/03/2020"
-        },
-        {
-            "name": "Billy",
-            "score": 20,
-            "date": "13/03/2020"
-        },
-        {
-            "name": "Billy",
-            "score": 13,
             "date": "24/02/2020"
         }
     ],

@@ -10,23 +10,23 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 278ea2b95e36321458adca7ffcca584f, type: 3}
-  m_Name: Enemy3Stats
+  m_Name: Enemy6Stats
   m_EditorClassIdentifier: 
-  enemyType: 1
-  life: 10
+  enemyType: 3
+  life: 20
   scale: 1
   regenSpeed: 2
   timeToStartRegen: 5
-  speed: 3
-  damage: 10
-  pointAtDeath: 4
+  speed: 2
+  damage: 15
+  pointAtDeath: 3
   rotationSpeed: 0.1
   probability: 25
   fireDistance: 5
-  starfeSpeed: 1
-  fireRate: 1
+  starfeSpeed: 0.5
+  fireRate: 2
   spawnRate: 0
   enemyToSpawnNumber: 0
   enemyToSpawnIndex: 0
-  arrowColor: {r: 0.62306017, g: 0.11681201, b: 0.990566, a: 1}
-  aoc: {fileID: 22100000, guid: 9a38af840112f004ab63be157ed416fb, type: 2}
+  arrowColor: {r: 0.45882356, g: 0.29803923, b: 0.14117648, a: 1}
+  aoc: {fileID: 22100000, guid: 4cf1d11bdd1e7164aa301713231b0f5a, type: 2}
