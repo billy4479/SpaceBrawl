@@ -438,10 +438,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   EnemyRBs: []
   shootingHandler: {fileID: 1575260500}
-  SuspendInput: 0
-  Score: 0
-  Level: 1
-  EnemyNumber: 0
+  suspendInput: 0
+  score: 0
+  level: 1
+  enemyNumber: 0
 --- !u!114 &172112023
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1250,15 +1250,13 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 8b760797d8364f748837ae0850181728, type: 2}
   Enemy_Base: {fileID: 5355085466133539871, guid: 2327614cfb10e144b9b1b34a6de626f7,
     type: 3}
-  Bullet_Player: {fileID: 7483117115779252672, guid: 7717922c929515a40b65acf90deb293d,
-    type: 3}
-  Bullet_Enemy: {fileID: 8939543187775377237, guid: 85c057f449893fd49a8a7c9a46fdb159,
+  Bullet_Base: {fileID: 7483117115779252672, guid: 7717922c929515a40b65acf90deb293d,
     type: 3}
   Stella: {fileID: 6556389919488989655, guid: 22130d84efcd66fd2b1019716b392841, type: 3}
   Player_Current: {fileID: 1353386398}
   Player_Stats:
   - {fileID: 11400000, guid: 26786ee4be8815140be21d555be0dd20, type: 2}
-  Player_Stats_Insex: 0
+  Player_Stats_Index: 0
   Label_Score: {fileID: 5969383}
   Label_Level: {fileID: 1945195145}
   Pause_Menu: {fileID: 1066499257}

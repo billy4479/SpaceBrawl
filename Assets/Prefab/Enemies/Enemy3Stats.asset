@@ -22,9 +22,11 @@ MonoBehaviour:
   pointAtDeath: 4
   rotationSpeed: 0.1
   probability: 25
+  minLevel: 5
   fireDistance: 5
   starfeSpeed: 1
   fireRate: 1
+  bulletStats: {fileID: 11400000, guid: b63a0638eae480146b38b2127087dd96, type: 2}
   spawnRate: 0
   enemyToSpawnNumber: 0
   enemyToSpawnIndex: 0

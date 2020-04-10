@@ -9,13 +9,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e87225d4c7bf76f49a77e68158a01b2d, type: 3}
-  m_Name: Player_1
+  m_Script: {fileID: 11500000, guid: ab0e11f3c639d064aafb26c5be8a2033, type: 3}
+  m_Name: PlayerBullet1
   m_EditorClassIdentifier: 
-  acceleration: 7
-  maxSpeed: 5
-  life: 50
-  timeToStartRegen: 5
-  regenSpeed: 2
-  bulletStats: {fileID: 11400000, guid: 8a4b8e56aadc3d14cb0a9245c8c167a1, type: 2}
-  fireRate: 4
+  player: 1
+  damage: 10
+  speed: 10
+  timaAlive: 2
+  size: 1
+  aoc: {fileID: 22100000, guid: 383e84b92bf7f3145b6751694f8302f9, type: 2}
+  soundName: PlayerShot

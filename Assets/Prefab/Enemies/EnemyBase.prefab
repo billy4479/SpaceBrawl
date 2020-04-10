@@ -110,6 +110,7 @@ GameObject:
   - component: {fileID: 7466164718697530112}
   - component: {fileID: -6571965422561981480}
   - component: {fileID: 1174293459788445576}
+  - component: {fileID: 9190337324935096808}
   m_Layer: 0
   m_Name: EnemyBase
   m_TagString: Enemy
@@ -285,6 +286,19 @@ MonoBehaviour:
   healthBarContainer: {fileID: 2516450805376834327}
   enemyStats: {fileID: 0}
   playerStats: {fileID: 0}
+--- !u!114 &9190337324935096808
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5355085466133539871}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ca0a43860c5f8574480694173a3dbad9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  FirePoint: {fileID: 8480274621457602193}
 --- !u!1 &9081005917131170980
 GameObject:
   m_ObjectHideFlags: 0
@@ -309,7 +323,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9081005917131170980}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.217, z: 0}
+  m_LocalPosition: {x: 0, y: 0.281, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 7796158752705034909}

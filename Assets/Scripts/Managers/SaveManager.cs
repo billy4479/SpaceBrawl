@@ -1,0 +1,135 @@
+﻿using System.IO;
+using UnityEngine;
+using BillyUtils;
+
+public class SaveManager : MonoBehaviour
+{
+    static public SaveManager instance;
+    private string savePath;
+    private string oldSavePath;
+
+    #region Classes and Types
+
+    public enum ControllMethod { Finger, Joystick, ToggledJoystick };
+
+    [System.Serializable]
+    public class SavedScores
+    {
+        public string name;
+        public int score;
+        public string date;
+    }
+
+    [System.Serializable]
+    public class Settings
+    {
+        public float VolumeSFX;
+        public float VolumeMusic;
+        public string name;
+        public ControllMethod controllMethod;
+    }
+
+    [System.Serializable]
+    private class SaveCollection
+    {
+        public SavedScores[] savedScores;
+        public Settings settings;
+    }
+
+    #endregion Classes and Types
+
+    private SaveCollection saveCollection;
+    public SavedScores[] scores;
+    public Settings settings;
+    private const string passphrase = "sP@c3Br@wL";
+
+    private void Awake()
+    {
+        #region Singletone
+
+        if (instance == null)
+        {
+            instance = this;
+            DontDestroyOnLoad(this);
+        }
+        else if (instance != this)
+            Destroy(this.gameObject);
+
+        #endregion Singletone
+
+        #region Select Path
+
+        if (Application.platform == RuntimePlatform.Android)
+        {
+            savePath = Application.persistentDataPath + "/save.dat";
+            oldSavePath = Application.persistentDataPath + "/save.json";
+        }
+        else
+        {
+            savePath = Application.dataPath + "/save.dat";
+            oldSavePath = Application.persistentDataPath + "/save.json";
+        }
+
+        #endregion Select Path
+
+        ReadFile();
+    }
+
+    public void WriteChanges()
+    {
+        if(saveCollection == null)
+        {
+            scores = new SavedScores[10];
+            for (int i = 0; i < 10; i++)
+            {
+                scores[i] = new SavedScores
+                {
+                    name = "Empty",
+                    score = 0,
+                    date = "None"
+                };
+            }
+
+            settings = new Settings
+            {
+                name = "Player",
+                VolumeMusic = 100f,
+                VolumeSFX = 100f
+            };
+
+            saveCollection = new SaveCollection
+            {
+                savedScores = scores,
+                settings = settings
+            };
+        }
+        saveCollection.savedScores = scores;
+        saveCollection.settings = settings;
+
+        using (StreamWriter saveStream = new StreamWriter(File.Open(savePath, FileMode.OpenOrCreate)))
+        {
+            string json = JsonUtility.ToJson(saveCollection, true);
+            string b64 = StringEncryptor.Encrypt(json, passphrase);
+
+            saveStream.Write(b64);
+        }
+    }
+
+    public void ReadFile()
+    {
+        if (File.Exists(oldSavePath))
+            File.Delete(oldSavePath);
+        if (File.Exists(savePath))
+        {
+            string raw = File.ReadAllText(savePath);
+            saveCollection = JsonUtility.FromJson<SaveCollection>(StringEncryptor.Decrypt(raw, passphrase));
+            if (saveCollection != null)
+            {
+                scores = saveCollection.savedScores;
+                settings = saveCollection.settings;
+            }
+            else
+                WriteChanges();
+        }
+    }
+}

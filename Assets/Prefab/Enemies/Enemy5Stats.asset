@@ -18,10 +18,11 @@ MonoBehaviour:
   regenSpeed: 2
   timeToStartRegen: 5
   speed: 5
-  damage: 5
+  damage: 7
   pointAtDeath: 1
-  rotationSpeed: 0.1
+  rotationSpeed: 1
   probability: 0
+  minLevel: 0
   fireDistance: 5
   starfeSpeed: 1
   fireRate: 1

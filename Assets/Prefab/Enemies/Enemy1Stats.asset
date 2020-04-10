@@ -22,11 +22,12 @@ MonoBehaviour:
   pointAtDeath: 1
   rotationSpeed: 0.1
   probability: 35
-  fireDistance: 5
-  starfeSpeed: 1
-  fireRate: 1
+  minLevel: 0
+  fireDistance: 0
+  starfeSpeed: 0
+  fireRate: 0
   spawnRate: 0
   enemyToSpawnNumber: 0
   enemyToSpawnIndex: 0
-  arrowColor: {r: 0.93725497, g: 0.5803922, b: 0.28627452, a: 1}
+  arrowColor: {r: 1, g: 0.5246637, b: 0, a: 1}
   aoc: {fileID: 22100000, guid: 7143266757aa7234ebd6f211e526f074, type: 2}

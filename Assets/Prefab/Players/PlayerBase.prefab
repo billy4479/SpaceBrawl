@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 3933549885187587354}
   - component: {fileID: 3933549885187587358}
   m_Layer: 0
-  m_Name: Player
+  m_Name: PlayerBase
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -189,9 +189,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca0a43860c5f8574480694173a3dbad9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bullet: {fileID: 7483117115779252672, guid: 7717922c929515a40b65acf90deb293d, type: 3}
+  bulletStats: {fileID: 11400000, guid: 8a4b8e56aadc3d14cb0a9245c8c167a1, type: 2}
   FirePoint: {fileID: 3933549886474668414}
-  rb: {fileID: 3933549885187587353}
 --- !u!114 &3933549885187587358
 MonoBehaviour:
   m_ObjectHideFlags: 0
