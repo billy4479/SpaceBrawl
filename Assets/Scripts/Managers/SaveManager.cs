@@ -18,6 +18,13 @@ public class SaveManager : MonoBehaviour
         public string name;
         public int score;
         public string date;
+
+        public SavedScores()
+        {
+            name = "Empty";
+            score = 0;
+            date = "None";
+        }
     }
 
     [System.Serializable]
@@ -27,6 +34,13 @@ public class SaveManager : MonoBehaviour
         public float VolumeMusic;
         public string name;
         public ControllMethod controllMethod;
+        public Settings()
+        {
+            VolumeMusic = 100f;
+            VolumeSFX = 100f;
+            name = "Player";
+            controllMethod = ControllMethod.Finger;
+        }
     }
 
     [System.Serializable]
@@ -34,6 +48,13 @@ public class SaveManager : MonoBehaviour
     {
         public SavedScores[] savedScores;
         public Settings settings;
+        public SaveCollection()
+        {
+            savedScores = new SavedScores[10];
+            for (int i = 0; i < 10; i++)
+                savedScores[i] = new SavedScores();
+            settings = new Settings();
+        }
     }
 
     #endregion Classes and Types
@@ -77,41 +98,23 @@ public class SaveManager : MonoBehaviour
 
     public void WriteChanges()
     {
-        if(saveCollection == null)
+        if (saveCollection == null)
         {
-            scores = new SavedScores[10];
-            for (int i = 0; i < 10; i++)
-            {
-                scores[i] = new SavedScores
-                {
-                    name = "Empty",
-                    score = 0,
-                    date = "None"
-                };
-            }
-
-            settings = new Settings
-            {
-                name = "Player",
-                VolumeMusic = 100f,
-                VolumeSFX = 100f
-            };
-
-            saveCollection = new SaveCollection
-            {
-                savedScores = scores,
-                settings = settings
-            };
+            saveCollection = new SaveCollection();
+            scores = saveCollection.savedScores;
+            settings = saveCollection.settings;
         }
-        saveCollection.savedScores = scores;
-        saveCollection.settings = settings;
-
+        else
+        {
+            saveCollection.savedScores = scores;
+            saveCollection.settings = settings;
+        }
         using (StreamWriter saveStream = new StreamWriter(File.Open(savePath, FileMode.OpenOrCreate)))
         {
-            string json = JsonUtility.ToJson(saveCollection, true);
-            string b64 = StringEncryptor.Encrypt(json, passphrase);
+            string json = JsonUtility.ToJson(saveCollection, false);
+            string encrypted = StringEncryptor.Encrypt(json, passphrase);
 
-            saveStream.Write(b64);
+            saveStream.Write(encrypted);
         }
     }
 
@@ -131,5 +134,7 @@ public class SaveManager : MonoBehaviour
             else
                 WriteChanges();
         }
+        else
+            WriteChanges();
     }
 }

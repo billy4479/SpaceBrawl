@@ -32,6 +32,7 @@ public class GameManager : MonoBehaviour
 
     [HideInInspector]
     public Vector2 screenSize { get; private set; }
+    public event System.EventHandler<GameOverEventArgs> OnGameOver;
 
     #endregion Variables
 
@@ -58,6 +59,7 @@ public class GameManager : MonoBehaviour
         enemySpawner = EnemySpawner.instance;
         player.GetComponent<PlayerMoviment>().stats = assetsHolder.Player_Stats[assetsHolder.Player_Stats_Index];
         player.GetComponent<HealthSystem>().playerStats = assetsHolder.Player_Stats[assetsHolder.Player_Stats_Index];
+
 
         score = 0;
         level = 1;
@@ -86,8 +88,6 @@ public class GameManager : MonoBehaviour
     public void PlayerLose()
     {
         suspendInput = true;
-        foreach (GameObject pointer in GameObject.FindGameObjectsWithTag("Pointer"))
-            Destroy(pointer);
         foreach (GameObject bullet in GameObject.FindGameObjectsWithTag("Bullet"))
             Destroy(bullet);
         foreach (EnemyBase enemy in GameObject.FindObjectsOfType<EnemyBase>())
@@ -127,7 +127,8 @@ public class GameManager : MonoBehaviour
     private IEnumerator WaitForPlayerDeathAnimation()
     {
         yield return new WaitForSeconds(1);
-        SceneManager.LoadScene("Menu");
+        OnGameOver?.Invoke(this, new GameOverEventArgs());
+        //SceneManager.LoadScene("Menu");
     }
 
     private void FixedUpdate()
@@ -139,7 +140,7 @@ public class GameManager : MonoBehaviour
 
         #endregion GUI
 
-        if (enemyNumber == 0)
+        if (enemyNumber == 0 && !suspendInput)
             StartCoroutine(PlayerWon());
         //Debug.Log(screenSize);
     }
@@ -236,4 +237,18 @@ public class GameManager : MonoBehaviour
     }
 
     #endregion UtilityFunctions
+}
+public class GameOverEventArgs
+{
+    public int score;
+    public int level;
+    public int coins;
+    public bool isStoryMode;
+    public GameOverEventArgs()
+    {
+        score = GameManager.instance.score;
+        level = GameManager.instance.level;
+        coins = 0;
+        isStoryMode = false;
+    }
 }

@@ -11,11 +11,11 @@ GameObject:
   - component: {fileID: 3933549885187587357}
   - component: {fileID: 3933549885187587356}
   - component: {fileID: 3933549885187587353}
-  - component: {fileID: 3933549885187587352}
   - component: {fileID: 3933549885187587367}
   - component: {fileID: 3933549885187587355}
   - component: {fileID: 3933549885187587354}
   - component: {fileID: 3933549885187587358}
+  - component: {fileID: 6908926946082008195}
   m_Layer: 0
   m_Name: PlayerBase
   m_TagString: Player
@@ -110,41 +110,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 0
---- !u!60 &3933549885187587352
-PolygonCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3933549885187587366}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.2, y: 0.3}
-    newSize: {x: 0.2, y: 0.3}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  m_Points:
-    m_Paths:
-    - - {x: 0.036581717, y: 0.009721952}
-      - {x: 0.015246799, y: 0.05273284}
-      - {x: 0.02325017, y: 0.110998176}
-      - {x: -0.027748039, y: 0.107747994}
-      - {x: -0.02199631, y: 0.05349969}
-      - {x: -0.03521422, y: -0.001566691}
-      - {x: -0.07972267, y: -0.03428177}
-      - {x: -0.044747334, y: -0.071247675}
-      - {x: 0.051247697, y: -0.074248284}
-      - {x: 0.077248946, y: -0.035252605}
 --- !u!95 &3933549885187587367
 Animator:
   serializedVersion: 3
@@ -189,7 +154,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca0a43860c5f8574480694173a3dbad9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bulletStats: {fileID: 11400000, guid: 8a4b8e56aadc3d14cb0a9245c8c167a1, type: 2}
   FirePoint: {fileID: 3933549886474668414}
 --- !u!114 &3933549885187587358
 MonoBehaviour:
@@ -207,6 +171,22 @@ MonoBehaviour:
   healthBarContainer: {fileID: 9135168143535072813}
   enemyStats: {fileID: 0}
   playerStats: {fileID: 11400000, guid: 26786ee4be8815140be21d555be0dd20, type: 2}
+--- !u!70 &6908926946082008195
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3933549885187587366}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0.0002875626, y: 0.014953867}
+  m_Size: {x: 0.18102011, y: 0.22523066}
+  m_Direction: 0
 --- !u!1 &3933549886474668413
 GameObject:
   m_ObjectHideFlags: 0

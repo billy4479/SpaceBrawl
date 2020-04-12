@@ -462,10 +462,10 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_text: An error has occurred! Please delete Android > com.FETripleG.SpaceBrawl
-    > files > save.json
+    > files > save.dat
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: e649f6a76bdae2c4cad7a7aaad109260, type: 2}
-  m_sharedMaterial: {fileID: -7738589886612327634, guid: e649f6a76bdae2c4cad7a7aaad109260,
+  m_fontAsset: {fileID: 11400000, guid: ae14c309568759440b55b4c2d4108780, type: 2}
+  m_sharedMaterial: {fileID: 7014240731401478894, guid: ae14c309568759440b55b4c2d4108780,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -501,7 +501,7 @@ MonoBehaviour:
   m_textAlignment: 513
   m_characterSpacing: 0
   m_wordSpacing: 0
-  m_lineSpacing: 10
+  m_lineSpacing: 0
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
@@ -532,7 +532,7 @@ MonoBehaviour:
   m_margin: {x: 0.8009379, y: 0, z: 0.43396822, w: -2.9042358}
   m_textInfo:
     textComponent: {fileID: 553201051}
-    characterCount: 91
+    characterCount: 90
     spriteCount: 0
     spaceCount: 12
     wordCount: 13
@@ -676,10 +676,10 @@ RectTransform:
   m_Father: {fileID: 2136197289}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 289}
-  m_SizeDelta: {x: 200, y: 50}
+  m_AnchorMin: {x: 0.5, y: 1}
+  m_AnchorMax: {x: 0.5, y: 1}
+  m_AnchoredPosition: {x: 0, y: -90.70001}
+  m_SizeDelta: {x: 668.9, y: 81.399994}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1219243280
 MonoBehaviour:
@@ -701,8 +701,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: ScoreBoard
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: e649f6a76bdae2c4cad7a7aaad109260, type: 2}
-  m_sharedMaterial: {fileID: -7738589886612327634, guid: e649f6a76bdae2c4cad7a7aaad109260,
+  m_fontAsset: {fileID: 11400000, guid: ae14c309568759440b55b4c2d4108780, type: 2}
+  m_sharedMaterial: {fileID: 7014240731401478894, guid: ae14c309568759440b55b4c2d4108780,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -766,7 +766,7 @@ MonoBehaviour:
   m_firstVisibleCharacter: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: -299.97137, y: -23.192064, z: -301.52148, w: -7.730637}
+  m_margin: {x: 0.34220308, y: 0.8972912, z: 0.39812475, w: 1.9050597}
   m_textInfo:
     textComponent: {fileID: 1219243280}
     characterCount: 10
