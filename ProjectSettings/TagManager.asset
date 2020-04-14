@@ -12,6 +12,7 @@ TagManager:
   - Pointer
   - Joystick
   - EnemyBullet
+  - DialogueButtons
   layers:
   - Default
   - TransparentFX
