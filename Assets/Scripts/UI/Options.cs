@@ -43,11 +43,12 @@ public class Options : MonoBehaviour
     public void OnMusicChange()
     {
         sm.settings.VolumeMusic = musicSlider.value;
-        am.SetMusicVolume(musicSlider.value);
+        am.SetVolume(musicSlider.value, true);
     }
 
     public void OnSFXChange()
     {
         sm.settings.VolumeSFX = sfxSlider.value;
+        am.SetVolume(sfxSlider.value, false);
     }
 }

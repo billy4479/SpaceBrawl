@@ -91,17 +91,16 @@ public class AudioManager : MonoBehaviour
         PlaySound("Music");
     }
 
-    public void SetMusicVolume(float volume)
+    public void SetVolume(float volume, bool isMusic)
     {
         for (int i = 0; i < sounds.Length; i++)
         {
-            if (sounds[i].name == "Music")
+            if (sounds[i].isMusic == isMusic)
             {
                 sounds[i].SetVolume(volume);
                 return;
             }
         }
-        Debug.LogError("No matching sound for " + name);
     }
 
     public void PlaySound(string name)
