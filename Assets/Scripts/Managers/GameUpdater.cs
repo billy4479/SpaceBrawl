@@ -32,7 +32,7 @@ public class GameUpdater : MonoBehaviour
         if (response.requestOrigin == ConfigOrigin.Remote)
         {
             lastVersion = ConfigManager.appConfig.GetString("lastVersion");
-            if (lastVersion != null && lastVersion != Application.version)
+            if (!string.IsNullOrEmpty(lastVersion) && lastVersion != Application.version)
             {
                 if (Application.platform == RuntimePlatform.WindowsPlayer) url = windowsUrl1 + lastVersion + windowsUrl2;
                 else url = androidUrl1 + lastVersion + androidUrl2;

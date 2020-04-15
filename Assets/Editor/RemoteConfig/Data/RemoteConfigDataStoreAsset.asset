@@ -14,20 +14,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rsKeyList:
   - metadata:
-      entityId: b964b8c9-d55d-42c6-87e2-e55edb57f598
+      entityId: 18ecf12d-bdc7-4351-b30d-968b32162031
     rs:
       key: lastVersion
       type: string
-      value: 0.4.1
+      value: 0.4.3
   rsLastCachedKeyList:
   - metadata:
-      entityId: b964b8c9-d55d-42c6-87e2-e55edb57f598
+      entityId: 18ecf12d-bdc7-4351-b30d-968b32162031
     rs:
       key: lastVersion
       type: string
-      value: 0.4.1
-  configId: 45d588d3-a509-4451-a080-07593d50894b
-  currentEnvironmentId: cf2fe206-883d-428d-8cb9-f60aceb6f910
+      value: 0.4.3
+  configId: 9c34dc7b-68ff-4cef-b4f8-ae3f8497cb83
+  currentEnvironmentId: ae988859-930f-4215-b0a6-9711edd17687
   environments:
   - id: cf2fe206-883d-428d-8cb9-f60aceb6f910
     appId: 
