@@ -19,8 +19,8 @@ public class DialogueSystem : MonoBehaviour
     private void LoadDialogs()
     {
         dialogues = new Dictionary<int, DialogueData>();
-        var rawCSV = File.ReadAllText("Assets/Resources/dialogues.csv");
-        string[] lines = rawCSV.Split(new char[] { '\n' });
+        var rawCSV = Resources.Load("dialogues") as TextAsset;
+        string[] lines = rawCSV.text.Split(new char[] { '\n' });
         for (int i = 1; i < lines.Length; i++)
         {
             if (lines[i] == "") continue;
@@ -127,8 +127,8 @@ public class DialogueSystem : MonoBehaviour
                     containers[i].SetActive(true);
                     var button = containers[i].transform.Find("Button").GetComponent<Button>();
                     var button_text = button.transform.Find("Text").GetComponent<TextMeshProUGUI>();
-                    button_text.text = mode.dialogueButtons[i].text;
-                    switch (mode.dialogueButtons[i].callback)
+                    button_text.text = mode.dialogueButtons[index].text;
+                    switch (mode.dialogueButtons[index].callback)
                     {
                         case ButtonActions.OPENDOWNLOADPAGE:
                             button.onClick.AddListener(ButtonAction_OpenDownloadPage);
