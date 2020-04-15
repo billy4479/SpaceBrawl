@@ -10,7 +10,7 @@ public class SaveManager : MonoBehaviour
 
     #region Classes and Types
 
-    public enum ControllMethod { Finger, Joystick, ToggledJoystick };
+    public enum ControllMethod { Finger, Joystick, ToggledJoystick, KeyBoard };
 
     [System.Serializable]
     public class SavedScores

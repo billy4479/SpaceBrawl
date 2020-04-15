@@ -61,6 +61,20 @@ public class PlayerMoviment : MonoBehaviour, IHealth
                     animator.SetInteger("dir", 0);
                 }
             }
+            else if (sm.settings.controllMethod == SaveManager.ControllMethod.KeyBoard)
+            {
+                PlayerRB.rotation = UtilsClass.GetAngleFromVector((Vector2)UtilsClass.GetMouseWorldPosition() - PlayerRB.position) - 90f;
+                if (Input.GetMouseButton(0)) weapon.Shoot();
+
+                Vector2 direction = new Vector2();
+                if (Input.GetKey(KeyCode.W)) direction.y++;
+                if (Input.GetKey(KeyCode.A)) direction.x--;
+                if (Input.GetKey(KeyCode.S)) direction.y--;
+                if (Input.GetKey(KeyCode.D)) direction.x++;
+                PlayerRB.AddForce(direction * speed);
+                if (direction != Vector2.zero) animator.SetInteger("dir", 1);
+                else animator.SetInteger("dir", 0);
+            }
             else
             {
                 if (fireJoystick.Direction != Vector2.zero)

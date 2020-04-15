@@ -66,6 +66,11 @@ public class ControllMethodHandler : MonoBehaviour
                 fireJoystickTransform.gameObject.SetActive(false);
                 break;
 
+            case SaveManager.ControllMethod.KeyBoard:
+                positionJoystickTransform.gameObject.SetActive(false);
+                fireJoystickTransform.gameObject.SetActive(false);
+                break;
+
             case SaveManager.ControllMethod.Joystick:
                 positionJoystickTransform.gameObject.SetActive(true);
                 fireJoystickTransform.gameObject.SetActive(true);
