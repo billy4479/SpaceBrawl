@@ -9,8 +9,10 @@ public class GameUpdater : MonoBehaviour
     struct appAttributes { }
 
     string lastVersion;
-    const string url1 = "http://ftp.spacebrawlreal.altervista.org/versioni/Android/SpaceBrawl.";
-    const string url2 = ".apk";
+    const string androidUrl1 = "http://ftp.spacebrawlreal.altervista.org/versioni/Android/SpaceBrawl.";
+    const string androidUrl2 = ".apk";
+    const string windowsUrl1 = "http://ftp.spacebrawlreal.altervista.org/versioni/PC/Windows/";
+    const string windowsUrl2 = ".exe";
     string url;
     public static GameUpdater instance { get; private set; }
     public string GetURL()
@@ -32,7 +34,8 @@ public class GameUpdater : MonoBehaviour
             lastVersion = ConfigManager.appConfig.GetString("lastVersion");
             if (lastVersion != null && lastVersion != Application.version)
             {
-                url = url1 + lastVersion + url2;
+                if (Application.platform == RuntimePlatform.WindowsPlayer) url = windowsUrl1 + lastVersion + windowsUrl2;
+                else url = androidUrl1 + lastVersion + androidUrl2;
                 DialogueSystem.instance.ShowDialogue(1);
             }
         }
