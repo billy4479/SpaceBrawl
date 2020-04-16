@@ -22,6 +22,8 @@ public class Sound
     public bool loop;
     public bool isMusic;
 
+    private float overrideVolume;
+
     public void SetSource(AudioSource source)
     {
         this.source = source;
@@ -29,9 +31,9 @@ public class Sound
         this.source.loop = loop;
     }
 
-    public void Play(float volume)
+    public void Play()
     {
-        source.volume = this.volume * (1 + Random.Range(-RandomVolume / 2, RandomVolume / 2)) * (volume / 100f);
+        source.volume = volume * (1 + Random.Range(-RandomVolume / 2, RandomVolume / 2)) * overrideVolume;
         source.pitch = pitch * (1 + Random.Range(-RandomPitch / 2, RandomPitch / 2));
         source.Play();
     }
@@ -52,7 +54,10 @@ public class Sound
     }
 
     public void SetVolume(float volume)
-    { this.source.volume = this.volume * (1 + Random.Range(-RandomVolume / 2, RandomVolume / 2)) * (volume / 100f); }
+    {
+        overrideVolume = volume;
+        source.volume = this.volume * overrideVolume * (1 + Random.Range(-RandomVolume / 2, RandomVolume / 2));
+    }
 }
 
 public class AudioManager : MonoBehaviour
@@ -88,6 +93,10 @@ public class AudioManager : MonoBehaviour
         musicVolume = SaveManager.instance.settings.VolumeMusic;
         sfxVolume = SaveManager.instance.settings.VolumeSFX;
 
+        SetVolume(SaveManager.instance.settings.VolumeMusic, true);
+        SetVolume(SaveManager.instance.settings.VolumeSFX, false);
+
+
         PlaySound("Music");
     }
 
@@ -97,8 +106,7 @@ public class AudioManager : MonoBehaviour
         {
             if (sounds[i].isMusic == isMusic)
             {
-                sounds[i].SetVolume(volume);
-                return;
+                sounds[i].SetVolume(volume * 0.01f);
             }
         }
     }
@@ -109,12 +117,9 @@ public class AudioManager : MonoBehaviour
         {
             if (sounds[i].name == name)
             {
-                float volume;
-                if (sounds[i].isMusic)
-                    volume = musicVolume;
-                else
-                    volume = sfxVolume;
-                sounds[i].Play(volume);
+                //if (sounds[i].isMusic) sounds[i].SetVolume(SaveManager.instance.settings.VolumeMusic);
+                //if (!sounds[i].isMusic) sounds[i].SetVolume(SaveManager.instance.settings.VolumeSFX);
+                sounds[i].Play();
                 return;
             }
         }

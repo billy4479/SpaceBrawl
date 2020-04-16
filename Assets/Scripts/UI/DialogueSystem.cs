@@ -115,7 +115,7 @@ public class DialogueSystem : MonoBehaviour
         foreach (var c in text)
         {
             obj.text += c;
-            yield return new WaitForSeconds(0.05f);
+            yield return new WaitForSeconds(0.025f);
         }
         if (mode.onClick == Dialogue_OnClick.TheresAButton)
         {
