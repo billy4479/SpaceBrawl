@@ -1,88 +1,87 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
     #region Variables
 
-    private AssetsHolder assetsHolder = AssetsHolder.instance;
-
+    [SerializeField] private PlayerStats[] playerStats;
     private GameObject player;
     private Animator playerAnimator;
     private Transform[] anchors;
-    private TextMeshProUGUI ScoreLabel;
-    private TextMeshProUGUI LevelLabel;
-    private EnemyStats[] EnemyTypes;
-    private EnemySpawner enemySpawner;
 
     public List<Rigidbody2D> EnemyRBs;
     public ShootingHandler shootingHandler;
 
+    private AudioManager audioManager;
+    private SaveManager saveManager;
+    private EnemySpawner enemySpawner;
+    private GameInfo gameInfo;
+
+    //Game variables
     public bool suspendInput = false;
     public int score = 0;
     public int level = 1;
     public int enemyNumber = 0;
 
-    private AudioManager audioManager;
+    [HideInInspector] public Vector2 screenSize { get; private set; }
 
-    private enum Side { UP, DOWN, RIGHT, LEFT }
+    public event EventHandler<GameOverEventArgs> OnGameOver;
 
-    [HideInInspector]
-    public Vector2 screenSize { get; private set; }
-    public event System.EventHandler<GameOverEventArgs> OnGameOver;
+    public bool debug = false;
 
     #endregion Variables
 
-    #region Singleton
-
-    public static GameManager instance;
-
     private void Awake()
     {
-        instance = this;
-    }
+        audioManager = AudioManager.instance;
+        saveManager = SaveManager.instance;
+        enemySpawner = FindObjectOfType<EnemySpawner>();
 
-    #endregion Singleton
-
-    private void Start()
-    {
-        assetsHolder = AssetsHolder.instance;
-        player = assetsHolder.Player_Current;
+        player = GameObject.FindGameObjectWithTag("Player");
         playerAnimator = player.GetComponent<Animator>();
-        anchors = assetsHolder.Anchors;
-        ScoreLabel = assetsHolder.Label_Score;
-        LevelLabel = assetsHolder.Label_Level;
-        EnemyTypes = assetsHolder.Enemy_Stats;
-        enemySpawner = EnemySpawner.instance;
-        player.GetComponent<PlayerMoviment>().stats = assetsHolder.Player_Stats[assetsHolder.Player_Stats_Index];
-        player.GetComponent<HealthSystem>().playerStats = assetsHolder.Player_Stats[assetsHolder.Player_Stats_Index];
 
-
+        gameInfo = saveManager.GetGameInfo();
         score = 0;
         level = 1;
         enemyNumber = 0;
         suspendInput = false;
 
-        audioManager = AudioManager.instance;
+        var anchorsGO = GameObject.FindGameObjectsWithTag("Anchor");
+        anchors = new Transform[2];
+        try
+        {
+            for (int i = 0; i < anchorsGO.Length; i++)
+            {
+                anchors[i] = anchorsGO[i].transform;
+            }
+        }
+        catch
+        {
+            throw new IndexOutOfRangeException("Too many anchors");
+        }
 
         screenSize = new Vector2(
             Vector2.Distance(Camera.main.ScreenToWorldPoint(new Vector2(0, 0)), Camera.main.ScreenToWorldPoint(new Vector2(Screen.width, 0))) * 0.5f,
             Vector2.Distance(Camera.main.ScreenToWorldPoint(new Vector2(0, 0)), Camera.main.ScreenToWorldPoint(new Vector2(0, Screen.height))) * 0.5f
         );
-        SpawnNewEnemies(level);
     }
 
-    private IEnumerator PlayerWon()
+    private void Start()
+    {
+        enemySpawner.SpawnNewLevelEnemy(level, debug);
+    }
+
+    private IEnumerator LevelPassed()
     {
         enemyNumber = -1;
         level++;
 
         yield return new WaitForSeconds(2);
 
-        SpawnNewEnemies(level);
+        enemySpawner.SpawnNewLevelEnemy(level, debug);
     }
 
     public void PlayerLose()
@@ -90,7 +89,7 @@ public class GameManager : MonoBehaviour
         suspendInput = true;
         foreach (GameObject bullet in GameObject.FindGameObjectsWithTag("Bullet"))
             Destroy(bullet);
-        foreach (EnemyBase enemy in GameObject.FindObjectsOfType<EnemyBase>())
+        foreach (EnemyBase enemy in FindObjectsOfType<EnemyBase>())
             enemy.RemoveEnemy();
 
         Rigidbody2D PlayerRB = player.GetComponent<Rigidbody2D>();
@@ -127,95 +126,13 @@ public class GameManager : MonoBehaviour
     private IEnumerator WaitForPlayerDeathAnimation()
     {
         yield return new WaitForSeconds(1);
-        OnGameOver?.Invoke(this, new GameOverEventArgs());
-        //SceneManager.LoadScene("Menu");
+        OnGameOver?.Invoke(this, new GameOverEventArgs() { score = score, coins = 0, isStoryMode = gameInfo.isStoryMode, level = level });
     }
 
-    private void FixedUpdate()
+    private void Update()
     {
-        #region GUI
-
-        ScoreLabel.text = "Score: " + score;
-        LevelLabel.text = "Level: " + level;
-
-        #endregion GUI
-
         if (enemyNumber == 0 && !suspendInput)
-            StartCoroutine(PlayerWon());
-        //Debug.Log(screenSize);
-    }
-
-    private void SpawnNewEnemies(int EnemiesToSpawn)
-    {
-        enemyNumber = 0;
-        List<EnemyStats> enemyList = new List<EnemyStats>(EnemyTypes);
-        List<EnemyStats> enemyToRemove = new List<EnemyStats>();
-        foreach (var enemy in enemyList)
-        {
-            if (enemy.minLevel > level)
-                enemyToRemove.Add(enemy);
-        }
-        foreach (var enemy in enemyToRemove)
-        {
-            enemyList.Remove(enemy);
-        }
-
-        int totProb = 0;
-        int arrLen = enemyList.Count;
-        for (int j = 0; j < arrLen; j++)
-            totProb += enemyList[j].probability;
-        
-        for (int i = 0; i < EnemiesToSpawn; i++)
-        {
-            int randNum = Random.Range(0, totProb);
-
-            int finalIndex = -1;
-            int accumulo = 0;
-
-            for (int j = 0; j < arrLen; j++)
-            {
-                if (randNum < enemyList[j].probability + accumulo)
-                {
-                    finalIndex = j;
-                    break;
-                }
-                else
-                    accumulo += enemyList[j].probability;
-            }
-            if (finalIndex == -1)
-            {
-                Debug.LogError("No Enemy Selection");
-                break;
-            }
-            Vector3 pos = RandomSpawnPosOnBorders();
-            enemySpawner.SpawnEnemy(pos, Quaternion.identity, enemyList[finalIndex]);
-        }
-    }
-
-    #region UtilityFunctions
-
-    public Vector3 RandomSpawnPosOnBorders()
-    {
-        Side side = (Side)UnityEngine.Random.Range(0, 4);
-
-        switch (side)
-        {
-            case Side.UP:
-                return new Vector3(UnityEngine.Random.Range(anchors[0].position.x, -anchors[0].position.x), anchors[0].position.y, 0);
-
-            case Side.DOWN:
-                return new Vector3(UnityEngine.Random.Range(anchors[1].position.x, -anchors[1].position.x), anchors[1].position.y, 0);
-
-            case Side.RIGHT:
-                return new Vector3(anchors[0].position.x, UnityEngine.Random.Range(anchors[0].position.y, -anchors[0].position.y), 0);
-
-            case Side.LEFT:
-                return new Vector3(anchors[1].position.x, UnityEngine.Random.Range(anchors[1].position.y, -anchors[1].position.y), 0);
-
-            default:
-                Debug.LogError("No random number in enemy spawning function");
-                return Vector3.zero;
-        }
+            StartCoroutine(LevelPassed());
     }
 
     private int GetScoreboardPosition(int score, SaveManager.SavedScores[] savedScores)
@@ -235,20 +152,12 @@ public class GameManager : MonoBehaviour
         Debug.LogError("Error while getting position");
         return -1;
     }
-
-    #endregion UtilityFunctions
 }
+
 public class GameOverEventArgs
 {
     public int score;
     public int level;
     public int coins;
     public bool isStoryMode;
-    public GameOverEventArgs()
-    {
-        score = GameManager.instance.score;
-        level = GameManager.instance.level;
-        coins = 0;
-        isStoryMode = false;
-    }
 }

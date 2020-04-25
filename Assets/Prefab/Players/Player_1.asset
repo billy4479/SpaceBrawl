@@ -19,3 +19,4 @@ MonoBehaviour:
   regenSpeed: 2
   bulletStats: {fileID: 11400000, guid: 8a4b8e56aadc3d14cb0a9245c8c167a1, type: 2}
   fireRate: 4
+  scale: 1

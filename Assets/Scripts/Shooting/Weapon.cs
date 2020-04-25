@@ -8,21 +8,27 @@ public class Weapon : MonoBehaviour
         this.stats = stats;
         try
         { shotSoundName = stats.soundName; }
-        catch (System.NullReferenceException){ }
+        catch (System.NullReferenceException) { }
         this.fireRate = fireRate;
         return stats;
     }
-    private GameObject bulletBase;
+    [SerializeField] private GameObject bulletBase;
     public Transform FirePoint;
     private AudioManager audioManager;
     private float lastShoot;
     private float fireRate;
     private string shotSoundName;
+    private bool reassign = false;
+
+    private void Awake()
+    {
+        audioManager = AudioManager.instance;
+        if (audioManager == null) reassign = true;
+    }
 
     private void Start()
     {
-        audioManager = AudioManager.instance;
-        bulletBase = AssetsHolder.instance.Bullet_Base;
+        if (reassign) audioManager = AudioManager.instance;
     }
 
     public void Shoot()

@@ -1,0 +1,53 @@
+SpaceBrawl Roadmap
+	- Soldi:
+		- Nome: kermate
+		- Logo: K leggermente tondo colori
+		- Solo per lo shop dopo
+		- Droppate dai nemici
+	- Power-Up in-game:
+		- Droppati dai nemici
+		- Potenziabili con le kermate
+		- Durano un tempo limitato ( es. fine turno)
+	- Abilità navicelle: 
+		- Abilità di una singola navicella ad esclusione della prima
+	- Schermata iniziale con logo
+	- Menu:
+		- Appena apri il gioco spacebrawl grande sotto un tasto grande gioca, la rotellina delle impostazioni in alto, bottoncino crediti
+		- Quando schiacci gioca si entra nel menu serio:
+			- Si cambia tra le schermate scorrento
+			- Ci devono essere le icone per andare alle opzioni e tornare indietro
+			- Una sezione per giocare: si scorre tra i livelli della story mode e un tasto grosso per la modalità infinita
+			- Hangar dove si potenzia la nave selezionata e si comprano le altre
+			- Sezione per potenziare i power-up
+			- Sezione per comprare monete per $ o per Ads (es. boost monete x5)
+			- Sezione quest
+	- Schermata GameOver:
+		- Niente interazioni
+	- Bilanciamenti:
+		- Rendere il gioco più difficile
+	- Quest:
+		- Prestabilite
+		- Ricompensa soldi 
+		- Quest segrete / EasterEgg
+	- Storia:
+		- Struttura
+			- Diviso in stage
+			- Ogni stage è diverse ondate (tipo modalità infinita)
+			- Le ondate sono prestabilite
+			- I boss saranno o nell'ondata finale o in un livello a parte
+			- Alcuni stage speciali (es. nemici modificati o nave da difenfere)
+		- Lore
+			- Gli umani hanno due pianeti: la terra e un altro
+			- Gli alieni (nome?) altri 2
+			- La storia è vista dal punto di vista del pilota
+			- La compagnia per cui lavori è una compagnia di navi cargo che trasporta merci tra i due pianeti
+			- Fino a prima gli alieni erano scarsi e non riuscivano a danneggiare le navi umane
+			- Gli alieni si evolvono e creano una nave che riesce a farti danni (nemico normale)
+			- Agli uomini servivano cose per difendersi. Sulla terra c'erano dei cannoni per proteggere i pianeti ma non funzionanti nello spazio
+			- Uno scienziato inventa le prime armi laser che funzionano anche nello spazio
+			- Tu sei incaricato di guidare la prima nave dotata di questi laser
+			- Gli alieni si evolvono e riescono a copiarti le armi (altri tipi di nemici, sega elettrica, lazur...)
+			- Ogni missione compiuta corrisponde a dei pezzi trasportati ma dopo l'ultimo boss ti accorgi che i pezzi servono per costruire una super astronave corazzata
+			- Una volta costruita si scopre che l'umanità voleva conquistare tutto lo spazio e che gli alieni volevano solo mantenere la pace 
+			- Ti rivolti conto gli umani e ti rivolti agli umani e l'ultimissimo boss segreto è la nave che tu stesso hai costruito
+			- La modalità infinita è un simulatore con cui addestrano i piloti

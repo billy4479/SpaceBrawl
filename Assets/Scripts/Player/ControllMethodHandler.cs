@@ -2,11 +2,9 @@
 
 public class ControllMethodHandler : MonoBehaviour
 {
-    private AssetsHolder assetsHolder;
-    private RectTransform positionJoystickTransform;
-    private RectTransform fireJoystickTransform;
-    private RectTransform canvas;
-    private SaveManager sm;
+    [SerializeField] private RectTransform positionJoystickTransform;
+    [SerializeField] private RectTransform fireJoystickTransform;
+    [SerializeField] private RectTransform canvas;
 
     #region AdjustUIPosition
 
@@ -49,14 +47,8 @@ public class ControllMethodHandler : MonoBehaviour
 
     private void Start()
     {
-        sm = SaveManager.instance;
-        assetsHolder = AssetsHolder.instance;
-        positionJoystickTransform = assetsHolder.Joystick_Position_Transform;
-        fireJoystickTransform = assetsHolder.Joystick_Fire_Transform;
-        canvas = assetsHolder.Canvas;
-
         standardResolution = new Vector2(canvas.rect.width, canvas.rect.height);
-        switch (sm.settings.controllMethod)
+        switch (SaveManager.instance.settings.controllMethod)
         {
             default:
                 break;

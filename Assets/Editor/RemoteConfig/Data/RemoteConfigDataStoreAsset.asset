@@ -14,33 +14,33 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rsKeyList:
   - metadata:
-      entityId: 18ecf12d-bdc7-4351-b30d-968b32162031
+      entityId: 99f9ffa9-d02f-47a1-ab26-d1a003a2405f
     rs:
       key: lastVersion
       type: string
-      value: 0.4.3
+      value: 0.9.1
   rsLastCachedKeyList:
   - metadata:
-      entityId: 18ecf12d-bdc7-4351-b30d-968b32162031
+      entityId: 99f9ffa9-d02f-47a1-ab26-d1a003a2405f
     rs:
       key: lastVersion
       type: string
-      value: 0.4.3
-  configId: 9c34dc7b-68ff-4cef-b4f8-ae3f8497cb83
-  currentEnvironmentId: ae988859-930f-4215-b0a6-9711edd17687
+      value: 0.9.1
+  configId: 45d588d3-a509-4451-a080-07593d50894b
+  currentEnvironmentId: cf2fe206-883d-428d-8cb9-f60aceb6f910
   environments:
   - id: cf2fe206-883d-428d-8cb9-f60aceb6f910
     appId: 
     name: Development
     description: 
     createdAt: 2020-04-13T13:53:28Z
-    updatedAt: 2020-04-15T05:55:49Z
+    updatedAt: 2020-04-15T06:18:46Z
   - id: ae988859-930f-4215-b0a6-9711edd17687
     appId: 
     name: Release (Default)
     description: 
     createdAt: 2020-04-13T13:53:28Z
-    updatedAt: 2020-04-15T05:55:49Z
+    updatedAt: 2020-04-15T06:18:46Z
   rulesList: []
   lastCachedRulesList: []
   addedRulesIDs: []

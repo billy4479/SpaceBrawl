@@ -4,17 +4,14 @@ using UnityEngine.SceneManagement;
 public class PauseMenu : MonoBehaviour
 {
     public static bool isPaused = false;
-    private GameObject pauseMenu;
+    [SerializeField] private GameObject pauseMenu;
     private GameManager gameManager;
     private AudioManager audioManager;
-    private AssetsHolder assetsHolder;
 
     private void Start()
     {
         audioManager = AudioManager.instance;
-        assetsHolder = AssetsHolder.instance;
-        gameManager = GameManager.instance;
-        pauseMenu = assetsHolder.Pause_Menu;
+        gameManager = FindObjectOfType<GameManager>();
     }
 
     private void Update()

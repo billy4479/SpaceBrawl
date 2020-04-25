@@ -15,9 +15,9 @@ public class GameOverUIHandler : MonoBehaviour
     [SerializeField] private GameObject button;
     private readonly string labelBase_Score = "Score: ";
     private readonly string labelBase_Level = "Level: ";
-    private void Start()
+    private void Awake()
     {
-        GameManager.instance.OnGameOver += OnGameOver;
+        FindObjectOfType<GameManager>().OnGameOver += OnGameOver;
     }
 
     private void OnGameOver(object sender, GameOverEventArgs e)

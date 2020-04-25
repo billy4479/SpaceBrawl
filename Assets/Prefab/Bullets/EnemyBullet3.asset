@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: EnemyBullet3
   m_EditorClassIdentifier: 
   player: 0
-  damage: 10
+  damage: 15
   speed: 10
   timaAlive: 2
   size: 1

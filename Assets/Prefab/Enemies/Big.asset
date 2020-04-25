@@ -10,24 +10,30 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 278ea2b95e36321458adca7ffcca584f, type: 3}
-  m_Name: Enemy2Stats
+  m_Name: Big
   m_EditorClassIdentifier: 
+  ID: 1
   enemyType: 0
-  life: 30
   scale: 1.5
-  regenSpeed: 2
-  timeToStartRegen: 5
   speed: 5
-  damage: 20
+  bodyDamage: 20
   pointAtDeath: 5
-  rotationSpeed: 0.1
+  rotationSpeed: 1
   probability: 20
   minLevel: 3
+  arrowColor: {r: 0, g: 0.7051564, b: 0.8679245, a: 1}
+  aoc: {fileID: 22100000, guid: ea6901828afdb7d6aaef798ae28b4681, type: 2}
+  life: 30
+  regenSpeed: 2
+  timeToStartRegen: 5
   fireDistance: 0
   starfeSpeed: 0
   fireRate: 0
+  bulletStats: {fileID: 0}
   spawnRate: 0
   enemyToSpawnNumber: 0
-  enemyToSpawnIndex: 0
-  arrowColor: {r: 0, g: 0.7051564, b: 0.8679245, a: 1}
-  aoc: {fileID: 22100000, guid: ea6901828afdb7d6aaef798ae28b4681, type: 2}
+  enemyToSpawnID: 0
+  timeToCharge: 0
+  chargeDistance: 0
+  distanceOffset: 0.5
+  speedCoeff: 0

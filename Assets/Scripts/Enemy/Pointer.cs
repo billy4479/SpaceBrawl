@@ -2,10 +2,9 @@
 
 public class Pointer : MonoBehaviour
 {
-    private Rigidbody2D enemy;
     private GameManager gm;
-    private Transform player;
-    private AssetsHolder assetsHolder;
+    private Rigidbody2D enemy;
+    private Rigidbody2D player;
 
     private readonly float coeff = 3f;
     private Vector2 realPos = new Vector2();
@@ -14,15 +13,19 @@ public class Pointer : MonoBehaviour
     private float[] angles;
     private Transform cam;
 
-    private void Start()
+    private void Awake()
     {
-        assetsHolder = AssetsHolder.instance;
-        gm = GameManager.instance;
-        player = assetsHolder.Player_Current.transform;
+        gm = FindObjectOfType<GameManager>();
+        player = GameObject.FindGameObjectWithTag("Player").GetComponent<Rigidbody2D>();
         cam = Camera.main.transform;
         enemy = transform.parent.GetComponent<Rigidbody2D>();
         transform.parent = null;
 
+    }
+
+    private void Start()
+    {
+        //Screen vertices
         points[0] = new Vector2(gm.screenSize.x, gm.screenSize.y);
         points[1] = new Vector2(-gm.screenSize.x, gm.screenSize.y);
         points[2] = new Vector2(-gm.screenSize.x, -gm.screenSize.y);
@@ -33,11 +36,10 @@ public class Pointer : MonoBehaviour
         points[1].x * points[2].x + points[1].y * points[2].y,
         };
 
-        float[] _angles =  {
+        angles = new float[] {
             Mathf.Acos(dotProd[0] / (points[0].magnitude * points[1].magnitude)) * Mathf.Rad2Deg,
             Mathf.Acos(dotProd[1] / (points[1].magnitude * points[2].magnitude)) * Mathf.Rad2Deg,
         };
-        angles = _angles;
     }
 
     private void FixedUpdate()
@@ -45,7 +47,7 @@ public class Pointer : MonoBehaviour
         cam = Camera.main.transform;
 
         //Set Direction
-        Vector2 direction = (enemy.position - (Vector2)player.position).normalized;
+        Vector2 direction = (enemy.position - player.position).normalized;
         transform.eulerAngles = new Vector3(0, 0, Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg + 90);
 
         //Set Scale
@@ -123,7 +125,10 @@ public class Pointer : MonoBehaviour
         {
             transform.position = finalPos;
         }
-        catch (System.Exception){ Debug.LogError("Nan"); }
+        catch {
+            Debug.LogError("Invalid Pointer Position");
+            //throw e;
+        }
     }
 
     private void OnDrawGizmos()

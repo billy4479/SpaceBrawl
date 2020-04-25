@@ -34,8 +34,10 @@ public class SaveManager : MonoBehaviour
         public float VolumeMusic;
         public string name;
         public ControllMethod controllMethod;
+        public int selectedCharacter;
         public Settings()
         {
+            selectedCharacter = 0;
             VolumeMusic = 100f;
             VolumeSFX = 100f;
             name = "Player";
@@ -116,6 +118,11 @@ public class SaveManager : MonoBehaviour
 
             saveStream.Write(encrypted);
         }
+    }
+
+    public GameInfo GetGameInfo()
+    {
+        return new GameInfo() { selectedPlayerID = settings.selectedCharacter};
     }
 
     public void ReadFile()

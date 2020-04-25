@@ -1,9 +1,9 @@
-﻿using UnityEngine;
+﻿/*using UnityEngine;
 using TMPro;
 
 public class AssetsHolder : MonoBehaviour
 {
-    #region Singleton
+    #region Singletone
 
     public static AssetsHolder instance;
 
@@ -34,7 +34,7 @@ public class AssetsHolder : MonoBehaviour
     public RectTransform Canvas;
 
     public Transform[] Anchors;
-}
+}*/
 
 public enum Scenes
 {

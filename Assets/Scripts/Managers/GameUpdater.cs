@@ -14,7 +14,6 @@ public class GameUpdater : MonoBehaviour
     const string windowsUrl1 = "http://ftp.spacebrawlreal.altervista.org/versioni/PC/Windows/";
     const string windowsUrl2 = ".exe";
     string url;
-    public static GameUpdater instance { get; private set; }
     public string GetURL()
     {
         return url;
@@ -22,7 +21,6 @@ public class GameUpdater : MonoBehaviour
 
     private void Awake()
     {
-        instance = this;
         ConfigManager.FetchCompleted += OnFetch;
         ConfigManager.FetchConfigs(new userAttributes(), new appAttributes());
     }

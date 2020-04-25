@@ -3,19 +3,16 @@ using UnityEngine;
 
 public class CameraScript : MonoBehaviour
 {
-    private AssetsHolder assetsHolder;
     private GameManager gameManager;
     private Vector3 player;
     private Vector3 oldPlayer;
-    private Transform[] anchors;
+    [SerializeField] private Transform[] anchors;
     private Transform playerTransform;
 
-    private void Start()
+    private void Awake()
     {
-        gameManager = GameManager.instance;
-        assetsHolder = AssetsHolder.instance;
-        playerTransform = assetsHolder.Player_Current.transform;
-        anchors = assetsHolder.Anchors;
+        gameManager = FindObjectOfType<GameManager>();
+        playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
         transform.position = new Vector3(0, 0, -10);
     }
 

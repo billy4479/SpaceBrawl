@@ -3,35 +3,43 @@ using UnityEngine;
 
 public class PlayerMoviment : MonoBehaviour, IHealth
 {
-    [HideInInspector]
-    public PlayerStats stats;
-    private float speed;
-    private float maxSpeed;
+
+    private PlayerStats stats;
+    [SerializeField] PlayerStats[] playerStats;
+
     private Rigidbody2D PlayerRB;
     private Animator animator;
     private Weapon weapon;
 
-    private AssetsHolder assetsHolder;
     private GameManager gameManager;
-    private Joystick positionJoystick;
-    private Joystick fireJoystick;
     private SaveManager sm;
+    
+    [SerializeField] private Joystick positionJoystick;
+    [SerializeField] private Joystick fireJoystick;
 
     private float lastAngle;
 
-    private void Start()
+    private void Awake()
     {
-        assetsHolder = AssetsHolder.instance;
-        gameManager = GameManager.instance;
-        positionJoystick = assetsHolder.Joystick_Position;
-        fireJoystick = assetsHolder.Joystick_Fire;
-        sm = SaveManager.instance;
+        gameManager = FindObjectOfType<GameManager>();
         PlayerRB = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         weapon = GetComponent<Weapon>();
+        sm = SaveManager.instance;
+        if (sm == null) Debug.Log("SaveManager null at Awake");
+        stats = playerStats[sm.settings.selectedCharacter];
+    }
+
+    private void Start()
+    {
+        transform.localScale *= stats.scale;
         weapon.SetBulletStats(stats.bulletStats, stats.fireRate);
-        speed = stats.acceleration;
-        maxSpeed = stats.maxSpeed;
+    }
+
+    public object GetStats()
+    {
+        if (stats == null) throw new System.NullReferenceException();
+        return stats;
     }
 
     public void OnDeath(bool defeated)
@@ -49,8 +57,8 @@ public class PlayerMoviment : MonoBehaviour, IHealth
             {
                 if (Input.GetMouseButton(0))
                 {
-                    PlayerRB.rotation = UtilsClass.GetAngleFromVector((Vector2)UtilsClass.GetMouseWorldPosition() - PlayerRB.position) - 90f;
-                    PlayerRB.AddForce(transform.up * speed);
+                    PlayerRB.rotation = UtilsClass.GetAngleFromVectorFloat((Vector2)UtilsClass.GetMouseWorldPosition() - PlayerRB.position) - 90f;
+                    PlayerRB.AddForce(transform.up * stats.acceleration);
                     weapon.Shoot();
 
                     animator.SetInteger("dir", 1);
@@ -63,7 +71,7 @@ public class PlayerMoviment : MonoBehaviour, IHealth
             }
             else if (sm.settings.controllMethod == SaveManager.ControllMethod.KeyBoard)
             {
-                PlayerRB.rotation = UtilsClass.GetAngleFromVector((Vector2)UtilsClass.GetMouseWorldPosition() - PlayerRB.position) - 90f;
+                PlayerRB.rotation = UtilsClass.GetAngleFromVectorFloat((Vector2)UtilsClass.GetMouseWorldPosition() - PlayerRB.position) - 90f;
                 if (Input.GetMouseButton(0)) weapon.Shoot();
 
                 Vector2 direction = new Vector2();
@@ -71,7 +79,7 @@ public class PlayerMoviment : MonoBehaviour, IHealth
                 if (Input.GetKey(KeyCode.A)) direction.x--;
                 if (Input.GetKey(KeyCode.S)) direction.y--;
                 if (Input.GetKey(KeyCode.D)) direction.x++;
-                PlayerRB.AddForce(direction * speed);
+                PlayerRB.AddForce(direction * stats.acceleration);
                 if (direction != Vector2.zero) animator.SetInteger("dir", 1);
                 else animator.SetInteger("dir", 0);
             }
@@ -94,25 +102,33 @@ public class PlayerMoviment : MonoBehaviour, IHealth
                 }
                 else
                 {
-                    PlayerRB.AddForce(positionJoystick.Direction * speed * Mathf.Pow(positionJoystick.Direction.magnitude, 3f));
+                    PlayerRB.AddForce(positionJoystick.Direction * stats.acceleration * Mathf.Pow(positionJoystick.Direction.magnitude, 3f));
                     animator.SetInteger("dir", 1);
                 }
             }
 
             #region setMaxSpeed
 
-            if (PlayerRB.velocity.x > maxSpeed)
-                PlayerRB.velocity = new Vector2(maxSpeed, PlayerRB.velocity.y);
-            if (PlayerRB.velocity.y > maxSpeed)
-                PlayerRB.velocity = new Vector2(PlayerRB.velocity.x, maxSpeed);
-            if (PlayerRB.velocity.x < -maxSpeed)
-                PlayerRB.velocity = new Vector2(-maxSpeed, PlayerRB.velocity.y);
-            if (PlayerRB.velocity.y < -maxSpeed)
-                PlayerRB.velocity = new Vector2(PlayerRB.velocity.x, -maxSpeed);
+            if (PlayerRB.velocity.x > stats.maxSpeed)
+                PlayerRB.velocity = new Vector2(stats.maxSpeed, PlayerRB.velocity.y);
+            if (PlayerRB.velocity.y > stats.maxSpeed)
+                PlayerRB.velocity = new Vector2(PlayerRB.velocity.x, stats.maxSpeed);
+            if (PlayerRB.velocity.x < -stats.maxSpeed)
+                PlayerRB.velocity = new Vector2(-stats.maxSpeed, PlayerRB.velocity.y);
+            if (PlayerRB.velocity.y < -stats.maxSpeed)
+                PlayerRB.velocity = new Vector2(PlayerRB.velocity.x, -stats.maxSpeed);
 
             #endregion setMaxSpeed
         }
         else
             animator.SetInteger("dir", 0);
+    }
+    private void OnDrawGizmosSelected()
+    {
+        try
+        {
+            Gizmos.DrawLine(PlayerRB.position, UtilsClass.GetMouseWorldPosition());
+        }
+        catch { }
     }
 }

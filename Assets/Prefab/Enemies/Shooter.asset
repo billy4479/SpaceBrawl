@@ -10,24 +10,30 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 278ea2b95e36321458adca7ffcca584f, type: 3}
-  m_Name: Enemy5Stats
+  m_Name: Shooter
   m_EditorClassIdentifier: 
-  enemyType: 0
-  life: 5
+  ID: 2
+  enemyType: 1
   scale: 1
+  speed: 3
+  bodyDamage: 5
+  pointAtDeath: 4
+  rotationSpeed: 1
+  probability: 25
+  minLevel: 5
+  arrowColor: {r: 0.62306017, g: 0.11681201, b: 0.990566, a: 1}
+  aoc: {fileID: 22100000, guid: 9a38af840112f004ab63be157ed416fb, type: 2}
+  life: 10
   regenSpeed: 2
   timeToStartRegen: 5
-  speed: 5
-  damage: 7
-  pointAtDeath: 1
-  rotationSpeed: 1
-  probability: 0
-  minLevel: 0
   fireDistance: 5
   starfeSpeed: 1
   fireRate: 1
+  bulletStats: {fileID: 11400000, guid: b63a0638eae480146b38b2127087dd96, type: 2}
   spawnRate: 0
   enemyToSpawnNumber: 0
-  enemyToSpawnIndex: 0
-  arrowColor: {r: 0, g: 1, b: 0, a: 1}
-  aoc: {fileID: 22100000, guid: 331a88b653cc87147a9a24b2e1474526, type: 2}
+  enemyToSpawnID: 0
+  timeToCharge: 0
+  chargeDistance: 0
+  distanceOffset: 0.5
+  speedCoeff: 0

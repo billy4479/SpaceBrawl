@@ -7,19 +7,19 @@ public class SpawnEnemyesEditor : Editor
     public override void OnInspectorGUI()
     {
         EnemySpawner enemySpawner = (EnemySpawner)target;
-        GameManager gm = GameManager.instance;
-        AssetsHolder assetsHolder = AssetsHolder.instance;
+        GameManager gm = FindObjectOfType<GameManager>();
+        var enemyList = enemySpawner.enemyStats;
         base.OnInspectorGUI();
 
         EditorGUILayout.Space();
 
         try
         {
-            for (int i = 0; i < assetsHolder.Enemy_Stats.Length; i++)
+            for (int i = 0; i < enemyList.Length; i++)
             {
-                if (GUILayout.Button(i.ToString()))
+                if (GUILayout.Button(enemyList[i].name))
                 {
-                    enemySpawner.SpawnEnemy(gm.RandomSpawnPosOnBorders(), Quaternion.identity, assetsHolder.Enemy_Stats[i]);
+                    enemySpawner.SpawnSingleEnemy(Quaternion.identity, enemyList[i].ID, gm.debug);
                 }
             }
 

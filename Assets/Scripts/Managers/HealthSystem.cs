@@ -9,7 +9,6 @@ public class HealthSystem : MonoBehaviour
     private int maxHealth;
     private int currentHeath;
 
-    private AssetsHolder assetsHolder;
     private GameObject player;
     private bool isPlayer;
     private bool hasDied = false;
@@ -21,39 +20,49 @@ public class HealthSystem : MonoBehaviour
     private float lastRegen = float.MinValue;
     private float lastDamage = float.MinValue;
 
-    private void Start()
+    private void Awake()
     {
-        assetsHolder = AssetsHolder.instance;
-        player = assetsHolder.Player_Current;
+        player = GameObject.FindGameObjectWithTag("Player");
         health = GetComponent<IHealth>();
         isPlayer = health.IsPlayer();
-        if(playerStats != null && enemyStats != null)
+    }
+
+    private void Start()
+    {
+        if (isPlayer) playerStats = health.GetStats() as PlayerStats;
+        if (!isPlayer) enemyStats = health.GetStats() as EnemyStats;
+        if (playerStats != null && enemyStats != null)
         {
             Debug.LogError("This HeathSystem is used for player and enemy simultaneusly!");
             throw new System.Exception();
         }
-        if(playerStats == null && enemyStats == null)
+        if (playerStats == null && enemyStats == null)
         {
             Debug.LogError("This HealthSystem does not have any stats");
             throw new System.Exception();
         }
-        if(enemyStats != null && !isPlayer)
+        if (enemyStats != null && !isPlayer)
         {
             maxHealth = enemyStats.life;
             regenTime = enemyStats.timeToStartRegen;
             regenRate = enemyStats.regenSpeed;
         }
-        if(playerStats != null && isPlayer)
+        if (playerStats != null && isPlayer)
         {
             maxHealth = playerStats.life;
             regenTime = playerStats.timeToStartRegen;
             regenRate = playerStats.regenSpeed;
         }
         currentHeath = maxHealth;
-        if(!isPlayer && enemyStats == assetsHolder.Enemy_Stats[3])
+        if (!isPlayer)
         {
             healthBarContainer.transform.localPosition *= enemyStats.scale;
             healthBarContainer.transform.localScale *= enemyStats.scale;
+        }
+        else
+        {
+            healthBarContainer.transform.localPosition *= playerStats.scale;
+            healthBarContainer.transform.localScale *= playerStats.scale;
         }
 
     }
@@ -112,19 +121,19 @@ public class HealthSystem : MonoBehaviour
             if (!controller.targetPlayer && !isPlayer)
                 TakeDamage(controller.damage);
         }
-        if (collider.CompareTag("Player") && collider.GetInstanceID() != lastID && !isPlayer)
+        if (collider.CompareTag("Player") && collider.GetInstanceID() != lastID && !isPlayer && !hasDied)
         {
             //Se sei il nemico e ti colpisce il player
             lastID = collider.GetInstanceID();
-            collider.GetComponent<HealthSystem>().TakeDamage(GetComponent<EnemyBase>().stats.damage);
+            collider.GetComponent<HealthSystem>().TakeDamage(enemyStats.bodyDamage);
             Die(false);
         }
         if (collider.CompareTag("Enemy") && collider.GetInstanceID() != lastID && isPlayer)
         {
             //Se sei il giocatore e ti colpisce il nemico
-            //NON VIENE MAI CHIAMATO
+            //NON VIENE ESEGUITO
             lastID = collider.GetInstanceID();
-            TakeDamage(collider.GetComponent<EnemyBase>().stats.damage);
+            TakeDamage(collider.GetComponent<EnemyBase>().stats.bodyDamage);
         }
     }
 }

@@ -3,29 +3,37 @@
 [CreateAssetMenu(menuName = "Enemy Statistics")]
 public class EnemyStats : ScriptableObject
 {
+    //Base
+    public int ID;
     public EnemyType enemyType;
-    public int life = 10;
-    public float scale = 1f;
-    public float regenSpeed = 2f;
-    public float timeToStartRegen = 5f;
+    public float scale;
     public float speed;
-    public int damage = 10;
-    public int pointAtDeath = 1;
-    public float rotationSpeed = .1f;
-    public int probability = 10;
+    public int bodyDamage;
+    public int pointAtDeath;
+    public float rotationSpeed;
+    public int probability;
     public int minLevel;
-    [Space]
-    public float fireDistance = 5f;
-    public float starfeSpeed = 1f;
-    public float fireRate = 1f;
-    public BulletStats bulletStats;
-    [Space]
-    public float spawnRate;
-    public int enemyToSpawnNumber;
-    public int enemyToSpawnIndex;
-    [Space]
+    
     public Color arrowColor = Color.white;
     public AnimatorOverrideController aoc;
+    //Health
+    public int life;
+    public float regenSpeed;
+    public float timeToStartRegen;
+    //Shooter
+    public float fireDistance;
+    public float starfeSpeed;
+    public float fireRate;
+    public BulletStats bulletStats;
+    //Spawner
+    public float spawnRate;
+    public int enemyToSpawnNumber;
+    public int enemyToSpawnID;
+    //Charger
+    public float timeToCharge;
+    public float chargeDistance;
+    public float distanceOffset;
+    public float speedCoeff;
 
 }
 

@@ -141,7 +141,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85852138681b61e41b54bcd19bfc059a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stats: {fileID: 11400000, guid: 26786ee4be8815140be21d555be0dd20, type: 2}
+  playerStats:
+  - {fileID: 11400000, guid: 26786ee4be8815140be21d555be0dd20, type: 2}
+  positionJoystick: {fileID: 0}
+  fireJoystick: {fileID: 0}
 --- !u!114 &3933549885187587354
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -154,6 +157,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca0a43860c5f8574480694173a3dbad9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bulletBase: {fileID: 7483117115779252672, guid: 7717922c929515a40b65acf90deb293d,
+    type: 3}
   FirePoint: {fileID: 3933549886474668414}
 --- !u!114 &3933549885187587358
 MonoBehaviour:
@@ -184,8 +189,8 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.0002875626, y: 0.014953867}
-  m_Size: {x: 0.18102011, y: 0.22523066}
+  m_Offset: {x: 0, y: 0}
+  m_Size: {x: 0.18102011, y: 0.23876685}
   m_Direction: 0
 --- !u!1 &3933549886474668413
 GameObject:

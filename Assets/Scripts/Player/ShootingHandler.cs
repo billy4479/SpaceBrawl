@@ -3,16 +3,13 @@
 public class ShootingHandler : MonoBehaviour
 {
     private GameManager gm;
-    private AssetsHolder assetsHolder;
     private Weapon playerWeapon;
-    private Joystick fire;
+    [SerializeField]private Joystick fire;
 
-    private void Start()
+    private void Awake()
     {
-        gm = GameManager.instance;
-        assetsHolder = AssetsHolder.instance;
-        fire = assetsHolder.Joystick_Fire;
-        playerWeapon = assetsHolder.Player_Current.GetComponent<Weapon>();
+        gm = FindObjectOfType<GameManager>();
+        playerWeapon = GameObject.FindGameObjectWithTag("Player").GetComponent<Weapon>();
     }
 
     private void Update()

@@ -12,4 +12,5 @@ public class PlayerStats : ScriptableObject
     public float regenSpeed;
     public BulletStats bulletStats;
     public float fireRate;
+    public float scale = 1f;
 }

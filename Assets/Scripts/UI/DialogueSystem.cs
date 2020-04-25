@@ -144,7 +144,7 @@ public class DialogueSystem : MonoBehaviour
 
     private void ButtonAction_OpenDownloadPage()
     {
-        Application.OpenURL(GameUpdater.instance.GetURL());
+        Application.OpenURL(FindObjectOfType<GameUpdater>().GetURL());
     }
 
     private void RemoveDialogue()

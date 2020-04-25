@@ -1,11 +1,11 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class EnemyBase : MonoBehaviour, IHealth
 {
     #region Variables
 
+    [HideInInspector]
     public EnemyStats stats;
 
     private bool canMove = true;
@@ -13,139 +13,120 @@ public class EnemyBase : MonoBehaviour, IHealth
     private float repelStrenght = 1f;
 
     //Components and Managers
-    private Rigidbody2D PlayerRB;
+    private Rigidbody2D playerRB;
     private GameManager gm;
     private AudioManager am;
-    private AssetsHolder assetsHolder;
     private Rigidbody2D rb;
     private Animator animator;
     private GameObject pointer;
     private Transform firePos;
-    private GameObject bulletBase;
+    private Transform[] anchors;
 
-    //Base
     private float speed;
-    private float turnSpeed;
-    private int pointsAtDeath;
-    private int prob;
-    private int damage;
-
-    //Class
-    private bool isShooter;
-    private bool isSummoner;
-    private bool isCharger;
+    private float starfeSpeed;
 
     //Shooter
-    private float fireDistance;
-    private float starfeSpeed;
-    private float fireRate;
-    private float lastShoot = float.MinValue;
-    private BulletStats bulletStats;
     private Weapon weapon;
 
     //Spawner
-    private EnemyStats enemyToSpawnStats;
     private float lastSpawn = float.MinValue;
-    private int enemyToSpawnNumber;
-    private float spawnRate;
+    private EnemySpawner enemySpawner;
 
     //Charger
     private float chargerTimer = float.MinValue;
     private bool isCharging = false;
+    private float directionAtDashStart;
     private bool isDashing = false;
     private float initialSpeed;
-    private float directionAtDashStart;
-    private float safeZone = .5f;
 
     #endregion Variables
 
-    private const bool debug = false;
+    //[HideInInspector]
+    public bool debug = false;
+
+    private void Awake()
+    {
+        am = AudioManager.instance;
+        gm = FindObjectOfType<GameManager>();
+        rb = GetComponent<Rigidbody2D>();
+        animator = GetComponent<Animator>();
+        pointer = transform.Find("Pointer").gameObject;
+        firePos = transform.Find("FirePosition");
+        playerRB = GameObject.FindGameObjectWithTag("Player").GetComponent<Rigidbody2D>();
+        weapon = GetComponent<Weapon>();
+        enemySpawner = FindObjectOfType<EnemySpawner>();
+        anchors = new Transform[2];
+        var tmp = GameObject.FindGameObjectsWithTag("Anchor");
+        for (int i = 0; i < tmp.Length; i++) anchors[i] = tmp[i].transform;
+    }
 
     private void Start()
     {
-        am = AudioManager.instance;
-        assetsHolder = AssetsHolder.instance;
-        gm = GameManager.instance;
-        rb = GetComponent<Rigidbody2D>();
-        animator = GetComponent<Animator>();
-        animator.runtimeAnimatorController = stats.aoc;
-        pointer = transform.Find("Pointer").gameObject;
-        firePos = transform.Find("FirePosition");
-        PlayerRB = assetsHolder.Player_Current.GetComponent<Rigidbody2D>();
-        bulletBase = assetsHolder.Bullet_Base;
-        bulletStats = stats.bulletStats;
-        speed = stats.speed;
-        initialSpeed = speed;
-        turnSpeed = stats.rotationSpeed;
-        pointsAtDeath = stats.pointAtDeath;
-        prob = stats.probability;
-        damage = stats.damage;
-        isShooter = stats.enemyType == EnemyType.Shooter ? true : false;
-        isSummoner = stats.enemyType == EnemyType.Summoner ? true : false;
-        isCharger = stats.enemyType == EnemyType.Charger ? true : false;
-        fireDistance = stats.fireDistance;
-        starfeSpeed = stats.starfeSpeed;
-        fireRate = stats.fireRate;
-        pointer.GetComponent<SpriteRenderer>().color = stats.arrowColor;
         transform.localScale *= stats.scale;
-        enemyToSpawnNumber = stats.enemyToSpawnNumber;
-        enemyToSpawnStats = assetsHolder.Enemy_Stats[stats.enemyToSpawnIndex];
-        spawnRate = stats.spawnRate;
         firePos.transform.localPosition *= stats.scale;
-        weapon = GetComponent<Weapon>();
-        weapon.SetBulletStats(bulletStats, fireRate);
-
+        weapon.SetBulletStats(stats.bulletStats, stats.fireRate);
+        initialSpeed = stats.speed;
+        pointer.GetComponent<SpriteRenderer>().color = stats.arrowColor;
+        animator.runtimeAnimatorController = stats.aoc;
+        speed = stats.speed;
+        starfeSpeed = stats.starfeSpeed;
         if (debug)
         {
             starfeSpeed = 0f;
             speed = 0f;
+            initialSpeed = 0f;
         }
     }
+
     private void FixedUpdate()
     {
         if (canMove)
         {
             #region Rotation
-            Vector2 direction = (PlayerRB.position - rb.position).normalized;
-            float distance = Vector2.Distance(rb.position, PlayerRB.position);
+            Vector2 direction = (playerRB.position - rb.position).normalized;
             float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg - 90f;
-            rb.rotation = Mathf.LerpAngle(rb.rotation, angle, turnSpeed);
+            rb.rotation = Mathf.LerpAngle(rb.rotation, angle, stats.rotationSpeed);
             #endregion
+            float distance = Vector2.Distance(rb.position, playerRB.position);
 
-            if (isShooter)
+            switch (stats.enemyType)
             {
-                if (distance >= fireDistance)
+                case EnemyType.Normal:
                     rb.MovePosition(MoveNormally());
-                else
-                {
-                    rb.MovePosition(MoveStarfing());
-                    weapon.Shoot();
-                }
-            }
-            else if (isSummoner)
-            {
-                rb.MovePosition(MoveNormally());
-                if (Time.time - lastSpawn > 1f / spawnRate && !debug)
-                {
-                    lastSpawn = Time.time;
-                    Spawn();
-                }
-            }
-            else if (isCharger)
-            {
-                if (distance >= fireDistance) //Se è troppo lontano
-                {
-                    if (distance >= fireDistance + safeZone) //E NON è nella safeZone
-                    { //Interrompi
-                        StopDashing();
+                    break;
+                case EnemyType.Shooter:
+                    if (distance >= stats.fireDistance)
                         rb.MovePosition(MoveNormally());
+                    else
+                    {
+                        rb.MovePosition(MoveStarfing());
+                        weapon.Shoot();
                     }
-                    else if (isCharging || isDashing) MoveChargerCharge(); //Carica lo stesso
-                    else rb.MovePosition(MoveNormally());
-                }
-                else MoveChargerCharge(); //Se è abbastanza vicino carica e basta
+                    break;
+                case EnemyType.Summoner:
+                    rb.MovePosition(MoveNormally());
+                    if (Time.time - lastSpawn > 1f / stats.spawnRate && !debug)
+                    {
+                        lastSpawn = Time.time;
+                        Spawn();
+                    }
+                    break;
+                case EnemyType.Charger:
+                    if (distance >= stats.chargeDistance) //Se è troppo lontano
+                    {
+                        if (distance >= stats.chargeDistance + stats.distanceOffset) //E NON è nella safeZone
+                        { //Interrompi
+                            StopDashing();
+                            rb.MovePosition(MoveNormally());
+                        }
+                        else if (isCharging || isDashing) MoveChargerCharge(); //Carica lo stesso
+                        else rb.MovePosition(MoveNormally());
+                    }
+                    else MoveChargerCharge(); //Se è abbastanza vicino carica e basta
+                    break;
+                default:
+                    break;
             }
-            else rb.MovePosition(MoveNormally());
         }
     }
 
@@ -157,10 +138,10 @@ public class EnemyBase : MonoBehaviour, IHealth
             chargerTimer = Time.time;
             isCharging = true;
         }
-        else if (Time.time - chargerTimer > fireRate && !debug)
+        else if (Time.time - chargerTimer > stats.fireRate && !debug)
         {
             //Dash
-            speed = initialSpeed * 4;
+            speed = initialSpeed * stats.speedCoeff;
             isCharging = false;
             directionAtDashStart = rb.rotation;
             isDashing = true;
@@ -190,11 +171,11 @@ public class EnemyBase : MonoBehaviour, IHealth
     #region Spawner
     private void Spawn()
     {
-        for (int i = 0; i < enemyToSpawnNumber; i++)
+        for (int i = 0; i < stats.enemyToSpawnNumber; i++)
         {
             Vector3 randomOffset = GetRandomOffset();
             Vector3 position = transform.position + randomOffset.normalized * 2f;
-            EnemySpawner.instance.SpawnEnemy(position, Quaternion.identity, enemyToSpawnStats);
+            enemySpawner.SpawnSingleEnemy(position, Quaternion.identity, stats.enemyToSpawnID);
         }
     }
     private Vector3 GetRandomOffset()
@@ -205,7 +186,7 @@ public class EnemyBase : MonoBehaviour, IHealth
         if (Random.Range(0, 2) == 1)
             randomOffset.y = randomOffset.y * -1f;
 
-        float max = Mathf.Abs(assetsHolder.Anchors[0].transform.position.x);
+        float max = Mathf.Abs(anchors[0].position.x);
         if (randomOffset.x > max - 1f || randomOffset.x < -max + 1f || randomOffset.y > max - 1f || randomOffset.y < -max + 1f)
         {
             randomOffset = GetRandomOffset();
@@ -239,13 +220,14 @@ public class EnemyBase : MonoBehaviour, IHealth
     }
 
     #endregion Moviment
-
+  
+    #region Heath
     public void RemoveEnemy()
     {
         Destroy(pointer);
         gm.EnemyRBs.Remove(rb);
         gm.enemyNumber--;
-        Destroy(gameObject);
+        Destroy(gameObject); 
     }
     private IEnumerator AnimateDeath()
     {
@@ -265,15 +247,19 @@ public class EnemyBase : MonoBehaviour, IHealth
         CapsuleCollider2D[] capsuleColl = GetComponents<CapsuleCollider2D>();
         for (int i = 0; i < capsuleColl.Length; i++)
             Destroy(capsuleColl[i]);
-        PolygonCollider2D[] polColl = GetComponents<PolygonCollider2D>();
+        /*PolygonCollider2D[] polColl = GetComponents<PolygonCollider2D>();
         for (int i = 0; i < polColl.Length; i++)
-            Destroy(polColl[i]);
+            Destroy(polColl[i]);*/
 
         if (defeated)
-            gm.score += pointsAtDeath;
+            gm.score += stats.pointAtDeath;
         gm.enemyNumber--;
         am.PlaySound("EnemyExplosion");
         StartCoroutine(AnimateDeath());
     }
     public bool IsPlayer() => false;
+
+    public object GetStats() => stats;
+    #endregion
+
 }
