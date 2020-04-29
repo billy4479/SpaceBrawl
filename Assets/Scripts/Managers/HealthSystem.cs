@@ -9,7 +9,6 @@ public class HealthSystem : MonoBehaviour
     private int maxHealth;
     private int currentHeath;
 
-    private GameObject player;
     private bool isPlayer;
     private bool hasDied = false;
     private int lastID = 0;
@@ -22,7 +21,6 @@ public class HealthSystem : MonoBehaviour
 
     private void Awake()
     {
-        player = GameObject.FindGameObjectWithTag("Player");
         health = GetComponent<IHealth>();
         isPlayer = health.IsPlayer();
     }

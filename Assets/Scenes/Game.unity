@@ -592,7 +592,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d53ab818bc975ee0d81dee331ea6f277, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerStats: []
+  playerStats:
+  - {fileID: 11400000, guid: 26786ee4be8815140be21d555be0dd20, type: 2}
   EnemyRBs: []
   shootingHandler: {fileID: 1575260500}
   suspendInput: 0
@@ -2456,7 +2457,7 @@ Canvas:
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 25
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 100
   m_TargetDisplay: 0
 --- !u!224 &1525900974
 RectTransform:

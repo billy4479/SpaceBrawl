@@ -5,10 +5,8 @@ public class CameraScript : MonoBehaviour
 {
     private GameManager gameManager;
     private Vector3 player;
-    private Vector3 oldPlayer;
     [SerializeField] private Transform[] anchors;
     private Transform playerTransform;
-
     private void Awake()
     {
         gameManager = FindObjectOfType<GameManager>();
@@ -18,15 +16,7 @@ public class CameraScript : MonoBehaviour
 
     private void FixedUpdate()
     {
-        try
-        {
-            player = playerTransform.position;
-        }
-        catch
-        {
-            player = oldPlayer;
-        }
-
+        player = playerTransform.position;
         Vector3 distFromOne = player - anchors[0].transform.position;
         Vector3 distFromTwo = player - anchors[1].transform.position;
 
@@ -64,6 +54,5 @@ public class CameraScript : MonoBehaviour
         {
             transform.position = new Vector3(player.x, player.y, -10f);
         }
-        oldPlayer = player;
     }
 }
