@@ -105,7 +105,7 @@ public class Pointer : MonoBehaviour
         #endregion IF
 
         #region Enable or disable renderer
-        if (Vector2.Distance(player.position, enemy.position) > Vector2.Distance(player.position, realPos))
+        if (Vector2.Distance(cam.position, enemy.position) > Vector2.Distance(cam.position, realPos))
             GetComponent<Renderer>().enabled = true;
         else
             GetComponent<Renderer>().enabled = false;

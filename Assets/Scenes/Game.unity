@@ -600,7 +600,7 @@ MonoBehaviour:
   score: 0
   level: 1
   enemyNumber: 0
-  debug: 0
+  debug: 1
 --- !u!114 &172112023
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -18,14 +18,14 @@ MonoBehaviour:
     rs:
       key: lastVersion
       type: string
-      value: 0.9.1
+      value: 0.9.2
   rsLastCachedKeyList:
   - metadata:
       entityId: 99f9ffa9-d02f-47a1-ab26-d1a003a2405f
     rs:
       key: lastVersion
       type: string
-      value: 0.9.1
+      value: 0.9.2
   configId: 45d588d3-a509-4451-a080-07593d50894b
   currentEnvironmentId: cf2fe206-883d-428d-8cb9-f60aceb6f910
   environments:
