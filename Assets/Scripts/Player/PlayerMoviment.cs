@@ -71,6 +71,7 @@ public class PlayerMoviment : MonoBehaviour, IHealth
             }
             else if (sm.settings.controllMethod == SaveManager.ControllMethod.KeyBoard)
             {
+                PlayerRB.angularVelocity = 0f;
                 PlayerRB.rotation = UtilsClass.GetAngleFromVectorFloat((Vector2)UtilsClass.GetMouseWorldPosition() - PlayerRB.position) - 90f;
                 if (Input.GetMouseButton(0)) weapon.Shoot();
 
