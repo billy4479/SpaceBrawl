@@ -34,7 +34,6 @@ public class GameOverUIHandler : MonoBehaviour {
             int counter = 0;
             float delay = 2f / score;
             int step = GetStep(ref delay);
-            //delay = 2f / score * step;
             while (counter < score) {
                 if (score - counter < step) {
                     step = score - counter;
@@ -48,12 +47,12 @@ public class GameOverUIHandler : MonoBehaviour {
             label_Score.text = labelBase_Score + 0;
     }
 
-    private int GetStep(ref float delay, int initialStep = 1) {
-        int step = initialStep;
-        delay *= step;
-        if (delay < Time.fixedDeltaTime) {
-            step = GetStep(ref delay, ++step);
+    private int GetStep(ref float delay) {
+        int step = 1;
+        while (delay * step < Time.fixedDeltaTime) {
+            step++;
         }
+        delay *= step;
         return step;
     }
 
