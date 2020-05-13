@@ -31,4 +31,8 @@ public class Menu : MonoBehaviour
     {
         SceneManager.LoadScene((int)Scenes.StoryMode);
     }
+
+    /*private void Start() {
+        StartCoroutine(SceneTransition.Entry(1f, Color.black, transform));
+    }*/
 }
